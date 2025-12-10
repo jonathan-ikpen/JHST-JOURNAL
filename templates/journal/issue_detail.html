@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ issue }}</h2>
+<p>Published on: {{ issue.publication_date }}</p>
+
+<h3>Articles</h3>
+<ul>
+    {% for article in issue.articles.all %}
+    <li>
+        <a href="{% url 'article_detail' article.id %}"><strong>{{ article.manuscript.title }}</strong></a>
+        <br>
+        by {{ article.manuscript.author.username }}
+    </li>
+    {% empty %}
+    <li>No articles in this issue.</li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'index' %}">Back to Home</a></p>
+{% endblock %}

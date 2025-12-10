@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ article.manuscript.title }}</h2>
+<p><strong>Author:</strong> {{ article.manuscript.author.username }} ({{ article.manuscript.author.affiliation }})</p>
+<p><strong>Published in:</strong> {{ article.issue }}</p>
+
+<h3>Abstract</h3>
+<p>{{ article.manuscript.abstract }}</p>
+
+<p>
+    <a href="{{ article.manuscript.file.url }}" class="btn" target="_blank">Download PDF</a>
+</p>
+
+<p><a href="{% url 'issue_detail' article.issue.id %}">Back to Issue</a></p>
+{% endblock %}

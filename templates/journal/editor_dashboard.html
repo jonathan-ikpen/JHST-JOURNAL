@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Editor Dashboard</h2>
+<p>Welcome, Editor {{ user.username }}</p>
+
+<h3>All Submissions</h3>
+{% if submissions %}
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for manuscript in submissions %}
+        <tr>
+            <td>{{ manuscript.title }}</td>
+            <td>{{ manuscript.author.username }}</td>
+            <td>{{ manuscript.get_status_display }}</td>
+            <td>{{ manuscript.submitted_date|date:"Y-m-d" }}</td>
+            <td>
+                <a href="{% url 'assign_reviewer' manuscript.id %}" class="btn">Assign Reviewer</a>
+                <a href="{% url 'make_decision' manuscript.id %}" class="btn">Decision</a>
+                {% if manuscript.status == 'accepted' %}
+                <a href="{% url 'publish_article' manuscript.id %}" class="btn">Publish</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No submissions found.</p>
+{% endif %}
+{% endblock %}

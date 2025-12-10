@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Make Decision</h2>
+<h3>Manuscript: {{ manuscript.title }}</h3>
+
+<h4>Reviews</h4>
+<ul>
+    {% for review in reviews %}
+    <li>
+        <strong>{{ review.reviewer.username }}</strong>: {{ review.get_recommendation_display }}
+        <br>
+        {{ review.comments }}
+    </li>
+    {% empty %}
+    <li>No reviews yet.</li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="decision">Decision:</label>
+    <select name="decision" id="decision">
+        <option value="accepted">Accept</option>
+        <option value="rejected">Reject</option>
+    </select>
+    <br><br>
+    <button type="submit">Submit Decision</button>
+</form>
+<p><a href="{% url 'dashboard' %}">Back to Dashboard</a></p>
+{% endblock %}

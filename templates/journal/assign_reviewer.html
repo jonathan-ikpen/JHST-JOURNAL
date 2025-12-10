@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Assign Reviewer</h2>
+<h3>Manuscript: {{ manuscript.title }}</h3>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="reviewer">Select Reviewer:</label>
+    <select name="reviewer" id="reviewer">
+        {% for reviewer in reviewers %}
+        <option value="{{ reviewer.id }}">{{ reviewer.username }} ({{ reviewer.affiliation }})</option>
+        {% endfor %}
+    </select>
+    <br><br>
+    <button type="submit">Assign</button>
+</form>
+<p><a href="{% url 'dashboard' %}">Back to Dashboard</a></p>
+{% endblock %}

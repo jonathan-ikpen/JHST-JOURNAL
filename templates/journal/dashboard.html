@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ user.username }}</p>
+
+<p>You currently do not have any specific roles assigned (Researcher, Editor, or Reviewer).</p>
+<p>If you are a researcher, please <a href="{% url 'register' %}">register as a researcher</a> or contact the
+    administrator.</p>
+{% endblock %}

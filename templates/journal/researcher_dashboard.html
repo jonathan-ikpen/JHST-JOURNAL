@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Researcher Dashboard</h2>
+<p>Welcome, {{ user.username }} ({{ user.affiliation }})</p>
+
+<a href="{% url 'submit_manuscript' %}" class="btn">Submit New Manuscript</a>
+
+<h3>Your Submissions</h3>
+{% if submissions %}
+<ul>
+    {% for manuscript in submissions %}
+    <li>
+        <strong>{{ manuscript.title }}</strong> - {{ manuscript.get_status_display }}
+        <br>
+        <small>Submitted on: {{ manuscript.submitted_date }}</small>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You have not submitted any manuscripts yet.</p>
+{% endif %}
+{% endblock %}

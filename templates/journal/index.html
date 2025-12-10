@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to the Journal Management System</h1>
+<p>This is a platform for researchers to submit their manuscripts and for editors to manage the review process.</p>
+
+{% if not user.is_authenticated %}
+<p>
+    <a href="{% url 'register' %}" class="btn">Register as Researcher</a>
+    <a href="{% url 'login' %}" class="btn">Login</a>
+</p>
+{% endif %}
+
+<h3>Latest Issues</h3>
+{% if latest_issues %}
+<ul>
+    {% for issue in latest_issues %}
+    <li>
+        <a href="{% url 'issue_detail' issue.id %}">{{ issue }}</a> - {{ issue.publication_date }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No issues published yet.</p>
+{% endif %}
+{% endblock %}
