@@ -250,6 +250,14 @@ def manage_volumes(request):
     volumes = Volume.objects.prefetch_related('issues__articles').order_by('-year', '-number')
     return render(request, 'dashboard/manage_volumes.html', {'volumes': volumes})
 
+@login_required
+def manage_issue(request, issue_id):
+    if not request.user.is_editor:
+        return redirect('dashboard')
+    
+    issue = get_object_or_404(Issue, id=issue_id)
+    return render(request, 'dashboard/manage_issue.html', {'issue': issue})
+
 def index(request):
     latest_issues = Issue.objects.all().order_by('-publication_date')[:5]
     return render(request, 'journal/index.html', {'latest_issues': latest_issues})

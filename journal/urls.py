@@ -19,6 +19,7 @@ urlpatterns = [
     path('create_issue/', views.create_issue, name='create_issue'),
     path('create_volume/', views.create_volume, name='create_volume'),
     path('manage_volumes/', views.manage_volumes, name='manage_volumes'),
+    path('manage_volumes/issue/<int:issue_id>/', views.manage_issue, name='manage_issue'),
     path('issues/<int:issue_id>/', views.issue_detail, name='issue_detail'),
     path('article/<int:article_id>/', views.article_detail, name='article_detail'),
     path('search/', views.search, name='search'),
