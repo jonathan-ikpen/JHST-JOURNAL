@@ -1,5 +1,0 @@
-# HTTrack Website Copier Cookie File
-# This file format is compatible with Netscape cookies
-fountainjournals.com	TRUE	/	FALSE	1999999999	OJSSID	2nc914gj3k98eimr1vo19b922h
-fountainjournals.com	TRUE	/	FALSE	1999999999	SameSite	Lax
-
