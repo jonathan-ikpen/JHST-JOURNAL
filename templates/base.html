@@ -1,119 +1,319 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal Management System</title>
+{% load static %}
+<html class="" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Journal of Hydrocarbon Science and Technology</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&amp;family=Newsreader:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#054D08",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102211",
+              "card-light": "#FFFFFF",
+              "card-dark": "#2a2a2a",
+              "text-light": "#333333",
+              "text-dark": "#e0e0e0",
+              "border-light": "#e5e7eb",
+              "border-dark": "#4a4a4a",
+            },
+            fontFamily: {
+              display: "Newsreader",
+              body: ["Roboto", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
+    </script>
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+      body {
+        background-color: #ededed !important;
+      }
+      .body-container {
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        max-width: 1400px;
+        background: #fff;
+        border-radius: 7px;
+        box-: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .organogram-line {
+        position: relative;
+      }
+      .organogram-line::before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 2px;
+        background-color: #4a90e2;
+      }
+      .organogram-line::after {
+        content: "";
+        position: absolute;
+        left: -2px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 4px solid transparent;
+        border-left-color: #4a90e2;
+      }
+      .organogram-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .organogram-number {
+        background-color: #4a90e2;
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+      }
+      .organogram-content {
+        flex-grow: 1;
+      }
+      .organogram-title {
+        background-color: #f0f0f0;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+      }
+      .organogram-description {
+        padding: 0.5rem 1rem;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+      }
+      /* Mobile nav slide-down styles */
+      #mobile-menu.open {
+        /* allow max-height large enough to show items; transition on max-height for slide effect */
+        max-height: 1000px;
+      }
+      #mobile-menu a {
+        color: white;
+        text-decoration: none;
+      }
+      #mobile-menu .material-icons {
+        vertical-align: middle;
+      }
 
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
+      @keyframes wave {
+        0%,
+        100% {
+          height: 16px;
         }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
+        50% {
+          height: 40px;
         }
-
-        nav ul li {
-            display: inline;
-            margin-right: 1rem;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        main {
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        .btn:hover {
-            background: #0056b3;
-        }
-
-        form p {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 0.5rem 1rem;
-            background: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #218838;
-        }
+      }
+      .animate-wave {
+        animation: wave 1s ease-in-out infinite;
+        border-radius: 4px;
+        height: 16px;
+      }
     </style>
-</head>
+  </head>
+  <body
+    class="bg-background-[#ededed] dark:bg-background-dark font-body text-text-light dark:text-text-dark"
+  >
+    <!-- Preloader -->
+    <div
+      id="page-preloader"
+      class="fixed inset-0 z-[60] bg-white flex flex-col items-center justify-center transition-opacity duration-500"
+    >
+      <div class="flex space-x-1.5 h-12 items-center">
+        <div
+          class="w-2 bg-primary animate-wave"
+          style="animation-delay: 0s"
+        ></div>
+        <div
+          class="w-2 bg-primary animate-wave"
+          style="animation-delay: 0.1s"
+        ></div>
+        <div
+          class="w-2 bg-primary animate-wave"
+          style="animation-delay: 0.2s"
+        ></div>
+        <div
+          class="w-2 bg-primary animate-wave"
+          style="animation-delay: 0.3s"
+        ></div>
+        <div
+          class="w-2 bg-primary animate-wave"
+          style="animation-delay: 0.4s"
+        ></div>
+      </div>
+      <p
+        class="mt-4 text-primary font-display font-medium text-sm tracking-wider animate-pulse"
+      >
+        LOADING JHST
+      </p>
+    </div>
 
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                {% if user.is_authenticated %}
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-                <li>Welcome, {{ user.username }}</li>
-                {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
-                {% endif %}
-            </ul>
-            <form action="{% url 'search' %}" method="get" style="display: inline-block; margin-left: 20px;">
-                <input type="text" name="q" placeholder="Search articles..."
-                    style="width: 200px; display: inline-block;">
-                <button type="submit">Search</button>
-            </form>
-        </nav>
-    </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-</body>
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed bottom-5 right-5 z-50 flex flex-col space-y-3 p-4 pointer-events-none"
+    ></div>
 
+    <!-- Hidden Django Messages -->
+    <div
+      id="django-messages"
+      data-messages='[{% for message in messages %}{"tag": "{{ message.tags }}", "text": "{{ message|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]'
+      class="hidden"
+    ></div>
+
+    <div
+      class="body-container bg-background-white flex flex-col !my-0 md:!my-5 !mt-0 max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8 min-h-screen md:min-h-[calc(100vh-2.5rem)]"
+    >
+      {% include 'includes/header.html' %}
+
+      <div class="flex-1 w-full relative">
+        {% block content %} {% endblock %}
+      </div>
+
+      <!-- FOOTER -->
+      {% include 'includes/footer.html' %}
+    </div>
+    <script>
+      // Preloader
+      window.addEventListener("load", () => {
+        const preloader = document.getElementById("page-preloader");
+        if (preloader) {
+          preloader.classList.add("opacity-0");
+          setTimeout(() => (preloader.style.display = "none"), 500);
+        }
+      });
+
+      // Navigation Preloader Trigger
+      document.addEventListener("click", (e) => {
+        const link = e.target.closest("a");
+        if (
+          link &&
+          !link.target &&
+          link.href &&
+          !link.href.includes("#") &&
+          !link.href.startsWith("javascript") &&
+          !e.ctrlKey &&
+          !e.metaKey
+        ) {
+          const preloader = document.getElementById("page-preloader");
+          if (preloader) {
+            preloader.style.display = "flex";
+            requestAnimationFrame(() =>
+              preloader.classList.remove("opacity-0")
+            );
+          }
+        }
+      });
+
+      // Toast Logic
+      function showToast(text, type = "info") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className =
+          "pointer-events-auto flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg  dark:text-gray-400 dark:bg-gray-800 transform transition-all duration-300 translate-x-full";
+
+        let icon = "";
+        if (type.includes("success")) {
+          icon = `<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"><span class="material-icons text-sm">check</span></div>`;
+        } else if (type.includes("error")) {
+          icon = `<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200"><span class="material-icons text-sm">error</span></div>`;
+        } else {
+          icon = `<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200"><span class="material-icons text-sm">info</span></div>`;
+        }
+
+        toast.innerHTML = `
+            ${icon}
+            <div class="ml-3 text-sm font-normal">${text}</div>
+            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" aria-label="Close" onclick="this.parentElement.remove()">
+                <span class="material-icons text-sm">close</span>
+            </button>
+        `;
+
+        container.appendChild(toast);
+
+        // Slide in
+        requestAnimationFrame(() => {
+          toast.classList.remove("translate-x-full");
+        });
+
+        // Auto remove
+        setTimeout(() => {
+          toast.classList.add("opacity-0", "translate-x-full");
+          setTimeout(() => toast.remove(), 300);
+        }, 5000);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const messageData = document.getElementById("django-messages");
+        if (messageData) {
+          try {
+            const messages = JSON.parse(
+              messageData.getAttribute("data-messages") || "[]"
+            );
+            messages.forEach((msg) => showToast(msg.text, msg.tag));
+          } catch (e) {
+            console.error("Error parsing messages", e);
+          }
+        }
+      });
+
+      // Mobile nav toggle
+      (function () {
+        const btn = document.getElementById("nav-toggle");
+        const menu = document.getElementById("mobile-menu");
+        if (!btn || !menu) return;
+
+        btn.addEventListener("click", function () {
+          const expanded = btn.getAttribute("aria-expanded") === "true";
+          btn.setAttribute("aria-expanded", String(!expanded));
+          if (!expanded) {
+            menu.classList.add("open");
+            // change icon to close
+            btn.querySelector(".material-icons").textContent = "close";
+          } else {
+            menu.classList.remove("open");
+            btn.querySelector(".material-icons").textContent = "menu";
+          }
+        });
+      })();
+      // Mobile nav dropdown toggles
+      document.querySelectorAll(".mobile-dropdown-toggle").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const content = this.nextElementSibling;
+          const icon = this.querySelector(".material-icons");
+
+          content.classList.toggle("hidden");
+
+          // Rotate icon
+          if (content.classList.contains("hidden")) {
+            icon.style.transform = "rotate(0deg)";
+          } else {
+            icon.style.transform = "rotate(180deg)";
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

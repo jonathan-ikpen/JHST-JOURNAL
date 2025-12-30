@@ -1,0 +1,190 @@
+﻿<header class="border-b-4 border-primary pb-4 mb-6">
+  <div class="flex justify-between items-center mb-4">
+    <a href="{% url 'index' %}" class="flex items-center space-x-4 hover:opacity-95 transition">
+      {% load static %}
+      <img
+        alt="JHST Logo"
+        class="h-16 md:h-20"
+        src="{% static 'assets/images/jhst-logo.png' %}"
+      />
+      <div>
+        <h1
+          class="text-lg leading-none md:text-3xl font-display font-bold text-primary"
+        >
+          JOURNAL OF HYDROCARBON SCIENCE AND TECHNOLOGY
+        </h1>
+        <!-- <p class="text-sm text-gray-600 dark:text-gray-400">
+          A publication of the Petroleum Training Institute
+        </p> -->
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          An International Journal Published By Petroleum Training
+          Institute
+        </p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          PTI, Effurun, Nigeria
+        </p>
+      </div>
+    </a>
+    <div class="hidden sm:block text-sm whitespace-nowrap">
+      <a
+        class="text-gray-600 dark:text-gray-400 hover:text-primary"
+        href="{% url 'register' %}"
+        >Register</a
+      >
+      <span class="mx-2 text-gray-400">|</span>
+      <a
+        class="text-gray-600 dark:text-gray-400 hover:text-primary"
+        href="{% url 'login' %}"
+        >Login</a
+      >
+    </div>
+  </div>
+  <nav class="bg-primary text-white rounded">
+    <div class="flex justify-between items-center">
+      <!-- Desktop links -->
+      <div class="hidden sm:flex flex-wrap" id="nav-desktop">
+        <!-- About Journal Dropdown -->
+        <div class="relative group">
+            <button class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary flex items-center">
+                ABOUT JOURNAL <span class="material-icons text-sm ml-1">arrow_drop_down</span>
+            </button>
+            <div class="absolute left-0 hidden group-hover:block bg-card-light dark:bg-card-dark text-gray-800 dark:text-gray-200  rounded min-w-[200px] z-50">
+                <a href="{% url 'about' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">About the Journal</a>
+                <a href="{% url 'aim_scope' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Aim & Scope</a>
+                <a href="{% url 'editorial_team' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Editorial Team</a>
+                <a href="{% url 'publication_schedule' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Publication Schedule</a>
+                <a href="{% url 'publication_fees' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Publication Fees</a>
+                <a href="{% url 'contact' %}" class="block px-4 py-2 hover:bg-primary hover:text-white">Contact</a>
+            </div>
+        </div>
+        <!-- Publications Dropdown -->
+        <div class="relative group">
+            <button class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary flex items-center">
+                PUBLICATIONS <span class="material-icons text-sm ml-1">arrow_drop_down</span>
+            </button>
+            <div class="absolute left-0 hidden group-hover:block bg-card-light dark:bg-card-dark text-gray-800 dark:text-gray-200  rounded min-w-[200px] z-50">
+                <a href="{% url 'current_issue' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Current Issue</a>
+                <a href="{% url 'archives' %}" class="block px-4 py-2 hover:bg-primary hover:text-white">Archives</a>
+            </div>
+        </div>
+        <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="{% url 'indexing' %}">INDEXING</a>
+        <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="{% url 'metrics' %}">METRICS</a>
+        <!-- Guidelines Dropdown -->
+        <div class="relative group">
+            <button class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary flex items-center">
+                GUIDELINES <span class="material-icons text-sm ml-1">arrow_drop_down</span>
+            </button>
+            <div class="absolute left-0 hidden group-hover:block bg-card-light dark:bg-card-dark text-gray-800 dark:text-gray-200  rounded min-w-[200px] z-50">
+                <a href="{% url 'author_guidelines' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Author's Guidelines</a>
+                <a href="{% url 'reviewer_guidelines' %}" class="block px-4 py-2 hover:bg-primary hover:text-white">Reviewer's Guidelines</a>
+            </div>
+        </div>
+        <!-- Policies Dropdown -->
+        <div class="relative group">
+            <button class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary flex items-center">
+                POLICIES <span class="material-icons text-sm ml-1">arrow_drop_down</span>
+            </button>
+            <div class="absolute left-0 hidden group-hover:block bg-card-light dark:bg-card-dark text-gray-800 dark:text-gray-200  rounded min-w-[200px] z-50">
+                <a href="{% url 'ethics_malpractice' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Ethics & Malpractice</a>
+                <a href="{% url 'open_access_policy' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Open Access Policy</a>
+                <a href="{% url 'editorial_policy' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Editorial Policy</a>
+                <a href="{% url 'peer_review_policy' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Peer Review Policy</a>
+                <a href="{% url 'archiving_policy' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Archiving Policy</a>
+                <a href="{% url 'subscription_advertising' %}" class="block px-4 py-2 hover:bg-primary hover:text-white border-b border-gray-100 dark:border-gray-700">Subscription & Advert</a>
+                <a href="{% url 'plagiarism_policy' %}" class="block px-4 py-2 hover:bg-primary hover:text-white">Plagiarism Policy</a>
+            </div>
+        </div>
+        <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="{% url 'announcements' %}">ANNOUNCEMENTS</a>
+        <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="{% url 'jhst_journals' %}">JHST JOURNALS</a>
+      </div>
+
+      <!-- Mobile actions: hamburger and search -->
+      <div class="w-full p-2 flex items-center justify-between px-4 sm:hidden">
+        <button id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" class="focus:outline-none flex justify-center items-center">
+          <span class="material-icons text-white">menu</span>
+        </button>
+
+        <div class="text-sm whitespace-nowrap">
+          <a
+            class="text-white dark:text-white hover:text-primary"
+            href="{% url 'register' %}"
+            >Register</a
+          >
+          <span class="mx-2 text-gray-400">|</span>
+          <a
+            class="text-white dark:text-white hover:text-primary"
+            href="{% url 'login' %}"
+            >Login</a
+          >
+        </div>
+      </div>
+
+      <div class="hidden sm:flex items-center px-4" id="nav-search-desktop">
+        <span class="material-icons">search</span>
+        <a class="ml-2" href="#">SEARCH</a>
+      </div>
+    </div>
+
+    <!-- Mobile slide-down menu -->
+    <div id="mobile-menu" class="sm:hidden overflow-hidden max-h-0 transition-all duration-300 ease-in-out">
+      <div class="flex flex-col px-4 pb-4">
+        <div class="border-t border-white/20">
+            <button class="w-full flex justify-between items-center py-2 px-2 font-bold text-gray-300 mobile-dropdown-toggle">
+                ABOUT JOURNAL
+                <span class="material-icons transition-transform duration-300">arrow_drop_down</span>
+            </button>
+            <div class="hidden mobile-dropdown-content pl-4 pb-2 bg-black/10">
+                <a class="block py-1 hover:bg-white/10" href="{% url 'about' %}">About the Journal</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'aim_scope' %}">Aim & Scope</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'editorial_team' %}">Editorial Team</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'publication_schedule' %}">Publication Schedule</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'publication_fees' %}">Publication Fees</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'contact' %}">Contact</a>
+            </div>
+        </div>
+        <div class="border-t border-white/20">
+            <button class="w-full flex justify-between items-center py-2 px-2 font-bold text-gray-300 mobile-dropdown-toggle">
+                PUBLICATIONS
+                <span class="material-icons transition-transform duration-300">arrow_drop_down</span>
+            </button>
+            <div class="hidden mobile-dropdown-content pl-4 pb-2 bg-black/10">
+                <a class="block py-1 hover:bg-white/10" href="{% url 'current_issue' %}">Current Issue</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'archives' %}">Archives</a>
+            </div>
+        </div>
+        <a class="py-2 border-t border-white/20" href="{% url 'indexing' %}">INDEXING</a>
+        <a class="py-2 border-t border-white/20" href="{% url 'metrics' %}">METRICS</a>
+        <div class="border-t border-white/20">
+            <button class="w-full flex justify-between items-center py-2 px-2 font-bold text-gray-300 mobile-dropdown-toggle">
+                GUIDELINES
+                <span class="material-icons transition-transform duration-300">arrow_drop_down</span>
+            </button>
+            <div class="hidden mobile-dropdown-content pl-4 pb-2 bg-black/10">
+                <a class="block py-1 hover:bg-white/10" href="{% url 'author_guidelines' %}">Author's Guidelines</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'reviewer_guidelines' %}">Reviewer's Guidelines</a>
+            </div>
+        </div>
+        <div class="border-t border-white/20">
+            <button class="w-full flex justify-between items-center py-2 px-2 font-bold text-gray-300 mobile-dropdown-toggle">
+                POLICIES
+                <span class="material-icons transition-transform duration-300">arrow_drop_down</span>
+            </button>
+            <div class="hidden mobile-dropdown-content pl-4 pb-2 bg-black/10">
+                <a class="block py-1 hover:bg-white/10" href="{% url 'ethics_malpractice' %}">Ethics & Malpractice</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'open_access_policy' %}">Open Access Policy</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'editorial_policy' %}">Editorial Policy</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'peer_review_policy' %}">Peer Review Policy</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'archiving_policy' %}">Archiving Policy</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'subscription_advertising' %}">Subscription & Advert</a>
+                <a class="block py-1 hover:bg-white/10" href="{% url 'plagiarism_policy' %}">Plagiarism Policy</a>
+            </div>
+        </div>
+        <a class="py-2 border-t border-white/20" href="{% url 'announcements' %}">ANNOUNCEMENTS</a>
+        <a class="py-2 border-t border-white/20" href="{% url 'jhst_journals' %}">JHST JOURNALS</a>
+        <div class="pt-2 border-t border-white/20 flex items-center">
+          <span class="material-icons">search</span>
+          <a class="ml-2" href="#">SEARCH</a>
+        </div>
+      </div>
+    </div>
+  </header>

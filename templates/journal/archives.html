@@ -1,0 +1,48 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto py-8">
+  <h1
+    class="text-3xl font-display font-bold text-primary mb-6 border-b border-gray-200 pb-2"
+  >
+    Archives
+  </h1>
+
+  {% if volumes %}
+  <div class="space-y-8">
+    {% for volume in volumes %}
+    <div class="bg-card-light dark:bg-card-dark rounded p-6">
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+        Volume {{ volume.number }} ({{ volume.year }})
+      </h2>
+      {% if volume.issues.all %}
+      <ul class="space-y-3">
+        {% for issue in volume.issues.all %}
+        <li>
+          <a
+            href="{% url 'issue_detail' issue.id %}"
+            class="flex items-center text-primary hover:underline group"
+          >
+            <span
+              class="material-icons text-sm mr-2 group-hover:translate-x-1 transition"
+              >arrow_forward</span
+            >
+            <span class="font-medium">Issue {{ issue.number }}</span>
+            <span class="text-gray-500 text-sm ml-2"
+              >- {{ issue.publication_date|date:"F Y" }}</span
+            >
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-gray-500 italic">
+        No issues published in this volume yet.
+      </p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-600 dark:text-gray-300">No archives found.</p>
+  {% endif %}
+</section>
+{% endblock %}

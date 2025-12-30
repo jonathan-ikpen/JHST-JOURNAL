@@ -1,0 +1,180 @@
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Assign
+Reviewer{% endblock %} {% block content %}
+<div class="space-y-6">
+  <!-- Manuscript Info Card -->
+  <div
+    class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg p-6 "
+  >
+    <h3
+      class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b border-gray-100 dark:border-gray-700 pb-2"
+    >
+      Manuscript Details
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+          Title
+        </p>
+        <p class="text-base font-semibold text-primary">
+          {{ manuscript.title }}
+        </p>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+          Author
+        </p>
+        <p class="text-base text-gray-800 dark:text-gray-200">
+          {{ manuscript.author.username }}
+        </p>
+      </div>
+      <div class="md:col-span-2">
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+          Abstract
+        </p>
+        <p
+          class="text-sm text-gray-600 dark:text-gray-300 italic mt-1 bg-gray-50 dark:bg-gray-800 p-3 rounded"
+        >
+          {{ manuscript.abstract|truncatewords:60 }}
+        </p>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+          Submission Date
+        </p>
+        <p class="text-sm text-gray-800 dark:text-gray-200">
+          {{ manuscript.submitted_date|date:"F d, Y" }}
+        </p>
+      </div>
+      <div
+        class="md:col-span-2 pt-2 border-t border-gray-100 dark:border-gray-700"
+      >
+        <a
+          href="{{ manuscript.file.url }}"
+          target="_blank"
+          class="inline-flex items-center text-primary hover:text-primary-dark font-bold text-sm"
+        >
+          <span class="material-icons text-base mr-1">download</span> Download
+          Manuscript (PDF/Doc)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Current Reviewers Column -->
+    <div
+      class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg p-6 "
+    >
+      <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">
+        Assigned Reviewers
+      </h3>
+      {% if existing_reviews %}
+      <ul class="space-y-3">
+        {% for review in existing_reviews %}
+        <li
+          class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded border border-gray-100 dark:border-gray-700"
+        >
+          <div class="flex items-center space-x-3">
+            <div
+              class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs uppercase"
+            >
+              {{ review.reviewer.username|slice:":2" }}
+            </div>
+            <div>
+              <p class="font-semibold text-sm text-gray-800 dark:text-gray-200">
+                {{ review.reviewer.username }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ review.reviewer.affiliation }}
+              </p>
+            </div>
+          </div>
+          <span
+            class="px-2 py-1 rounded text-xs font-bold {% if review.date_completed %}bg-green-100 text-green-800{% else %}bg-amber-100 text-amber-800{% endif %}"
+          >
+            {% if review.date_completed %}Completed{% else %}Pending{% endif %}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div
+        class="text-center py-6 text-gray-500 italic text-sm bg-gray-50 dark:bg-gray-800 rounded"
+      >
+        No reviewers invited yet.
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Assign New Form Column -->
+    <div
+      class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg p-6 "
+    >
+      <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">
+        Invite New Reviewer
+      </h3>
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+        <div>
+          <label
+            for="reviewer"
+            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+          >
+            Select from Database
+          </label>
+          {% if reviewers %}
+          <select
+            name="reviewer"
+            id="reviewer"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <option value="" disabled selected>-- Choose Reviewer --</option>
+            {% for reviewer in reviewers %}
+            <option value="{{ reviewer.id }}">
+              {{ reviewer.username }} {% if reviewer.affiliation %}({{
+              reviewer.affiliation }}){% endif %}
+            </option>
+            {% endfor %}
+          </select>
+
+          <div class="mt-4">
+            <label
+              for="due_date"
+              class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Due Date
+            </label>
+            <input
+              type="date"
+              name="due_date"
+              id="due_date"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              required
+            />
+            <p class="text-xs text-gray-500 mt-1">
+              Reviewers typically receive 2 weeks to complete a review.
+            </p>
+          </div>
+
+          <div class="mt-8 flex justify-end">
+            <button
+              type="submit"
+              class="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition  text-sm"
+            >
+              Send Invitation
+            </button>
+          </div>
+          {% else %}
+          <p
+            class="text-sm text-red-500 bg-red-50 p-3 rounded border border-red-100"
+          >
+            No available reviewers found. Please add more users with 'Reviewer'
+            role.
+          </p>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

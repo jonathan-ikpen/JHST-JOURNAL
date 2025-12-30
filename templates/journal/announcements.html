@@ -1,0 +1,134 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-8 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Announcements
+    </h1>
+
+    <div class="space-y-8">
+      <!-- Announcement 1 -->
+      <article
+        class="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 last:border-0"
+      >
+        <div class="md:w-1/4 shrink-0">
+          <div
+            class="w-full h-32 bg-primary/10 rounded flex items-center justify-center text-primary"
+          >
+            <span class="material-icons text-5xl">campaign</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span
+              class="px-2 py-1 bg-primary text-white text-xs font-bold rounded uppercase"
+              >Call for Papers</span
+            >
+            <span class="text-sm text-gray-500">December 15, 2024</span>
+          </div>
+          <h2
+            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-primary transition"
+          >
+            <a href="#"
+              >Special Issue: Innovations in Green Energy Transition</a
+            >
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+            JHST invites submissions for a special issue focused on "Innovations
+            in Green Energy Transition for the Oil & Gas Sector". Topics include
+            hydrogen energy, carbon capture utilization and storage (CCUS), and
+            renewable integration. Deadline for submission is March 30, 2025.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-primary font-semibold hover:underline"
+          >
+            Read Full Announcement
+            <span class="material-icons text-sm ml-1">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Announcement 2 -->
+      <article
+        class="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 last:border-0"
+      >
+        <div class="md:w-1/4 shrink-0">
+          <div
+            class="w-full h-32 bg-blue-100 dark:bg-blue-900/30 rounded flex items-center justify-center text-blue-600"
+          >
+            <span class="material-icons text-5xl">groups</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span
+              class="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded uppercase"
+              >News</span
+            >
+            <span class="text-sm text-gray-500">November 01, 2024</span>
+          </div>
+          <h2
+            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-primary transition"
+          >
+            <a href="#">Welcome to New Editorial Board Members</a>
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+            We are pleased to welcome Dr. A. Johnson (Imperial College, UK) and
+            Prof. B. Okafor (Unilag, Nigeria) to our distinguished Editorial
+            Board. Their expertise in Reservoir Engineering and Energy Policy
+            respectively will be invaluable to the journal.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-primary font-semibold hover:underline"
+          >
+            Read Full Announcement
+            <span class="material-icons text-sm ml-1">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Announcement 3 -->
+      <article
+        class="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 last:border-0"
+      >
+        <div class="md:w-1/4 shrink-0">
+          <div
+            class="w-full h-32 bg-amber-100 dark:bg-amber-900/30 rounded flex items-center justify-center text-amber-600"
+          >
+            <span class="material-icons text-5xl">build</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span
+              class="px-2 py-1 bg-amber-600 text-white text-xs font-bold rounded uppercase"
+              >Maintenance</span
+            >
+            <span class="text-sm text-gray-500">October 20, 2024</span>
+          </div>
+          <h2
+            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-primary transition"
+          >
+            <a href="#">System Maintenance Scheduled</a>
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+            The journal submission portal will be down for scheduled maintenance
+            on Oct 25, 2024, from 2:00 PM to 6:00 PM WAT to improve system
+            performance. We apologize for any inconvenience.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-primary font-semibold hover:underline"
+          >
+            Read Full Announcement
+            <span class="material-icons text-sm ml-1">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{% endblock %}

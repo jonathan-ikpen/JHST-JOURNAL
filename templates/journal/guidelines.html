@@ -1,0 +1,57 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Guidelines
+    </h1>
+
+    <div
+      class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
+    >
+      <p class="mb-6 text-lg">
+        Please select the appropriate guidelines from the sections below:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
+        <a
+          href="{% url 'author_guidelines' %}"
+          class="block group bg-primary/5 p-8 rounded border border-primary/10 hover:bg-primary/10 transition"
+        >
+          <div class="flex items-center mb-4">
+            <span class="material-icons text-4xl text-primary mr-4"
+              >description</span
+            >
+            <h2 class="text-2xl font-bold text-primary group-hover:underline">
+              Author's Guidelines
+            </h2>
+          </div>
+          <p class="text-gray-700 dark:text-gray-300">
+            Comprehensive instructions for manuscript preparation, formatting,
+            submission requirements, and information on publication fees.
+          </p>
+        </a>
+
+        <a
+          href="{% url 'reviewer_guidelines' %}"
+          class="block group bg-primary/5 p-8 rounded border border-primary/10 hover:bg-primary/10 transition"
+        >
+          <div class="flex items-center mb-4">
+            <span class="material-icons text-4xl text-primary mr-4"
+              >rate_review</span
+            >
+            <h2 class="text-2xl font-bold text-primary group-hover:underline">
+              Reviewer's Guidelines
+            </h2>
+          </div>
+          <p class="text-gray-700 dark:text-gray-300">
+            Information for peer reviewers regarding confidentiality, evaluation
+            criteria, report structure, and benefits.
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

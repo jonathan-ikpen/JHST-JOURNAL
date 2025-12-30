@@ -1,0 +1,13 @@
+TY  - JOUR
+TI  - A Stochastic Model to Analyze and Predict Transmission Dynamics of Tuberculosis in Ede Kingdom of Osun State
+PY  - 2018/06/29
+Y2  - 2025/12/30
+JF  - Fountain Journal of Natural and Applied Sciences
+JA  - Fountain Journal of Natural and Applied Sciences
+VL  - 7
+IS  - 1
+SE  - Articles
+DO  - 10.53704/fujnas.v7i1.182
+UR  - https://doi.org/10.53704/fujnas.v7i1.182
+AB  - In this study the stochastic process model for estimating the incidence of tuberculosis (TB) infection in Ede kingdom (Ede North and Ede South Local Government Areas) of Osun State was carried out. The probability generating function approach was used to solve the associated birth process model to obtain the estimate of TB incidence. Also time series analysis was carried out using JMulti software to predict future incidence rate of the disease in the study area. Based on Autoregressive Integrated Moving Average (ARIMA) model, the autocorrelation and partial autocorrelation methods and a suitable model to forecast TB infection was obtained.  The goodness of fit was measured using the Akaike Information Criteria (AIC) and Bayesian Information Criteria (BIC). Having satisfied all the model assumptions ARIMA (0,1,1) model with standard error, 6.37086 was found to be the best model for the forecast. It was observed that the forecasted series were close to the actual data series
+ER  -

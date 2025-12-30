@@ -1,0 +1,16 @@
+HTTrack3.49-2+htsswf+htsjava launched on Tue, 30 Dec 2025 00:51:56 at https://fountainjournals.com/index.php/FUJNAS/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://fountainjournals.com/index.php/FUJNAS/ -O1 "C:\jojo\school\jhst-journal\_inspo\fountainjournals.com[full]" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+00:51:58	Warning: 	Note: due to https://fountainjournals.com remote robots.txt rules, links beginning with these path will be forbidden: /cache/ (see in the options to disable this)
+00:55:07	Error: 	"Not Found" (404) at link https://fountainjournals.com/public/journals/1/cover_issue_36_en_US.jpg (from https://fountainjournals.com/index.php/FUJNAS/issue/archive)
+00:56:20	Warning: 	Retry after error -5 (Unable to get server's address: No such host is known. ) at link s7.addthis.com/js/250/addthis_widget.js (from https://fountainjournals.com/index.php/FUJNAS/article/view/874)
+01:26:49	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link s7.addthis.com/js/250/addthis_widget.js (from https://fountainjournals.com/index.php/FUJNAS/article/view/874)
+01:29:09	Error: 	"Unable to get server's address: unknown error" (-5) after 2 retries at link s7.addthis.com/js/250/addthis_widget.js (from https://fountainjournals.com/index.php/FUJNAS/article/view/874)
+
+HTTrack Website Copier/3.49-2 mirror complete in 37 minutes 26 seconds : 3897 links scanned, 3892 files written (241138834 bytes overall) [233144719 bytes received at 103804 bytes/sec], 13421379 bytes transferred using HTTP compression in 3325 files, ratio 32%, 13.1 requests per connection
+(2 errors, 3 warnings, 0 messages)

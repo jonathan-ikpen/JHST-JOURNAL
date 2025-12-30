@@ -1,0 +1,94 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Publication Schedule
+    </h1>
+
+    <div
+      class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
+    >
+      <p class="mb-6 text-lg">
+        The Journal of Hydrocarbon Science and Technology (JHST) adheres to a
+        regular publication schedule to ensure timely dissemination of research.
+      </p>
+
+      <!-- Biannual Publication -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Biannual Publication
+        </h2>
+        <p class="mb-4">JHST publishes two regular issues per calendar year:</p>
+        <ul class="space-y-4">
+          <li
+            class="flex items-center bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
+          >
+            <span class="material-icons text-primary mr-4 text-3xl"
+              >calendar_today</span
+            >
+            <div>
+              <span class="block font-bold text-lg text-primary">June</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400"
+                >Issue 1</span
+              >
+            </div>
+          </li>
+          <li
+            class="flex items-center bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
+          >
+            <span class="material-icons text-primary mr-4 text-3xl"
+              >calendar_today</span
+            >
+            <div>
+              <span class="block font-bold text-lg text-primary">December</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400"
+                >Issue 2</span
+              >
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Online First -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Online First
+        </h2>
+        <p>
+          To minimize publication lag, accepted articles are published
+          individually online as "Articles in Press" immediately after final
+          proofreading, before they are assigned to a specific issue. This
+          ensures your research is available to the community as quickly as
+          possible.
+        </p>
+      </div>
+
+      <!-- Special Issues -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Special Issues
+        </h2>
+        <p>
+          The journal occasionally publishes Special Issues focused on emerging
+          topics or conference proceedings. Calls for papers for special issues
+          are announced in the
+          <a
+            href="{% url 'announcements' %}"
+            class="text-primary hover:underline font-bold"
+            >Announcements</a
+          >
+          section.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

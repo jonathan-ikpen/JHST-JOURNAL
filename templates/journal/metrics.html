@@ -1,0 +1,120 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Journal Metrics
+    </h1>
+
+    <p class="mb-8 text-gray-700 dark:text-gray-300">
+      metrics provide a snapshot of the journal's performance, impact, and
+      reach. JHST values transparency and aims to provide authors and readers
+      with up-to-date statistics.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div
+        class="bg-white dark:bg-gray-800 p-6 rounded border border-gray-100 dark:border-gray-700 text-center"
+      >
+        <h3 class="text-3xl font-extrabold text-primary mb-1">2.45</h3>
+        <p class="text-sm text-gray-500 uppercase tracking-wide">
+          Impact Factor
+        </p>
+        <p class="text-xs text-gray-400 mt-1">(Estimated)</p>
+      </div>
+      <div
+        class="bg-white dark:bg-gray-800 p-6 rounded border border-gray-100 dark:border-gray-700 text-center"
+      >
+        <h3 class="text-3xl font-extrabold text-primary mb-1">45</h3>
+        <p class="text-sm text-gray-500 uppercase tracking-wide">Days</p>
+        <p class="text-xs text-gray-400 mt-1">Avg. Time to First Decision</p>
+      </div>
+      <div
+        class="bg-white dark:bg-gray-800 p-6 rounded border border-gray-100 dark:border-gray-700 text-center"
+      >
+        <h3 class="text-3xl font-extrabold text-primary mb-1">68</h3>
+        <p class="text-sm text-gray-500 uppercase tracking-wide">Days</p>
+        <p class="text-xs text-gray-400 mt-1">Avg. Submission to Publication</p>
+      </div>
+      <div
+        class="bg-white dark:bg-gray-800 p-6 rounded border border-gray-100 dark:border-gray-700 text-center"
+      >
+        <h3 class="text-3xl font-extrabold text-primary mb-1">32%</h3>
+        <p class="text-sm text-gray-500 uppercase tracking-wide">
+          Acceptance Rate
+        </p>
+        <p class="text-xs text-gray-400 mt-1">Based on last 12 months</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
+      <div>
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
+        >
+          Usage Statistics (2024)
+        </h2>
+        <ul class="space-y-3 mt-4">
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>Full Text Downloads</span>
+            <span class="font-mono font-bold text-primary">15,420</span>
+          </li>
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>Abstract Views</span>
+            <span class="font-mono font-bold text-primary">48,901</span>
+          </li>
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>Unique Visitors</span>
+            <span class="font-mono font-bold text-primary">22,050</span>
+          </li>
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>Countries Reached</span>
+            <span class="font-mono font-bold text-primary">85</span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
+        >
+          Citation Metrics
+        </h2>
+        <ul class="space-y-3 mt-4">
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>Total Citations</span>
+            <span class="font-mono font-bold text-primary">342</span>
+          </li>
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>h-index (Google Scholar)</span>
+            <span class="font-mono font-bold text-primary">12</span>
+          </li>
+          <li
+            class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-2"
+          >
+            <span>i10-index</span>
+            <span class="font-mono font-bold text-primary">15</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="mt-8 text-xs text-center text-gray-400">
+      Data Last Updated: January 1, 2025. Source: Internal Journal Analytics &
+      Google Scholar.
+    </p>
+  </div>
+</section>
+{% endblock %}

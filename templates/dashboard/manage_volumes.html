@@ -1,0 +1,132 @@
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Manage
+Content{% endblock %} {% block content %}
+<div class="max-w-5xl mx-auto space-y-8">
+  <!-- Header & Actions -->
+  <div
+    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+  >
+    <div>
+      <h2 class="text-2xl font-display font-bold text-gray-900 dark:text-white">
+        Volumes & Issues
+      </h2>
+      <p class="text-sm text-gray-500 mt-1">
+        Manage the journal's publication hierarchy.
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <a
+        href="{% url 'create_volume' %}"
+        class="inline-flex items-center px-4 py-2 bg-white dark:bg-card-dark border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition "
+      >
+        <span class="material-icons text-base mr-2">library_books</span>
+        New Volume
+      </a>
+      <a
+        href="{% url 'create_issue' %}"
+        class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-opacity-90 transition "
+      >
+        <span class="material-icons text-base mr-2">add</span>
+        New Issue
+      </a>
+    </div>
+  </div>
+
+  <!-- Volumes List -->
+  {% if volumes %}
+  <div class="grid gap-6">
+    {% for volume in volumes %}
+    <div
+      class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl overflow-hidden "
+    >
+      <!-- Volume Header -->
+      <div
+        class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-border-light dark:border-border-dark flex justify-between items-center"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
+          >
+            <span class="material-icons">folder</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+              {{ volume }}
+            </h3>
+            <p
+              class="text-xs text-gray-500 font-medium uppercase tracking-wide"
+            >
+              {{ volume.year }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Issues List -->
+      <div class="px-6 py-2">
+        {% if volume.issues.all %}
+        <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+          {% for issue in volume.issues.all %}
+          <li class="py-4 flex items-center justify-between group">
+            <div class="flex items-center gap-4">
+              <div
+                class="hidden sm:flex h-8 w-8 rounded-full bg-gray-100 dark:bg-gray-700 items-center justify-center text-gray-500"
+              >
+                <span class="material-icons text-sm">description</span>
+              </div>
+              <div>
+                <a
+                  href="{% url 'issue_detail' issue.id %}"
+                  class="font-semibold text-gray-800 dark:text-gray-200 hover:text-primary transition"
+                >
+                  Issue {{ issue.number }}
+                </a>
+                <p class="text-xs text-gray-500">
+                  Published: {{ issue.publication_date|date:"F d, Y" }}
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              >
+                {{ issue.articles.count }} Articles
+              </span>
+              <!-- Future: Edit/Delete Actions could go here -->
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="py-6 text-center text-gray-500 italic text-sm">
+          No issues in this volume yet.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div
+    class="text-center py-16 bg-white dark:bg-card-dark rounded-xl border border-dashed border-gray-300 dark:border-gray-700"
+  >
+    <div
+      class="mx-auto h-16 w-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4"
+    >
+      <span class="material-icons text-3xl text-gray-400">inventory_2</span>
+    </div>
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+      No Volumes Found
+    </h3>
+    <p class="text-gray-500 mb-6 max-w-sm mx-auto">
+      Start by creating a Volume (e.g., "Volume 1"), then add Issues to it.
+    </p>
+    <a
+      href="{% url 'create_volume' %}"
+      class="inline-flex items-center px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-opacity-90 transition "
+    >
+      <span class="material-icons text-sm mr-2">add</span> Create First Volume
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

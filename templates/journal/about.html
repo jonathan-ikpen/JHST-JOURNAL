@@ -1,0 +1,125 @@
+﻿{% extends 'base.html' %} {% load static %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      About the Journal
+    </h1>
+
+    <div
+      class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
+    >
+      <p class="mb-6 text-lg">
+        <strong>Journal of Hydrocarbon Science and Technology (JHST)</strong> is
+        the official journal of the Petroleum Training Institute (PTI), Effurun,
+        Nigeria. It is a premier open-access, peer-reviewed journal dedicated to
+        disseminating high-quality research, technical innovations, and policy
+        analyses in the energy sector.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
+        <div class="mb-4">
+          <h2
+            class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
+          >
+            Our Mission
+          </h2>
+          <div class="bg-primary/5 p-6 rounded border border-primary/10 h-full">
+            <p>
+              To provide a global platform for the exchange of knowledge between
+              academia and the hydrocarbon industry, fostering innovation and
+              sustainable development in energy technologies.
+            </p>
+          </div>
+        </div>
+        <div class="mb-4">
+          <h2
+            class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
+          >
+            Our Vision
+          </h2>
+          <div class="bg-primary/5 p-6 rounded border border-primary/10 h-full">
+            <p>
+              To be a leading authoritative source of scientific and technical
+              information for the global oil, gas, and energy community.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Objectives
+        </h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>
+            To publish cutting-edge hypothesis-driven original research, review
+            articles, and technical notes.
+          </li>
+          <li>
+            To bridge the gap between theoretical research and practical
+            industrial application.
+          </li>
+          <li>
+            To inform policy and decision-making in the energy sector through
+            rigorous scientific analysis.
+          </li>
+          <li>
+            To support the professional development of scientists, engineers,
+            and researchers in the hydrocarbon field.
+          </li>
+        </ul>
+      </div>
+
+      <p class="mb-4">
+        For more specific information, please explore the following sections:
+      </p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none pl-0">
+        <li>
+          <a
+            href="{% url 'aim_scope' %}"
+            class="flex items-center text-primary font-semibold hover:underline"
+            ><span class="material-icons mr-2 text-sm">arrow_forward</span> Aim
+            & Scope</a
+          >
+        </li>
+        <li>
+          <a
+            href="{% url 'editorial_team' %}"
+            class="flex items-center text-primary font-semibold hover:underline"
+            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
+            Editorial Team</a
+          >
+        </li>
+        <li>
+          <a
+            href="{% url 'publication_schedule' %}"
+            class="flex items-center text-primary font-semibold hover:underline"
+            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
+            Publication Schedule</a
+          >
+        </li>
+        <li>
+          <a
+            href="{% url 'publication_fees' %}"
+            class="flex items-center text-primary font-semibold hover:underline"
+            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
+            Publication Fees</a
+          >
+        </li>
+        <li>
+          <a
+            href="{% url 'contact' %}"
+            class="flex items-center text-primary font-semibold hover:underline"
+            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
+            Contact Us</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

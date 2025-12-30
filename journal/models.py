@@ -22,6 +22,8 @@ class Manuscript(models.Model):
     title = models.CharField(max_length=255)
     abstract = models.TextField()
     file = models.FileField(upload_to='manuscripts/')
+    co_authors = models.CharField(max_length=500, blank=True, help_text="Names of co-authors, separated by commas")
+    affiliations = models.TextField(blank=True, help_text="Author affiliations")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='manuscripts')
     reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_manuscripts')
     submitted_date = models.DateTimeField(auto_now_add=True)
@@ -30,6 +32,22 @@ class Manuscript(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def progress_width_class(self):
+        if self.status == 'submitted':
+            return 'w-1/3'
+        elif self.status == 'under_review':
+            return 'w-2/3'
+        elif self.status in ['accepted', 'rejected']:
+            return 'w-full'
+        return 'w-0'
+
+    @property
+    def progress_color_class(self):
+        if self.status == 'rejected':
+            return 'bg-red-500'
+        return 'bg-primary'
 
 class Review(models.Model):
     RECOMMENDATION_CHOICES = [
@@ -41,6 +59,7 @@ class Review(models.Model):
     manuscript = models.ForeignKey(Manuscript, on_delete=models.CASCADE, related_name='reviews')
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     date_assigned = models.DateTimeField(auto_now_add=True)
+    due_date = models.DateTimeField(null=True, blank=True)
     date_completed = models.DateTimeField(null=True, blank=True)
     comments = models.TextField(blank=True)
     recommendation = models.CharField(max_length=20, choices=RECOMMENDATION_CHOICES, blank=True)

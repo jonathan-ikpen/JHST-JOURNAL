@@ -1,0 +1,33 @@
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title
+%}Dashboard{% endblock %} {% block content %}
+<section
+  class="max-w-4xl mx-auto bg-card-light dark:bg-card-dark p-6 rounded  my-8"
+>
+  <h2
+    class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+  >
+    Dashboard
+  </h2>
+  <p class="text-lg mb-4">
+    Welcome, <span class="font-semibold">{{ user.username }}</span>
+  </p>
+
+  <div
+    class="bg-gray-100 dark:bg-gray-800 p-4 rounded border border-border-light dark:border-border-dark"
+  >
+    <p class="mb-2">
+      You currently do not have any specific roles assigned (Researcher, Editor,
+      or Reviewer).
+    </p>
+    <p>
+      If you are a researcher, please
+      <a
+        href="{% url 'register' %}"
+        class="text-primary hover:underline font-bold"
+        >register as a researcher</a
+      >
+      or contact the administrator.
+    </p>
+  </div>
+</section>
+{% endblock %}

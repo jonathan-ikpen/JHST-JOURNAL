@@ -1,26 +1,277 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <main class="lg:col-span-2 space-y-8">
+    <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+      <h2
+        class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+      >
+        An Introduction to the Journal
+      </h2>
+      <div class="aspect-w-16 aspect-h-9">
+        <div style="padding: 56.25% 0 0 0; position: relative">
+          <iframe
+            src="https://player.vimeo.com/video/1129153382?byline=0&title=0&portrait=0&badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            "
+            title="JHST, PTI"
+          ></iframe>
+        </div>
+        <script src="https://player.vimeo.com/api/player.js"></script>
+      </div>
+    </section>
+    <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+      <h2
+        class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+      >
+        About the Journal
+      </h2>
+      <h3 class="font-bold text-lg mb-2">MISSION STATEMENT</h3>
+      <p class="mb-4">
+        Journal of Hydrocarbon Science and Technology (JHST) is the official
+        publication of the Petroleum Training Institute, PTI, Effurun, Nigeria.
+        The journal seeks to:
+      </p>
+      <ol class="list-decimal list-inside space-y-2 mb-6">
+        <li>
+          Provide a global platform for original, peer-reviewed research that
+          deepens understanding and drives innovation across the hydrocarbon
+          value chain — from exploration and production to refining,
+          environmental management, renewable integration, and digital
+          transformation
+        </li>
+        <li>
+          Provide the general public with dynamic and required information to
+          the world for the purpose of innovation, knowledge/education,
+          lifestyle, culture and career development.
+        </li>
+      </ol>
+      <h3 class="font-bold text-lg mb-4">JHST ORGANOGRAM</h3>
+      <div class="space-y-4 relative pl-8">
+        <div class="organogram-item">
+          <div class="organogram-number bg-[#00529B]">01</div>
+          <div class="organogram-content flex-1">
+            <div
+              class="organogram-title bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark"
+            >
+              Editor-in-Chief
+            </div>
+            <div
+              class="organogram-description border border-border-light dark:border-border-dark"
+            >
+              Oversees the whole activities of JHST
+            </div>
+          </div>
+        </div>
+        <div class="organogram-item">
+          <div class="organogram-number bg-[#B33A3A]">02</div>
+          <div class="organogram-content flex-1">
+            <div
+              class="organogram-title bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark"
+            >
+              Managing Editor
+            </div>
+            <div
+              class="organogram-description border border-border-light dark:border-border-dark"
+            >
+              Coordinates journal's day-to-day activities, takes correspondences
+              and make important suggestion on the acceptance or rejection of
+              manuscripts to the editor-in-chief
+            </div>
+          </div>
+        </div>
+        <div class="organogram-item">
+          <div class="organogram-number bg-[#34A853]">03</div>
+          <div class="organogram-content flex-1">
+            <div
+              class="organogram-title bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark"
+            >
+              Editorial Assistant
+            </div>
+            <div
+              class="organogram-description border border-border-light dark:border-border-dark"
+            >
+              Supports the Managing Editor
+            </div>
+          </div>
+        </div>
+        <div class="organogram-item">
+          <div class="organogram-number bg-[#4A90E2]">04</div>
+          <div class="organogram-content flex-1">
+            <div
+              class="organogram-title bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark"
+            >
+              Section Editor
+            </div>
+            <div
+              class="organogram-description border border-border-light dark:border-border-dark"
+            >
+              Checks the appropriateness of a manuscript, handles peer-review
+              and makes suggestions to the Managing Editor
+            </div>
+          </div>
+        </div>
+        <div class="organogram-item">
+          <div class="organogram-number bg-[#795548]">05</div>
+          <div class="organogram-content flex-1">
+            <div
+              class="organogram-title bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark"
+            >
+              Editorial Board
+            </div>
+            <div
+              class="organogram-description border border-border-light dark:border-border-dark"
+            >
+              Make all-inclusive advice to Editor-in-Chief and Managing Editor
+              for better journal indices
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+      <h2
+        class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+      >
+        From the Chief Editor’s Desk
+      </h2>
+      <div class="clearfix">
+        <img
+          alt="Chief Editor"
+          class="fblock mx-auto mb-4 float-left mr-6 mb-2 w-48 sm:w-60 h-48 sm:h-60 rounded-full object-cover"
+          src="{% static 'assets/images/chief_editor.jpg' %}"
+        />
+        <div>
+          <p class="mb-4 leading-relaxed">
+            In an era where the global energy landscape is undergoing
+            unprecedented transformation, the Journal of Hydrocarbon Science and
+            Technology (JHST) emerges as a timely response to a critical need —
+            the need to rethink, redefine, and renew our approach to energy
+            development, sustainability, and innovation. The Petroleum Training
+            Institute (PTI), for over five decades, has served as Nigeria’s
+            premier institution for technical excellence in the petroleum and
+            allied sectors. Through education, applied research, and industry
+            collaboration, PTI has equipped generations of professionals with
+            the competence and creativity to advance the oil and gas industry.
+            The JHST is a natural evolution of this legacy — a bridge between
+            research and real-world application, between academia and industry,
+            between innovation and impact.
+          </p>
+          <p class="mb-4 leading-relaxed">
+            Our mission at JHST is to provide a global platform for original,
+            peer-reviewed research that deepens understanding and drives
+            innovation across the hydrocarbon value chain — from exploration and
+            production to refining, environmental management, renewable
+            integration, and digital transformation. We welcome contributions
+            that address both the opportunities and the challenges of the energy
+            transition — where hydrocarbons, renewables, and new technologies
+            converge to shape a sustainable future.
+          </p>
+          <p class="mb-4 leading-relaxed">
+            In line with PTI’s commitment to excellence, JHST upholds rigorous
+            standards of scholarly integrity, transparency, and quality. Our
+            distinguished editorial and review boards bring together leading
+            experts, scientists, and professionals from around the world —
+            ensuring that each publication meets the highest levels of technical
+            and ethical credibility. We envision this Journal not merely as a
+            collection of articles, but as a platform for dialogue, a catalyst
+            for innovation, and a repository of insight — where ideas transform
+            into technologies, and research drives resilience in an evolving
+            energy economy.
+          </p>
+          <p class="mb-4 leading-relaxed">
+            As we embark on this exciting journey, I invite researchers,
+            industry professionals, policymakers, and students alike to
+            contribute, collaborate, and engage with JHST. Together, we can
+            advance the science and technology that sustain our energy future —
+            responsibly, intelligently, and inclusively. Welcome to the Journal
+            of Hydrocarbon Science and Technology — where energy meets
+            innovation.
+          </p>
+          <p class="font-semibold text-primary">Dr. Fredrick B. Owoyemi</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Chief Editor, JHST
+          </p>
+        </div>
+        <div class="clear-both"></div>
+      </div>
+    </section>
+    <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+      <h2
+        class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+      >
+        Current Issue
+      </h2>
 
-{% block content %}
-<h1>Welcome to the Journal Management System</h1>
-<p>This is a platform for researchers to submit their manuscripts and for editors to manage the review process.</p>
+      {% if latest_issues %}
+      <div class="mb-6">
+        <!-- Assuming we display the very latest issue details here -->
+        <!-- For now static as per design, but dynamic logic should be: -->
+        {% with issue=latest_issues.0 %}
+        <p class="font-bold">
+          {{ issue }} ({{ issue.publication_date|date:"Y" }})
+        </p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Published: {{ issue.publication_date|date:"F Y" }}
+        </p>
+        {% endwith %}
+      </div>
+      <h3 class="font-bold text-lg mb-4">Articles</h3>
+      <div class="space-y-4">
+        <!-- Original static content had hardcoded articles. 
+             Ideally we loop through articles of the latest issue here. 
+             Since I don't see article context in the original simple index view, 
+             I will keep the static content but comment on where dynamic data goes. -->
+        <div class="border-b border-border-light dark:border-border-dark pb-4">
+          <p class="font-semibold">
+            Revolutionizing Environmental Foresight: Harnessing Big Data
+            Analytics for Enhanced Stewardship in the African Oil and Gas Sector
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            Ladini Bongo Mark
+          </p>
+          <a
+            class="inline-flex items-center bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+            href="#"
+          >
+            <span class="material-icons text-base mr-1">picture_as_pdf</span>
+            PDF
+          </a>
+        </div>
+        <!-- [Other articles would be looped here] -->
 
-{% if not user.is_authenticated %}
-<p>
-    <a href="{% url 'register' %}" class="btn">Register as Researcher</a>
-    <a href="{% url 'login' %}" class="btn">Login</a>
-</p>
-{% endif %}
+        <!-- Trying to keep some dynamic capability if available -->
+        {% for issue in latest_issues %}
+        <div class="border-b border-border-light dark:border-border-dark pb-4">
+          <p class="font-semibold">
+            <a href="{% url 'issue_detail' issue.id %}">{{ issue }}</a>
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            {{ issue.publication_date }}
+          </p>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="mt-6">
+        <a class="text-primary hover:underline font-semibold" href="#"
+          >View All Issues →</a
+        >
+      </div>
+      {% else %}
+      <div class="mb-6">
+        <p>No issues published yet.</p>
+      </div>
+      {% endif %}
+    </section>
+  </main>
 
-<h3>Latest Issues</h3>
-{% if latest_issues %}
-<ul>
-    {% for issue in latest_issues %}
-    <li>
-        <a href="{% url 'issue_detail' issue.id %}">{{ issue }}</a> - {{ issue.publication_date }}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No issues published yet.</p>
-{% endif %}
+  {% include 'includes/sidebar.html' %}
+</div>
 {% endblock %}

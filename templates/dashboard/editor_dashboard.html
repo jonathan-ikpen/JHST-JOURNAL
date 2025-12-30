@@ -1,0 +1,189 @@
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Editor
+Dashboard{% endblock %} {% block content %}
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <div
+    class="bg-white dark:bg-card-dark p-6 rounded-lg  border border-border-light dark:border-border-dark flex flex-col"
+  >
+    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider"
+      >Total Submissions</span
+    >
+    <span
+      class="text-3xl font-display font-bold text-primary dark:text-white mt-2"
+      >{{ submissions.count }}</span
+    >
+  </div>
+  <div
+    class="bg-white dark:bg-card-dark p-6 rounded-lg  border border-border-light dark:border-border-dark flex flex-col"
+  >
+    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider"
+      >Unassigned</span
+    >
+    <span class="text-3xl font-display font-bold text-amber-600 mt-2"
+      >{{ submissions|length }}</span
+    >
+    <!-- Placeholder logic -->
+  </div>
+</div>
+
+<!-- Main Submissions Table -->
+<div
+  class="bg-white dark:bg-card-dark rounded-lg  border border-border-light dark:border-border-dark overflow-hidden mb-12"
+>
+  <div
+    class="px-6 py-4 border-b border-border-light dark:border-border-dark flex justify-between items-center bg-gray-50 dark:bg-gray-800"
+  >
+    <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+      All Manuscripts
+    </h3>
+    <div class="flex space-x-2 items-center">
+      <a
+        href="{% url 'create_issue' %}"
+        class="mr-4 text-sm font-bold text-primary hover:underline"
+        >+ Create Issue</a
+      >
+      <input
+        type="text"
+        placeholder="Search..."
+        class="text-sm border-gray-300 rounded-md focus:ring-primary focus:border-primary px-3 py-1.5 dark:bg-gray-700 dark:border-gray-600"
+      />
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-750">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Manuscript
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Reviewers
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Status
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+      >
+        {% for manuscript in submissions %}
+        <tr
+          class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition duration-150 ease-in-out"
+        >
+          <td class="px-6 py-4">
+            <div class="text-sm font-bold text-primary dark:text-white">
+              {{ manuscript.title }}
+            </div>
+            <div class="text-xs text-gray-500 mt-1">
+              Author:
+              <span class="font-semibold"
+                >{{ manuscript.author.username }}</span
+              >
+              • {{ manuscript.submitted_date|date:"M d, Y" }}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex -space-x-2 overflow-hidden">
+              {% for review in manuscript.reviews.all %}
+              <div
+                class="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-800 flex items-center justify-center text-xs font-bold text-white {% if review.date_completed %}bg-green-500{% else %}bg-gray-400{% endif %}"
+                title="{{ review.reviewer.username }} ({% if review.date_completed %}Completed{% else %}Pending{% endif %})"
+              >
+                {{ review.reviewer.username|slice:":1"|upper }}
+              </div>
+              {% empty %}
+              <span class="text-xs text-red-500 italic">Unassigned</span>
+              {% endfor %}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span
+              class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if manuscript.status == 'accepted' %}bg-green-100 text-green-800 {% elif manuscript.status == 'rejected' %}bg-red-100 text-red-800 {% elif manuscript.status == 'under_review' %}bg-amber-100 text-amber-800 {% else %}bg-blue-100 text-blue-800{% endif %}"
+            >
+              {{ manuscript.get_status_display }}
+            </span>
+          </td>
+          <td
+            class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+          >
+            <div class="flex justify-end space-x-2">
+              <a
+                href="{% url 'assign_reviewer' manuscript.id %}"
+                class="text-blue-600 hover:text-blue-900 dark:text-blue-400 font-semibold text-xs border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded"
+                >Assign</a
+              >
+              <a
+                href="{% url 'make_decision' manuscript.id %}"
+                class="text-amber-600 hover:text-amber-900 dark:text-amber-400 font-semibold text-xs border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded"
+                >Decide</a
+              >
+              {% if manuscript.status == 'accepted' %}
+              <a
+                href="{% url 'publish_article' manuscript.id %}"
+                class="text-green-600 hover:text-green-900 dark:text-green-400 font-semibold text-xs border border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded"
+                >Publish</a
+              >
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- My Personal Submissions (If Researcher) -->
+{% if my_submissions %}
+<div class="border-t border-border-light dark:border-border-dark pt-8">
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-xl font-bold font-display text-gray-800 dark:text-white">
+      My Submissions
+    </h3>
+    <a
+      href="{% url 'submit_manuscript' %}"
+      class="text-sm font-bold text-primary hover:underline"
+      >+ New Submission</a
+    >
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for manuscript in my_submissions %}
+    <div
+      class="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-border-light dark:border-border-dark "
+    >
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-xs font-bold text-gray-500">
+          {{ manuscript.submitted_date|date:"F d, Y" }}
+        </span>
+        <span
+          class="px-2 py-0.5 rounded text-xs font-bold {% if manuscript.status == 'accepted' %}bg-green-100 text-green-800 {% elif manuscript.status == 'rejected' %}bg-red-100 text-red-800 {% else %}bg-blue-100 text-blue-800{% endif %}"
+        >
+          {{ manuscript.get_status_display }}
+        </span>
+      </div>
+      <h4 class="font-bold text-lg text-primary mb-1">
+        {{ manuscript.title }}
+      </h4>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %} {% endblock %}

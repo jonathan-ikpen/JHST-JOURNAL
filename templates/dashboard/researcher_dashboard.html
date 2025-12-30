@@ -1,0 +1,127 @@
+﻿{% extends 'dashboard/dashboard_base.html' %}
+<!-- researcher dashboard -->
+{% block dashboard_title %}Researcher Dashboard{% endblock %}
+
+<!-- researcher dashboard content -->
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+  <div>
+    <h2 class="text-2xl font-bold font-display text-gray-800 dark:text-white">
+      Your Manuscripts
+    </h2>
+    <p class="text-gray-500 text-sm">Track the status of your submissions.</p>
+  </div>
+  <a
+    href="{% url 'submit_manuscript' %}"
+    class="flex items-center bg-primary text-white font-bold py-2.5 px-5 rounded-lg hover:bg-opacity-90 transition  hover:"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 mr-2"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 4v16m8-8H4"
+      />
+    </svg>
+    New Submission
+  </a>
+</div>
+
+{% if submissions %}
+<div class="space-y-6">
+  {% for manuscript in submissions %}
+  <div
+    class="bg-white dark:bg-card-dark rounded-xl  border border-border-light dark:border-border-dark p-6 transition hover:"
+  >
+    <div class="flex flex-col md:flex-row justify-between mb-6">
+      <div>
+        <h3 class="text-lg font-bold text-primary dark:text-white">
+          {{ manuscript.title }}
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">
+          Submitted on {{ manuscript.submitted_date|date:"F d, Y" }}
+        </p>
+      </div>
+      <div class="mt-4 md:mt-0">
+        <span
+          class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide {% if manuscript.status == 'accepted' %}bg-green-100 text-green-800 {% elif manuscript.status == 'rejected' %}bg-red-100 text-red-800 {% elif manuscript.status == 'under_review' %}bg-amber-100 text-amber-800 {% else %}bg-blue-100 text-blue-800{% endif %}"
+        >
+          {{ manuscript.get_status_display }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="relative">
+      <div
+        class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-100 dark:bg-gray-700"
+      >
+        <div
+          class=" flex flex-col text-center whitespace-nowrap text-white justify-center {{ manuscript.progress_width_class }} {{ manuscript.progress_color_class }} transition-all duration-500"
+        ></div>
+      </div>
+      <div
+        class="flex justify-between text-xs text-gray-500 font-medium uppercase tracking-wide"
+      >
+        <div
+          class="{% if manuscript.status != '' %}text-primary font-bold{% endif %}"
+        >
+          Submitted
+        </div>
+        <div
+          class="{% if manuscript.status == 'under_review' or manuscript.status == 'accepted' or manuscript.status == 'rejected' %}text-primary font-bold{% endif %}"
+        >
+          Under Review
+        </div>
+        <div
+          class="{% if manuscript.status == 'accepted' %}text-green-600 font-bold{% elif manuscript.status == 'rejected' %}text-red-600 font-bold{% endif %}"
+        >
+          Decision
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div
+  class="bg-white dark:bg-card-dark rounded-xl  border border-border-light dark:border-border-dark p-12 text-center"
+>
+  <div
+    class="mx-auto h-24 w-24 bg-gray-50 rounded-full flex items-center justify-center mb-4"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-10 w-10 text-gray-300"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      />
+    </svg>
+  </div>
+  <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200">
+    No Manuscripts Yet
+  </h3>
+  <p class="text-gray-500 mt-2 mb-6">
+    Start your journey by submitting your first research paper.
+  </p>
+  <a
+    href="{% url 'submit_manuscript' %}"
+    class="inline-block bg-primary text-white font-bold py-2 px-6 rounded hover:bg-opacity-90 transition"
+  >
+    Submit Manuscript
+  </a>
+</div>
+{% endif %} {% endblock %}

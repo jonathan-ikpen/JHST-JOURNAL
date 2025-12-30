@@ -1,22 +1,48 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %} {% block content %}
+<section class="lg:col-span-2">
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded  mb-8">
+    <h2
+      class="text-2xl font-display font-bold text-primary mb-4 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Search Results
+    </h2>
+    <p class="mb-6 text-gray-700 dark:text-gray-300">
+      Query: "<span class="font-semibold">{{ query }}</span>"
+    </p>
 
-{% block content %}
-<h2>Search Results</h2>
-<p>Query: "{{ query }}"</p>
-
-{% if results %}
-<ul>
-    {% for article in results %}
-    <li>
-        <a href="{% url 'article_detail' article.id %}"><strong>{{ article.manuscript.title }}</strong></a>
-        <br>
-        by {{ article.manuscript.author.username }}
-        <br>
-        <small>Published in {{ article.issue }}</small>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No results found.</p>
-{% endif %}
+    {% if results %}
+    <div class="space-y-6">
+      {% for article in results %}
+      <div
+        class="border-b border-border-light dark:border-border-dark pb-4 last:border-0"
+      >
+        <p class="font-semibold text-lg mb-1">
+          <a
+            href="{% url 'article_detail' article.id %}"
+            class="hover:text-primary transition"
+            >{{ article.manuscript.title }}</a
+          >
+        </p>
+        <div class="text-sm text-gray-600 dark:text-gray-400">
+          <p>by {{ article.manuscript.author.username }}</p>
+          <p class="mt-1">
+            <span
+              class="bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded text-xs"
+              >Published in {{ article.issue }}</span
+            >
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded">
+      <p>No results found.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}
+
+
+

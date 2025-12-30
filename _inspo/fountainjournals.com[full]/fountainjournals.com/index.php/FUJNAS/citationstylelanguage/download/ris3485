@@ -1,0 +1,13 @@
+TY  - JOUR
+TI  - Comparative Analysis of Back-propagation Neural Network and K-Means Clustering Algorithm in Fraud Detection in Online Credit Card Transactions
+PY  - 2019/06/29
+Y2  - 2025/12/30
+JF  - Fountain Journal of Natural and Applied Sciences
+JA  - Fountain Journal of Natural and Applied Sciences
+VL  - 8
+IS  - 1
+SE  - Articles
+DO  - 10.53704/fujnas.v8i1.315
+UR  - https://doi.org/10.53704/fujnas.v8i1.315
+AB  - The ubiquitous nature of the internet had been a major driving force of the digital transformation in our world today. It has necessarily become the main medium for conducting electronic commerce (e-commerce) and online transactions. With this development, various means of possible payment methods have also emerged, such as electronic cash/ cheques, debit/credit cards, and electronic wallets. However, debit/credit cards are by far the most common payment methods employed. As a result, different credit card fraud activities have rapidly increased all over the world and are still evolving. This menace has drawn a lot of research interest and a number of techniques, with special emphasis on Data Mining, Expert System and Machine Learning (ML), as a means of identifying fraudulent behaviors. This paper examines and investigates two ML algorithms trained on public online credit card datasets, to analyze and identify fraudulent transactions. The BPNN and the K-means clustering ML algorithms were designed and implemented using Python Programming Languages. It was determined that the BPNN has a much higher accuracy of 93.1% as compared to the K-means which has an accuracy of 79.9%. Other metrics used to evaluate their performance also shows that the BPNN algorithm outperformed K-means algorithm, while the low prediction time of K-means gave it an advantage over the BPNN.Keywords: Credit card, Fraud detection, Back-Propagation neural network, Clustering algorithm, Machine learning, Security.
+ER  -

@@ -1,0 +1,82 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto py-8">
+  <div
+    class="flex justify-between items-center mb-6 border-b border-gray-200 pb-2"
+  >
+    <h1 class="text-3xl font-display font-bold text-primary">Current Issue</h1>
+    <a href="{% url 'archives' %}" class="text-sm text-primary hover:underline"
+      >View All Archives</a
+    >
+  </div>
+
+  {% if issue %}
+  <div class="mb-8 p-4 bg-primary/5 rounded border border-primary/20">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+      {{ issue.volume }} - Issue {{ issue.number }}
+    </h2>
+    <p class="text-gray-600 dark:text-gray-400 mt-1">
+      Published: {{ issue.publication_date|date:"F d, Y" }}
+    </p>
+  </div>
+
+  {% if issue.articles.all %}
+  <div class="space-y-6">
+    {% for article in issue.articles.all %}
+    <article
+      class="bg-card-light dark:bg-card-dark p-6 rounded hover: transition"
+    >
+      <h3
+        class="text-xl font-bold font-display text-gray-900 dark:text-white mb-2"
+      >
+        <a
+          href="{% url 'article_detail' article.id %}"
+          class="hover:text-primary transition"
+        >
+          {{ article.manuscript.title }}
+        </a>
+      </h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+        <strong>Authors:</strong> {{ article.manuscript.author.get_full_name }}
+        {% if article.manuscript.co_authors %}, {{ article.manuscript.co_authors
+        }}{% endif %}
+      </p>
+      <p class="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
+        {{ article.manuscript.abstract }}
+      </p>
+      <div class="flex items-center space-x-4">
+        <a
+          href="{% url 'article_detail' article.id %}"
+          class="text-primary font-bold text-sm uppercase tracking-wide hover:underline"
+          >Read More</a
+        >
+        {% if article.manuscript.file %}
+        <a
+          href="{{ article.manuscript.file.url }}"
+          class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 flex items-center text-sm"
+          target="_blank"
+        >
+          <span class="material-icons text-base mr-1">picture_as_pdf</span>
+          PDF
+        </a>
+        {% endif %} {% if article.doi %}
+        <span class="text-xs text-gray-400">DOI: {{ article.doi }}</span>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-600 italic">
+    No articles have been assigned to this issue yet.
+  </p>
+  {% endif %} {% else %}
+  <div class="text-center py-12">
+    <span class="material-icons text-6xl text-gray-300 mb-4"
+      >library_books</span
+    >
+    <h2 class="text-xl font-bold text-gray-600">No Current Issue Published</h2>
+    <p class="text-gray-500">Check back later or view the archives.</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

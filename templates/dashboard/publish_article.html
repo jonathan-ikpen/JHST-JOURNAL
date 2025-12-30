@@ -1,0 +1,105 @@
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Publish
+Article{% endblock %} {% block content %}
+<div class="max-w-5xl mx-auto">
+  <div
+    class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl p-8 "
+  >
+    <div class="mb-8 border-b border-gray-100 dark:border-gray-700 pb-4">
+      <h2 class="text-2xl font-display font-bold text-gray-900 dark:text-white">
+        Publish Article
+      </h2>
+      <p class="text-sm text-gray-500 mt-1">
+        Finalize the publication of
+        <span class="font-semibold text-primary">{{ manuscript.title }}</span>.
+      </p>
+    </div>
+
+    <div class="max-w-xl">
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+        <div>
+          <label
+            for="issue"
+            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+          >
+            Assign to Issue
+          </label>
+          <select
+            name="issue"
+            id="issue"
+            class="w-full rounded-md border-gray-300  focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2.5"
+          >
+            {% for issue in issues %}
+            <option value="{{ issue.id }}">{{ issue }}</option>
+            {% endfor %}
+          </select>
+          <p class="text-xs text-gray-500 mt-1">
+            Select the Volume & Issue this article belongs to.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label
+              for="page_start"
+              class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+              >Page Start</label
+            >
+            <input
+              type="number"
+              name="page_start"
+              id="page_start"
+              placeholder="e.g. 45"
+              class="w-full rounded-md border-gray-300  focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2.5"
+            />
+          </div>
+          <div>
+            <label
+              for="page_end"
+              class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+              >Page End</label
+            >
+            <input
+              type="number"
+              name="page_end"
+              id="page_end"
+              placeholder="e.g. 52"
+              class="w-full rounded-md border-gray-300  focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2.5"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="doi"
+            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+            >DOI (Optional)</label
+          >
+          <input
+            type="text"
+            name="doi"
+            id="doi"
+            placeholder="e.g. 10.1234/jhst.v1.i1.1"
+            class="w-full rounded-md border-gray-300  focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2.5"
+          />
+        </div>
+
+        <div
+          class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800 text-sm text-blue-800 dark:text-blue-200 mb-4"
+        >
+          <span class="font-bold block mb-1">Confirmation</span>
+          This action will make the article publicly available immediately on
+          the journal website.
+        </div>
+
+        <button
+          type="submit"
+          class="bg-green-600 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-green-700 transition  flex items-center"
+        >
+          <span class="material-icons text-sm mr-2">public</span> Publish Now
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

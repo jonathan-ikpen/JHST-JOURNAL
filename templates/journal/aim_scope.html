@@ -1,0 +1,73 @@
+﻿{% extends 'base.html' %} {% block content %}
+<section class="max-w-5xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Aim & Scope
+    </h1>
+
+    <div
+      class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
+    >
+      <!-- Intro -->
+      <div class="mb-8">
+        <p>
+          The
+          <strong>Journal of Hydrocarbon Science and Technology (JHST)</strong>
+          is a peer-reviewed, open-access journal dedicated to the dissemination
+          of high-quality research in the field of hydrocarbon science, energy
+          technology, and related disciplines.
+        </p>
+      </div>
+
+      <!-- Aim -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Aim
+        </h2>
+        <p>
+          Our primary aim is to provide a global platform for scientists,
+          engineers, academicians, and industry professionals to share their
+          innovative research findings, technical advancements, and reviews. We
+          strive to bridge the gap between theoretical research and industrial
+          application in the oil and gas sector.
+        </p>
+      </div>
+
+      <!-- Scope -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Scope
+        </h2>
+        <p class="mb-4">
+          JHST welcomes original research articles, technical notes, and review
+          papers in the following areas, though not limited to:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Petroleum Geology and Geophysics</li>
+            <li>Reservoir Engineering and Simulation</li>
+            <li>Drilling and Completion Technology</li>
+            <li>Production Engineering and Optimization</li>
+            <li>Natural Gas Engineering and Processing</li>
+            <li>Petrochemicals and Refining Technology</li>
+          </ul>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Health, Safety, and Environment (HSE) in Energy</li>
+            <li>Energy Economics and Policy</li>
+            <li>Renewable Energy Integration with Hydrocarbons</li>
+            <li>Carbon Capture, Utilization, and Storage (CCUS)</li>
+            <li>Digital Transformation in Oil & Gas (AI, IoT)</li>
+            <li>Pipeline Engineering and Flow Assurance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

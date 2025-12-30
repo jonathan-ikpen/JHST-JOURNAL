@@ -18,3 +18,8 @@ admin.site.register(Review)
 admin.site.register(Volume)
 admin.site.register(Issue)
 admin.site.register(Article)
+
+# Admin Site Customization
+admin.site.site_header = "JHST Administration"
+admin.site.site_title = "JHST Admin Portal"
+admin.site.index_title = "Welcome to Journal of Hydrocarbon Science and Technology Admin Portal"

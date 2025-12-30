@@ -1,0 +1,54 @@
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Create
+New Volume{% endblock %} {% block content %}
+<div class="max-w-5xl mx-auto">
+  <div
+    class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl p-8 "
+  >
+    <div class="mb-8 border-b border-gray-100 dark:border-gray-700 pb-4">
+      <h2 class="text-2xl font-display font-bold text-gray-900 dark:text-white">
+        Create New Volume
+      </h2>
+      <p class="text-sm text-gray-500 mt-1">
+        Initialize a new volume for the new year or publishing cycle.
+      </p>
+    </div>
+
+    <div class="max-w-2xl">
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <div class="space-y-5">
+          {% for field in form %}
+          <div>
+            <label
+              for="{{ field.id_for_label }}"
+              class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1"
+            >
+              {{ field.label }} {% if field.field.required %}<span
+                class="text-red-500"
+                >*</span
+              >{% endif %}
+            </label>
+            {{ field }} {% if field.help_text %}
+            <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+            {% endif %} {% if field.errors %}
+            <p class="text-sm text-red-500 mt-1">{{ field.errors.0 }}</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="pt-6">
+          <button
+            type="submit"
+            class="bg-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-opacity-90 transition  flex items-center"
+          >
+            <span class="material-icons text-sm mr-2">library_books</span>
+            Create Volume
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
