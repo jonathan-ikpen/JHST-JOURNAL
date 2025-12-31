@@ -1,3 +1,4 @@
+{% load static %}
 <aside class="space-y-8">
   <div class="bg-amber-400 p-4 rounded text-center text-black">
     <p class="font-bold text-lg">IMPORTANT ANNOUNCEMENT</p>
@@ -7,6 +8,20 @@
       </h3>
     </div>
   </div>
+
+  <div class="bg-card-light dark:bg-card-dark p-4 rounded shadow-sm">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-3"
+    >
+      New Release
+    </h3>
+    <img
+      src="{% static 'assets/images/Hydro_science_journal_2025.png' %}"
+      alt="Hydro Science Journal 2025 Release"
+      class="w-full rounded"
+    />
+  </div>
+
   <div class="text-center">
     <a
       class="block w-full bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark font-bold py-2 px-4 rounded border-b-4 border-gray-400 dark:border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-600"
