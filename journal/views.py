@@ -348,6 +348,7 @@ def search(request):
             Q(manuscript__author__first_name__icontains=query) |
             Q(manuscript__author__last_name__icontains=query)
         )
+    return render(request, 'journal/search_results.html', {'results': results, 'query': query})
 def archives(request):
     volumes = Volume.objects.prefetch_related('issues').order_by('-year', '-number')
     return render(request, 'journal/archives.html', {'volumes': volumes})

@@ -22,13 +22,25 @@
     </h3>
     <ul class="space-y-2">
       <li>
-        <a class="text-primary hover:underline" href="#">For Readers</a>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'subscription_advertising' %}"
+          >For Readers</a
+        >
       </li>
       <li>
-        <a class="text-primary hover:underline" href="#">For Authors</a>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'author_guidelines' %}"
+          >For Authors</a
+        >
       </li>
       <li>
-        <a class="text-primary hover:underline" href="#">For Librarians</a>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'subscription_advertising' %}"
+          >For Librarians</a
+        >
       </li>
     </ul>
   </div>
@@ -71,7 +83,9 @@
     </h3>
     <ul class="space-y-2">
       <li>
-        <a class="text-primary hover:underline" href="#">Categories</a>
+        <a class="text-primary hover:underline" href="{% url 'aim_scope' %}"
+          >Categories</a
+        >
       </li>
     </ul>
   </div>
