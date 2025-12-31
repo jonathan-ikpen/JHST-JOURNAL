@@ -47,19 +47,60 @@ def profile(request):
         return redirect('profile')
     return render(request, 'journal/profile.html', {'user': request.user})
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 @login_required
 def dashboard(request):
     # Always get personal submissions
     my_submissions = Manuscript.objects.filter(author=request.user).order_by('-submitted_date')
 
     if request.user.is_editor:
-        submissions = Manuscript.objects.all().order_by('-submitted_date')
-        unassigned_count = submissions.filter(status='submitted').count()
+        submissions_list = Manuscript.objects.all()
+        
+        # Filtering
+        status_filter = request.GET.get('status')
+        if status_filter and status_filter != 'all':
+            submissions_list = submissions_list.filter(status=status_filter)
+            
+        # Search
+        search_query = request.GET.get('search')
+        if search_query:
+            submissions_list = submissions_list.filter(
+                Q(title__icontains=search_query) | 
+                Q(author__username__icontains=search_query)
+            )
+            
+        # Sorting
+        sort_by = request.GET.get('sort', 'date_desc')
+        if sort_by == 'date_asc':
+            submissions_list = submissions_list.order_by('submitted_date')
+        elif sort_by == 'title':
+            submissions_list = submissions_list.order_by('title')
+        else: # date_desc
+            submissions_list = submissions_list.order_by('-submitted_date')
+
+        # Pagination
+        paginator = Paginator(submissions_list, 10) # 10 items per page
+        page = request.GET.get('page')
+        try:
+            submissions = paginator.page(page)
+        except PageNotAnInteger:
+            submissions = paginator.page(1)
+        except EmptyPage:
+            submissions = paginator.page(paginator.num_pages)
+
+        unassigned_count = Manuscript.objects.filter(status='submitted').count()
+        total_count = Manuscript.objects.count()
+        
         return render(request, 'dashboard/editor_dashboard.html', {
             'submissions': submissions,
             'my_submissions': my_submissions,
             'unassigned_count': unassigned_count,
-            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
+            'total_count': total_count,
+            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5],
+            'current_status': status_filter,
+            'current_sort': sort_by,
+            'current_search': search_query
         })
     elif request.user.is_reviewer:
         # Get manuscripts through the Review model
@@ -84,8 +125,64 @@ def dashboard(request):
 
 @login_required
 def my_submissions(request):
-    submissions = Manuscript.objects.filter(author=request.user).order_by('-submitted_date')
-    return render(request, 'dashboard/my_submissions.html', {'submissions': submissions})
+    submissions_list = Manuscript.objects.filter(author=request.user)
+    
+    # Filtering
+    status_filter = request.GET.get('status')
+    if status_filter and status_filter != 'all':
+        submissions_list = submissions_list.filter(status=status_filter)
+        
+    # Sorting
+    sort_by = request.GET.get('sort', 'date_desc')
+    if sort_by == 'date_asc':
+        submissions_list = submissions_list.order_by('submitted_date')
+    elif sort_by == 'title':
+        submissions_list = submissions_list.order_by('title')
+    else: # date_desc
+        submissions_list = submissions_list.order_by('-submitted_date')
+
+    # Pagination
+    paginator = Paginator(submissions_list, 10)
+    page = request.GET.get('page')
+    try:
+        submissions = paginator.page(page)
+    except PageNotAnInteger:
+        submissions = paginator.page(1)
+    except EmptyPage:
+        submissions = paginator.page(paginator.num_pages)
+
+    return render(request, 'dashboard/my_submissions.html', {
+        'submissions': submissions,
+        'current_status': status_filter,
+        'current_sort': sort_by
+    })
+
+@login_required
+def reviewer_manuscript_detail(request, manuscript_id):
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    
+    # Security check: Ensure user is a reviewer for this manuscript
+    try:
+        review_assignment = Review.objects.get(manuscript=manuscript, reviewer=request.user)
+    except Review.DoesNotExist:
+        return redirect('dashboard')
+        
+    return render(request, 'dashboard/reviewer_manuscript_detail.html', {
+        'manuscript': manuscript,
+        'review': review_assignment
+    })
+
+@login_required
+def my_submission_detail(request, manuscript_id):
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    
+    # Security check: Ensure user owns this manuscript
+    if manuscript.author != request.user:
+        return redirect('my_submissions')
+        
+    return render(request, 'dashboard/my_submission_detail.html', {
+        'manuscript': manuscript
+    })
 
 @login_required
 def submit_manuscript(request):
@@ -216,7 +313,7 @@ def make_decision(request, manuscript_id):
             # Notify Author
             _send_notification_email(
                 f"Decision on Manuscript: {manuscript.title}",
-                f"Dear {manuscript.author.get_full_name()},\n\nA decision has been reached regarding your manuscript '{manuscript.title}': {decision.upper()}.\nPlease log in to your dashboard to view details and reviews.\n\nBest regards,\nJHST Editorial Team",
+                f"Dear {manuscript.author.get_full_name()},\n\nA decision has been reached regarding your manuscript '{manuscript.title}': {decision.upper()}.\nPlease log in to your dashboard to view details and reviews.\n\nIMPORTANT: If your manuscript has been accepted, please proceed to pay the publication fee. Instructions can be found here: {request.build_absolute_uri('/about/publication-fees/')}\n\nBest regards,\nJHST Editorial Team",
                 [manuscript.author.email]
             )
 
@@ -231,7 +328,32 @@ def make_decision(request, manuscript_id):
         return redirect('dashboard')
     
     reviews = manuscript.reviews.all()
+    reviews = manuscript.reviews.all()
     return render(request, 'dashboard/make_decision.html', {'manuscript': manuscript, 'reviews': reviews})
+
+@login_required
+def mark_as_paid(request, manuscript_id):
+    if not request.user.is_editor:
+        return redirect('dashboard')
+    
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    manuscript.is_paid = True
+    manuscript.save()
+    
+    _send_notification_email(
+        f"Payment Confirmed: {manuscript.title}",
+        f"Dear {manuscript.author.get_full_name()},\n\nWe have confirmed your payment for the manuscript '{manuscript.title}'.\nYour manuscript is now ready for publication.\n\nBest regards,\nJHST Editorial Team",
+        [manuscript.author.email]
+    )
+
+    Notification.objects.create(
+        recipient=manuscript.author,
+        message=f"Payment Confirmed: Your payment for '{manuscript.title}' has been verified.",
+        link='/dashboard/my-submissions/'
+    )
+    
+    messages.success(request, f"Payment confirmed for {manuscript.title}.")
+    return redirect('dashboard')
 
 @login_required
 def publish_article(request, manuscript_id):
@@ -239,6 +361,11 @@ def publish_article(request, manuscript_id):
         return redirect('dashboard')
     
     manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    
+    # Payment check removed to allow publishing before payment as per user request
+    # if not manuscript.is_paid: ...
+
     if request.method == 'POST':
         issue_id = request.POST.get('issue')
         issue = get_object_or_404(Issue, id=issue_id)
@@ -277,6 +404,19 @@ def publish_article(request, manuscript_id):
     
     issues = Issue.objects.all()
     return render(request, 'dashboard/publish_article.html', {'manuscript': manuscript, 'issues': issues})
+
+@login_required
+def dashboard_manuscript_detail(request, manuscript_id):
+    if not request.user.is_editor: # Restrict to editor for now as per "action buttons" context
+        return redirect('dashboard')
+    
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    reviews = manuscript.reviews.all()
+    
+    return render(request, 'dashboard/manuscript_detail.html', {
+        'manuscript': manuscript,
+        'reviews': reviews,
+    })
 
 @login_required
 def create_issue(request):

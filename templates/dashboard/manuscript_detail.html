@@ -1,0 +1,341 @@
+{% extends 'dashboard/dashboard_base.html' %}
+<!-- prettier-ignore -->
+{% block dashboard_title %}Manuscript Details{% endblock %} {% block content %}
+<div
+  class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4"
+>
+  <div>
+    <a
+      href="{% url 'dashboard' %}"
+      class="inline-flex items-center text-sm text-slate-500 hover:text-primary mb-2 transition-colors"
+    >
+      <span class="material-icons text-base mr-1">arrow_back</span> Back to
+      Dashboard
+    </a>
+    <h2
+      class="text-2xl font-bold font-display text-slate-800 dark:text-white leading-tight"
+    >
+      {{ manuscript.title }}
+    </h2>
+    <div class="flex flex-wrap items-center gap-3 mt-2">
+      <span class="text-sm text-slate-500"> ID: #{{ manuscript.id }} </span>
+      <span class="text-slate-300">•</span>
+      <span class="text-sm text-slate-500">
+        Submitted: {{ manuscript.submitted_date|date:"F d, Y" }}
+      </span>
+      <span class="text-slate-300">•</span>
+      <span
+        class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide border {% if manuscript.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif manuscript.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif manuscript.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif manuscript.status == 'published' %}bg-blue-50 text-blue-700 border-blue-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
+      >
+        {{ manuscript.get_status_display }}
+      </span>
+    </div>
+  </div>
+
+  <div class="flex gap-2">
+    <!-- Primary Action Button based on Status (Optional convenience, detailed actions below) -->
+    <!-- prettier-ignore -->
+    {% if manuscript.status == 'submitted' or manuscript.status == 'under_review' %}
+    <a
+      href="{% url 'make_decision' manuscript.id %}"
+      class="inline-flex items-center justify-center bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition shadow-sm no-wrap whitespace-nowrap w-full"
+    >
+      <span class="material-icons text-sm mr-2">gavel</span> Make Decision
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Left Column: Details -->
+  <div class="lg:col-span-2 space-y-8">
+    <!-- Abstract -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2"
+      >
+        Abstract
+      </h3>
+      <p
+        class="text-slate-600 dark:text-slate-300 leading-relaxed fwhitespace-pre-wrap bg-[#f9fafb] p-4 rounded"
+      >
+        {{ manuscript.abstract }}
+      </p>
+
+      <div class="mt-6">
+        <h4
+          class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2"
+        >
+          Keywords
+        </h4>
+        <div class="flex flex-wrap gap-2">
+          {% for keyword in manuscript.keywords.split %}
+          <!-- Basic split, assuming space or comma handling might be needed in template or model -->
+          <!-- For now just displaying raw or simple split if comma separated in model -->
+          <span
+            class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs px-2 py-1 rounded"
+          >
+            {{ keyword|cut:"," }}
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Author Information -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2"
+      >
+        Author Details
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label
+            class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+            >Corresponding Author</label
+          >
+          <p class="font-medium text-slate-800 dark:text-white">
+            {{ manuscript.author.get_full_name }}
+          </p>
+          <p class="text-sm text-slate-500">{{ manuscript.author.email }}</p>
+          <p class="text-sm text-slate-500">
+            {{ manuscript.author.affiliation }}
+          </p>
+        </div>
+        <div>
+          <label
+            class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+            >Co-Authors</label
+          >
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            {{ manuscript.co_authors|default:"None" }}
+          </p>
+        </div>
+        <div class="md:col-span-2">
+          <label
+            class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1"
+            >Affiliations</label
+          >
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            {{ manuscript.affiliations|default:"-" }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Files -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2"
+      >
+        Manuscript File
+      </h3>
+      {% if manuscript.file %}
+      <div
+        class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-4 rounded border border-slate-200 dark:border-slate-800"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="h-10 w-10 bg-red-100 text-red-600 rounded flex items-center justify-center"
+          >
+            <span class="material-icons">picture_as_pdf</span>
+          </div>
+          <div>
+            <p class="font-medium text-slate-700 dark:text-slate-200 text-sm">
+              Full Manuscript PDF
+            </p>
+            <p class="text-xs text-slate-400">Click to view or download</p>
+          </div>
+        </div>
+        <a
+          href="{{ manuscript.file.url }}"
+          target="_blank"
+          class="text-primary hover:text-primary-dark font-bold text-sm"
+          >Download</a
+        >
+      </div>
+      {% else %}
+      <p class="text-slate-400 italic">No file uploaded.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right Column: Actions & Workflow -->
+  <div class="space-y-6">
+    <!-- Payment Status -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-sm font-bold font-display text-slate-400 uppercase tracking-widest mb-4"
+      >
+        Publication Fee
+      </h3>
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-slate-600 dark:text-slate-300 font-medium"
+          >Status</span
+        >
+        {% if manuscript.is_paid %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-green-100 text-green-700"
+        >
+          <span class="material-icons text-xs mr-1">check_circle</span> Paid
+        </span>
+        {% else %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-amber-100 text-amber-700"
+        >
+          Pending
+        </span>
+        {% endif %}
+      </div>
+
+      {% if not manuscript.is_paid %}
+      <div class="border-t border-slate-100 dark:border-slate-800 pt-4">
+        <p class="text-xs text-slate-500 mb-3">
+          Verify payment manually to proceed with publication.
+        </p>
+        <a
+          href="{% url 'mark_as_paid' manuscript.id %}"
+          onclick="return confirm('Mark this manuscript as PAID?')"
+          class="block w-full text-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded transition shadow-sm text-sm"
+        >
+          Mark as Paid
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Workflow Actions -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-sm font-bold font-display text-slate-400 uppercase tracking-widest mb-4"
+      >
+        Workflow Actions
+      </h3>
+
+      <div class="space-y-3">
+        <!-- Assign Reviewer -->
+        <div
+          class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800"
+        >
+          <div>
+            <span
+              class="block font-bold text-slate-700 dark:text-slate-200 text-sm"
+              >Reviewers</span
+            >
+            <span class="text-xs text-slate-400"
+              >{{ manuscript.reviews.count }} assigned</span
+            >
+          </div>
+          <a
+            href="{% url 'assign_reviewer' manuscript.id %}"
+            class="text-primary hover:underline text-sm font-bold"
+            >Manage</a
+          >
+        </div>
+
+        <!-- Make Decision -->
+        <div
+          class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800"
+        >
+          <div>
+            <span
+              class="block font-bold text-slate-700 dark:text-slate-200 text-sm"
+              >Decision</span
+            >
+            <span class="text-xs text-slate-400">
+              <!-- prettier-ignore -->
+              {% if manuscript.status == 'submitted' or manuscript.status == 'under_review' %}Pending{% else %}Done{% endif %}
+            </span>
+          </div>
+          <a
+            href="{% url 'make_decision' manuscript.id %}"
+            class="text-primary hover:underline text-sm font-bold"
+            >Decide</a
+          >
+        </div>
+
+        <!-- Publish -->
+        <div
+          class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-100 dark:border-slate-800"
+        >
+          <div>
+            <span
+              class="block font-bold text-slate-700 dark:text-slate-200 text-sm"
+              >Publication</span
+            >
+            <span class="text-xs text-slate-400">
+              <!-- prettier-ignore -->
+              {% if manuscript.status == 'published' %}Published{% else %}Not
+              Published{% endif %}
+            </span>
+          </div>
+          {% if manuscript.status == 'accepted' %}
+          <a
+            href="{% url 'publish_article' manuscript.id %}"
+            class="text-green-600 hover:underline text-sm font-bold"
+            >Publish</a
+          >
+          {% elif manuscript.status == 'published' %}
+          <span class="text-gray-400 text-sm cursor-not-allowed">Done</span>
+          {% else %}
+          <span class="text-gray-400 text-sm cursor-not-allowed">Locked</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviewer Status -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-sm font-bold font-display text-slate-400 uppercase tracking-widest mb-4"
+      >
+        Assigned Reviewers
+      </h3>
+      {% if reviews %}
+      <ul class="space-y-3">
+        {% for review in reviews %}
+        <li class="flex items-center justify-between text-sm">
+          <div class="flex items-center gap-2">
+            <div
+              class="h-6 w-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-400"
+            >
+              {{ review.reviewer.username|slice:":1"|upper }}
+            </div>
+            <!-- prettier-ignore -->
+            <span class="text-slate-700 dark:text-slate-300">{{ review.reviewer.get_full_name|default:review.reviewer.username }}</span
+            >
+          </div>
+          {% if review.date_completed %}
+          <span class="text-green-600 text-xs font-bold">Completed</span>
+          {% else %}
+          <span class="text-amber-500 text-xs font-bold">Pending</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-sm text-slate-500 italic">No reviewers assigned yet.</p>
+      <a
+        href="{% url 'assign_reviewer' manuscript.id %}"
+        class="block mt-3 text-center text-xs border border-dashed border-slate-300 text-slate-500 py-2 rounded hover:bg-slate-50 transition"
+      >
+        + Assign Reviewer
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

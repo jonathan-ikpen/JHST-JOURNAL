@@ -33,6 +33,25 @@
 </div>
 
 {% if submissions %}
+<!-- Filters -->
+<div class="mb-4">
+    <form method="get" class="flex items-center gap-2" id="submissions-filters">
+        <select name="status" onchange="this.form.submit()" class="text-xs border-gray-200 rounded focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600">
+            <option value="all" {% if current_status == 'all' %}selected{% endif %}>All Status</option>
+            <option value="submitted" {% if current_status == 'submitted' %}selected{% endif %}>Submitted</option>
+            <option value="under_review" {% if current_status == 'under_review' %}selected{% endif %}>Under Review</option>
+            <option value="accepted" {% if current_status == 'accepted' %}selected{% endif %}>Accepted</option>
+            <option value="published" {% if current_status == 'published' %}selected{% endif %}>Published</option>
+            <option value="rejected" {% if current_status == 'rejected' %}selected{% endif %}>Rejected</option>
+        </select>
+        <select name="sort" onchange="this.form.submit()" class="text-xs border-gray-200 rounded focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600">
+            <option value="date_desc" {% if current_sort == 'date_desc' %}selected{% endif %}>Newest</option>
+            <option value="date_asc" {% if current_sort == 'date_asc' %}selected{% endif %}>Oldest</option>
+            <option value="title" {% if current_sort == 'title' %}selected{% endif %}>Title</option>
+        </select>
+    </form>
+</div>
+
 <div
   class="bg-white dark:bg-card-dark rounded shadow-card overflow-hidden border border-slate-200 dark:border-slate-800/50"
 >
@@ -62,6 +81,12 @@
             scope="col"
             class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider"
           >
+            Payment
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider"
+          >
             Actions
           </th>
         </tr>
@@ -83,7 +108,9 @@
                   class="text-sm font-bold text-slate-900 dark:text-white max-w-xs truncate"
                   title="{{ manuscript.title }}"
                 >
-                  {{ manuscript.title }}
+                  <a href="{% url 'my_submission_detail' manuscript.id %}" class="hover:text-primary hover:underline">
+                    {{ manuscript.title }}
+                  </a>
                 </div>
                 <div class="text-xs text-slate-500">
                   ID: #{{ manuscript.id }}
@@ -102,6 +129,28 @@
             >
               {{ manuscript.get_status_display }}
             </span>
+          </td>
+           <td class="px-6 py-4 whitespace-nowrap">
+            {% if manuscript.status == 'accepted' or manuscript.status == 'published' %} {% if manuscript.is_paid %}
+            <span
+              class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700"
+            >
+              Paid
+            </span>
+            {% else %}
+            <span
+              class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 animate-pulse"
+            >
+              Awaiting Payment
+            </span>
+            <a
+              href="{% url 'publication_fees' %}"
+              class="block text-[10px] text-primary hover:underline mt-1 font-medium"
+              >View Instructions</a
+            >
+            {% endif %} {% else %}
+            <span class="text-slate-400 text-xs">-</span>
+            {% endif %}
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
             <div class="flex items-center space-x-3">
@@ -140,6 +189,65 @@
       </tbody>
     </table>
   </div>
+  
+    <!-- Pagination -->
+    <div class="bg-white dark:bg-card-dark px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+        <div class="flex items-center justify-between">
+            <div class="flex-1 flex justify-between sm:hidden">
+                {% if submissions.has_previous %}
+                    <a href="?page={{ submissions.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Previous</a>
+                {% else %}
+                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">Previous</span>
+                {% endif %}
+                
+                {% if submissions.has_next %}
+                    <a href="?page={{ submissions.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Next</a>
+                {% else %}
+                     <span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">Next</span>
+                {% endif %}
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                        Showing
+                        <span class="font-medium">{{ submissions.start_index }}</span>
+                        to
+                        <span class="font-medium">{{ submissions.end_index }}</span>
+                        of
+                        <span class="font-medium">{{ submissions.paginator.count }}</span>
+                        results
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        {% if submissions.has_previous %}
+                            <a href="?page={{ submissions.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="material-icons text-sm">chevron_left</span>
+                            </a>
+                        {% else %}
+                             <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-300 cursor-not-allowed">
+                                <span class="material-icons text-sm">chevron_left</span>
+                            </span>
+                        {% endif %}
+                        
+                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                            Page {{ submissions.number }} of {{ submissions.paginator.num_pages }}
+                        </span>
+
+                        {% if submissions.has_next %}
+                            <a href="?page={{ submissions.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="material-icons text-sm">chevron_right</span>
+                            </a>
+                        {% else %}
+                             <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-300 cursor-not-allowed">
+                                <span class="material-icons text-sm">chevron_right</span>
+                            </span>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% else %}
 <div

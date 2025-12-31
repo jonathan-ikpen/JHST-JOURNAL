@@ -1,0 +1,233 @@
+{% extends 'dashboard/dashboard_base.html' %}
+<!-- prettier-ignore -->
+{% block dashboard_title %}Submission Details{% endblock %} {% block content %}
+<div class="mb-6">
+  <a
+    href="{% url 'my_submissions' %}"
+    class="inline-flex items-center text-sm text-slate-500 hover:text-primary mb-2 transition-colors"
+  >
+    <span class="material-icons text-base mr-1">arrow_back</span> Back to My
+    Submissions
+  </a>
+  <h2
+    class="text-2xl font-bold font-display text-slate-800 dark:text-white leading-tight"
+  >
+    {{ manuscript.title }}
+  </h2>
+  <div class="flex flex-wrap items-center gap-3 mt-2">
+    <span class="text-sm text-slate-500"> ID: #{{ manuscript.id }} </span>
+    <span class="text-slate-300">•</span>
+    <span class="text-sm text-slate-500">
+      Submitted: {{ manuscript.submitted_date|date:"F d, Y" }}
+    </span>
+    <span class="text-slate-300">•</span>
+    <span
+      class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide border {% if manuscript.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif manuscript.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif manuscript.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif manuscript.status == 'published' %}bg-blue-50 text-blue-700 border-blue-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
+    >
+      {{ manuscript.get_status_display }}
+    </span>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Left Column: Details -->
+  <div class="lg:col-span-2 space-y-8">
+    <!-- Abstract -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2"
+      >
+        Abstract
+      </h3>
+      <p
+        class="text-slate-600 dark:text-slate-300 leading-relaxed fwhitespace-pre-wrap bg-slate-50 dark:bg-slate-800/30 p-4 rounded"
+      >
+        {{ manuscript.abstract }}
+      </p>
+
+      <div class="mt-6">
+        <h4
+          class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2"
+        >
+          Keywords
+        </h4>
+        <div class="flex flex-wrap gap-2">
+          {% for keyword in manuscript.keywords.split %}
+          <span
+            class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs px-2 py-1 rounded"
+          >
+            {{ keyword|cut:"," }}
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Files -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2"
+      >
+        Manuscript File
+      </h3>
+      {% if manuscript.file %}
+      <div
+        class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-4 rounded border border-slate-200 dark:border-slate-800"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="h-10 w-10 bg-primary/10 text-primary rounded flex items-center justify-center"
+          >
+            <span class="material-icons">description</span>
+          </div>
+          <div>
+            <p class="font-medium text-slate-700 dark:text-slate-200 text-sm">
+              Submitted Manuscript
+            </p>
+            <p class="text-xs text-slate-400">PDF Document</p>
+          </div>
+        </div>
+        <!-- Use manuscript.file check or just file.url if guaranteed by upload -->
+        <a
+          href="{{ manuscript.file.url }}"
+          target="_blank"
+          class="text-primary hover:text-primary-dark font-bold text-sm"
+          >Download</a
+        >
+      </div>
+      {% else %}
+      <p class="text-slate-400 italic">No file uploaded.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right Column: Status & Payment -->
+  <div class="space-y-6">
+    <!-- Payment Status (Only relevant if Accepted or Published) -->
+    {% if manuscript.status == 'accepted' or manuscript.status == 'published' %}
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-sm font-bold font-display text-slate-400 uppercase tracking-widest mb-4"
+      >
+        Publication Fee
+      </h3>
+
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-slate-600 dark:text-slate-300 font-medium"
+          >Status</span
+        >
+        {% if manuscript.is_paid %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-green-100 text-green-700"
+        >
+          <span class="material-icons text-xs mr-1">check_circle</span> Paid
+        </span>
+        {% else %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-amber-100 text-amber-700"
+        >
+          Pending
+        </span>
+        {% endif %}
+      </div>
+
+      {% if not manuscript.is_paid %}
+      <div
+        class="bg-amber-50 dark:bg-amber-900/10 p-4 rounded border border-amber-100 dark:border-amber-800/30"
+      >
+        <p class="text-sm text-amber-800 dark:text-amber-200 mb-2 font-bold">
+          Action Required
+        </p>
+        <p class="text-xs text-amber-700 dark:text-amber-300 mb-3">
+          Please complete the publication fee payment to proceed with
+          publication.
+        </p>
+        <a
+          href="{% url 'publication_fees' %}"
+          class="text-primary hover:underline text-xs font-bold"
+          >View Payment Instructions &rarr;</a
+        >
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Timeline / Status Card -->
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-sm font-bold font-display text-slate-400 uppercase tracking-widest mb-4"
+      >
+        Submission Timeline
+      </h3>
+      <div
+        class="relative pl-4 border-l-2 border-slate-100 dark:border-slate-700 space-y-6"
+      >
+        <!-- Submitted -->
+        <div class="relative">
+          <div
+            class="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-white dark:ring-card-dark"
+          ></div>
+          <p class="text-sm font-bold text-slate-800 dark:text-white">
+            Submitted
+          </p>
+          <p class="text-xs text-slate-500">
+            {{ manuscript.submitted_date|date:"F d, Y" }}
+          </p>
+        </div>
+
+        <!-- Under Review -->
+        <div class="relative">
+          <div
+            class="absolute -left-[21px] top-1 h-3 w-3 rounded-full {% if manuscript.status != 'submitted' %}bg-primary{% else %}bg-slate-300{% endif %} ring-4 ring-white dark:ring-card-dark"
+          ></div>
+          <p
+            class="text-sm font-bold {% if manuscript.status != 'submitted' %}text-slate-800 dark:text-white{% else %}text-slate-400{% endif %}"
+          >
+            Under Review
+          </p>
+        </div>
+
+        <!-- Decision -->
+        <div class="relative">
+          <div
+            class="absolute -left-[21px] top-1 h-3 w-3 rounded-full {% if manuscript.status == 'accepted' or manuscript.status == 'rejected' or manuscript.status == 'published' %}bg-primary{% else %}bg-slate-300{% endif %} ring-4 ring-white dark:ring-card-dark"
+          ></div>
+          <p
+            class="text-sm font-bold {% if manuscript.status == 'accepted' or manuscript.status == 'rejected' or manuscript.status == 'published' %}text-slate-800 dark:text-white{% else %}text-slate-400{% endif %}"
+          >
+            Decision
+          </p>
+          <!-- prettier-ignore -->
+          {% if manuscript.status == 'accepted' or manuscript.status == 'rejected' or manuscript.status == 'published' %}
+          <p
+            class="text-xs font-bold {% if manuscript.status == 'rejected' %}text-red-500{% else %}text-green-500{% endif %}"
+          >
+            {{ manuscript.get_status_display }}
+          </p>
+          {% endif %}
+        </div>
+
+        <!-- Published -->
+        <div class="relative">
+          <div
+            class="absolute -left-[21px] top-1 h-3 w-3 rounded-full {% if manuscript.status == 'published' %}bg-primary{% else %}bg-slate-300{% endif %} ring-4 ring-white dark:ring-card-dark"
+          ></div>
+          <p
+            class="text-sm font-bold {% if manuscript.status == 'published' %}text-slate-800 dark:text-white{% else %}text-slate-400{% endif %}"
+          >
+            Published
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

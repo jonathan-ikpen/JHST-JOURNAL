@@ -90,6 +90,7 @@ Review{% endblock %} {% block content %}
           </div>
         </div>
 
+        {% if manuscript.file %}
         <a
           href="{{ manuscript.file.url }}"
           target="_blank"
@@ -97,6 +98,11 @@ Review{% endblock %} {% block content %}
         >
           <span class="material-icons text-sm mr-2">download</span> Download PDF
         </a>
+        {% else %}
+        <p class="text-sm text-gray-400 italic text-center">
+          No file uploaded.
+        </p>
+        {% endif %}
       </div>
     </div>
   </div>

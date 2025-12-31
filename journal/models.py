@@ -30,6 +30,7 @@ class Manuscript(models.Model):
     submitted_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='submitted')
     keywords = models.CharField(max_length=255, help_text="Comma-separated keywords")
+    is_paid = models.BooleanField(default=False, help_text="Has the publication fee been paid?")
 
     def __str__(self):
         return self.title

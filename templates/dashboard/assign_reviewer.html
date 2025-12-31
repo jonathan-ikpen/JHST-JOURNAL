@@ -48,6 +48,7 @@ Reviewer{% endblock %} {% block content %}
       <div
         class="md:col-span-2 pt-2 border-t border-gray-100 dark:border-gray-700"
       >
+        {% if manuscript.file %}
         <a
           href="{{ manuscript.file.url }}"
           target="_blank"
@@ -56,6 +57,9 @@ Reviewer{% endblock %} {% block content %}
           <span class="material-icons text-base mr-1">download</span> Download
           Manuscript (PDF/Doc)
         </a>
+        {% else %}
+        <span class="text-sm text-gray-500 italic">No file uploaded.</span>
+        {% endif %}
       </div>
     </div>
   </div>
