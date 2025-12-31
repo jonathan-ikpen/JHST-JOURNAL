@@ -3,3 +3,5 @@
 __pycache__
 _inspo
 /_inspo
+db.sqlite3
+media/
