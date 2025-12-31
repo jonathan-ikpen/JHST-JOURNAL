@@ -107,3 +107,70 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.recipient.username}: {self.message}"
+
+class Announcement(models.Model):
+    CATEGORY_CHOICES = [
+        ('news', 'News'),
+        ('call_for_papers', 'Call for Papers'),
+        ('maintenance', 'Maintenance'),
+        ('general', 'General'),
+    ]
+
+    title = models.CharField(max_length=255)
+    short_description = models.TextField(max_length=500)
+    content = models.TextField()
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='general')
+    image = models.ImageField(upload_to='announcements/', blank=True, null=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-date_created']
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def icon_name(self):
+        icons = {
+            'news': 'groups',
+            'call_for_papers': 'campaign',
+            'maintenance': 'build',
+            'general': 'info',
+        }
+        return icons.get(self.category, 'info')
+
+    @property
+    def color_class(self):
+        colors = {
+            'news': 'blue',
+            'call_for_papers': 'primary', # Using primary for consistency with design
+            'maintenance': 'amber',
+            'general': 'gray',
+        }
+        # This returns the base color name, templates will need to construct the full class
+        # e.g. bg-{color}-100 text-{color}-600
+        # Wait, primary is a custom color in tailwind config probably, but 'bg-primary/10' is used in template.
+        # Let's return a dictionary or object with specific classes to match the design exactly.
+        return colors.get(self.category, 'gray')
+
+    @property
+    def icon_bg_class(self):
+        # Precise mapping to match the template's aesthetics
+        if self.category == 'call_for_papers':
+            return 'bg-primary/10 text-primary'
+        elif self.category == 'news':
+            return 'bg-blue-100 dark:bg-blue-900/30 text-blue-600'
+        elif self.category == 'maintenance':
+            return 'bg-amber-100 dark:bg-amber-900/30 text-amber-600'
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-600'
+
+    @property
+    def badge_class(self):
+        if self.category == 'call_for_papers':
+            return 'bg-primary text-white'
+        elif self.category == 'news':
+            return 'bg-blue-600 text-white'
+        elif self.category == 'maintenance':
+            return 'bg-amber-600 text-white'
+        return 'bg-gray-600 text-white'

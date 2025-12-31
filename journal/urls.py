@@ -55,6 +55,7 @@ urlpatterns = [
     path('policies/subscription/', TemplateView.as_view(template_name='journal/subscription_advertising.html'), name='subscription_advertising'),
     path('policies/plagiarism/', TemplateView.as_view(template_name='journal/plagiarism_policy.html'), name='plagiarism_policy'),
     path('policies/', TemplateView.as_view(template_name='journal/policies.html'), name='policies'),
-    path('announcements/', TemplateView.as_view(template_name='journal/announcements.html'), name='announcements'),
+    path('announcements/', views.announcements, name='announcements'),
+    path('announcements/<int:announcement_id>/', views.announcement_detail, name='announcement_detail'),
     path('jhst-journals/', TemplateView.as_view(template_name='journal/jhst_journals.html'), name='jhst_journals'),
 ]

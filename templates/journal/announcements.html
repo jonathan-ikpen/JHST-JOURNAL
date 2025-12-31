@@ -8,40 +8,51 @@
     </h1>
 
     <div class="space-y-8">
-      <!-- Announcement 1 -->
+      {% for announcement in announcements %}
       <article
         class="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 last:border-0"
       >
         <div class="md:w-1/4 shrink-0">
-          <div
-            class="w-full h-32 bg-primary/10 rounded flex items-center justify-center text-primary"
-          >
-            <span class="material-icons text-5xl">campaign</span>
+          {% if announcement.image %}
+          <div class="w-full h-32 rounded overflow-hidden">
+            <img
+              src="{{ announcement.image.url }}"
+              alt="{{ announcement.title }}"
+              class="w-full h-full object-cover"
+            />
           </div>
+          {% else %}
+          <div
+            class="w-full h-32 rounded flex items-center justify-center {{ announcement.icon_bg_class }}"
+          >
+            <span class="material-icons text-5xl"
+              >{{ announcement.icon_name }}</span
+            >
+          </div>
+          {% endif %}
         </div>
-        <div>
+        <div class="flex-1">
           <div class="flex items-center gap-3 mb-2">
             <span
-              class="px-2 py-1 bg-primary text-white text-xs font-bold rounded uppercase"
-              >Call for Papers</span
+              class="px-2 py-1 text-xs font-bold rounded uppercase {{ announcement.badge_class }}"
+              >{{ announcement.get_category_display }}</span
             >
-            <span class="text-sm text-gray-500">December 15, 2024</span>
+            <span class="text-sm text-gray-500"
+              >{{ announcement.date_created|date:"F d, Y" }}</span
+            >
           </div>
           <h2
             class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-primary transition"
           >
-            <a href="#"
-              >Special Issue: Innovations in Green Energy Transition</a
+            <a href="{% url 'announcement_detail' announcement.id %}"
+              >{{ announcement.title }}</a
             >
           </h2>
           <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-            JHST invites submissions for a special issue focused on "Innovations
-            in Green Energy Transition for the Oil & Gas Sector". Topics include
-            hydrogen energy, carbon capture utilization and storage (CCUS), and
-            renewable integration. Deadline for submission is March 30, 2025.
+            {{ announcement.short_description }}
           </p>
           <a
-            href="#"
+            href="{% url 'announcement_detail' announcement.id %}"
             class="inline-flex items-center text-primary font-semibold hover:underline"
           >
             Read Full Announcement
@@ -49,85 +60,47 @@
           </a>
         </div>
       </article>
+      {% empty %}
+      <div class="text-center py-12 text-gray-500">
+        <span class="material-icons text-4xl mb-2">campaign_off</span>
+        <p>No announcements at this time.</p>
+      </div>
+      {% endfor %} {% if announcements.has_other_pages %}
+      <div class="flex justify-center mt-8">
+        <span class="step-links flex space-x-2">
+          {% if announcements.has_previous %}
+          <a
+            href="?page=1"
+            class="px-3 py-1 bg-white border rounded hover:bg-gray-50"
+            >&laquo; first</a
+          >
+          <a
+            href="?page={{ announcements.previous_page_number }}"
+            class="px-3 py-1 bg-white border rounded hover:bg-gray-50"
+            >previous</a
+          >
+          {% endif %}
 
-      <!-- Announcement 2 -->
-      <article
-        class="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 last:border-0"
-      >
-        <div class="md:w-1/4 shrink-0">
-          <div
-            class="w-full h-32 bg-blue-100 dark:bg-blue-900/30 rounded flex items-center justify-center text-blue-600"
-          >
-            <span class="material-icons text-5xl">groups</span>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center gap-3 mb-2">
-            <span
-              class="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded uppercase"
-              >News</span
-            >
-            <span class="text-sm text-gray-500">November 01, 2024</span>
-          </div>
-          <h2
-            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-primary transition"
-          >
-            <a href="#">Welcome to New Editorial Board Members</a>
-          </h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-            We are pleased to welcome Dr. A. Johnson (Imperial College, UK) and
-            Prof. B. Okafor (Unilag, Nigeria) to our distinguished Editorial
-            Board. Their expertise in Reservoir Engineering and Energy Policy
-            respectively will be invaluable to the journal.
-          </p>
-          <a
-            href="#"
-            class="inline-flex items-center text-primary font-semibold hover:underline"
-          >
-            Read Full Announcement
-            <span class="material-icons text-sm ml-1">arrow_forward</span>
-          </a>
-        </div>
-      </article>
+          <span class="current px-3 py-1">
+            Page {{ announcements.number }} of {{
+            announcements.paginator.num_pages }}.
+          </span>
 
-      <!-- Announcement 3 -->
-      <article
-        class="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 last:border-0"
-      >
-        <div class="md:w-1/4 shrink-0">
-          <div
-            class="w-full h-32 bg-amber-100 dark:bg-amber-900/30 rounded flex items-center justify-center text-amber-600"
-          >
-            <span class="material-icons text-5xl">build</span>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center gap-3 mb-2">
-            <span
-              class="px-2 py-1 bg-amber-600 text-white text-xs font-bold rounded uppercase"
-              >Maintenance</span
-            >
-            <span class="text-sm text-gray-500">October 20, 2024</span>
-          </div>
-          <h2
-            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-primary transition"
-          >
-            <a href="#">System Maintenance Scheduled</a>
-          </h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-            The journal submission portal will be down for scheduled maintenance
-            on Oct 25, 2024, from 2:00 PM to 6:00 PM WAT to improve system
-            performance. We apologize for any inconvenience.
-          </p>
+          {% if announcements.has_next %}
           <a
-            href="#"
-            class="inline-flex items-center text-primary font-semibold hover:underline"
+            href="?page={{ announcements.next_page_number }}"
+            class="px-3 py-1 bg-white border rounded hover:bg-gray-50"
+            >next</a
           >
-            Read Full Announcement
-            <span class="material-icons text-sm ml-1">arrow_forward</span>
-          </a>
-        </div>
-      </article>
+          <a
+            href="?page={{ announcements.paginator.num_pages }}"
+            class="px-3 py-1 bg-white border rounded hover:bg-gray-50"
+            >last &raquo;</a
+          >
+          {% endif %}
+        </span>
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>

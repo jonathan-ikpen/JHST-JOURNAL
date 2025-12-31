@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Manuscript, Review, Volume, Issue, Article
+from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -18,6 +18,7 @@ admin.site.register(Review)
 admin.site.register(Volume)
 admin.site.register(Issue)
 admin.site.register(Article)
+admin.site.register(Announcement)
 
 # Admin Site Customization
 admin.site.site_header = "JHST Administration"

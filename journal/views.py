@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm
-from .models import Manuscript, Review, User, Issue, Article, Volume, Notification
+from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement
 
 def _send_notification_email(subject, message, recipient_list):
     """
@@ -533,4 +533,23 @@ def mark_notification_read(request, notification_id):
     notification.is_read = True
     notification.save()
     return redirect(request.META.get('HTTP_REFERER', 'dashboard'))
+
+def announcements(request):
+    announcements_list = Announcement.objects.filter(is_active=True).order_by('-date_created')
+    
+    # Pagination
+    paginator = Paginator(announcements_list, 5) # 5 per page
+    page = request.GET.get('page')
+    try:
+        announcements = paginator.page(page)
+    except PageNotAnInteger:
+        announcements = paginator.page(1)
+    except EmptyPage:
+        announcements = paginator.page(paginator.num_pages)
+        
+    return render(request, 'journal/announcements.html', {'announcements': announcements})
+
+def announcement_detail(request, announcement_id):
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+    return render(request, 'journal/announcement_detail.html', {'announcement': announcement})
 

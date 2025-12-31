@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% block content %}
+<section class="max-w-4xl mx-auto space-y-8">
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded shadow-sm">
+    <div class="mb-8 border-b border-border-light dark:border-border-dark pb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span
+          class="px-3 py-1 text-xs font-bold rounded uppercase {{ announcement.badge_class }}"
+        >
+          {{ announcement.get_category_display }}
+        </span>
+        <span class="text-sm text-gray-500"
+          >{{ announcement.date_created|date:"F d, Y" }}</span
+        >
+        <a
+          href="{% url 'announcements' %}"
+          class="ml-auto text-sm text-primary hover:underline flex items-center"
+        >
+          <span class="material-icons text-sm mr-1">arrow_back</span>
+          Back to Announcements
+        </a>
+      </div>
+      <h1
+        class="text-3xl md:text-4xl font-display font-bold text-gray-900 dark:text-gray-100"
+      >
+        {{ announcement.title }}
+      </h1>
+    </div>
+
+    {% if announcement.image %}
+    <div class="mb-8 rounded-lg overflow-hidden shadow-md">
+      <img
+        src="{{ announcement.image.url }}"
+        alt="{{ announcement.title }}"
+        class="w-full h-auto object-cover max-h-[500px]"
+      />
+    </div>
+    {% endif %}
+
+    <div
+      class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300"
+    >
+      {{ announcement.content|safe|linebreaks }}
+    </div>
+
+    {% if not announcement.image %}
+    <div
+      class="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800 flex items-center justify-center text-gray-400"
+    >
+      <div class="flex flex-col items-center">
+        <span class="material-icons text-6xl opacity-20"
+          >{{ announcement.icon_name }}</span
+        >
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
