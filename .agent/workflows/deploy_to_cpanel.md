@@ -62,7 +62,10 @@ In `journal_system/settings.py`, you will need to update a few settings for the 
 
 cPanel uses Phusion Passenger to serve Python apps. You need to create a special file named `passenger_wsgi.py` in your **Application Root**.
 
-Create `passenger_wsgi.py` with the following content:
+> [!IMPORTANT] > **cPanel might automatically create a default `passenger_wsgi.py` file.**
+> You must **DELETE** all its content and **REPLACE** it with the code below. The default code will not work for your Django project.
+
+Create (or overwrite) `passenger_wsgi.py` with the following content:
 
 ```python
 import os
