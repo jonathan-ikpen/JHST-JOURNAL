@@ -418,15 +418,57 @@
             <span class="hidden sm:inline">View Site</span>
           </a>
 
-          <div class="relative notification-bell cursor-pointer">
+          <div
+            class="relative notification-bell cursor-pointer"
+            id="notification-bell"
+          >
             <span
               class="material-icons text-slate-500 hover:text-primary transition-colors"
               >notifications_none</span
             >
-            <!-- Notification Dot (Example) -->
+            {% if notifications %}
             <span
-              class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900 hidden"
+              class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"
             ></span>
+            {% endif %}
+
+            <!-- Notification Dropdown -->
+            <div
+              id="notification-dropdown"
+              class="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-card-dark rounded-lg shadow-xl border border-slate-100 dark:border-slate-700 hidden z-50 overflow-hidden transform transition-all duration-200 origin-top-right"
+            >
+              <div
+                class="px-4 py-3 border-b border-border-light dark:border-border-dark flex justify-between items-center"
+              >
+                <span class="font-semibold text-sm">Notifications</span>
+                {% if notifications %}
+                <span class="text-xs text-slate-500"
+                  >{{ notifications|length }} new</span
+                >
+                {% endif %}
+              </div>
+              <div class="max-h-64 overflow-y-auto">
+                {% if notifications %} {% for notification in notifications %}
+                <a
+                  href="{% url 'mark_notification_read' notification.id %}{% if notification.link %}?next={{ notification.link }}{% endif %}"
+                  class="block px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-50 dark:border-slate-800 last:border-0"
+                >
+                  <p
+                    class="text-sm text-slate-800 dark:text-gray-200 mb-1 leading-snug"
+                  >
+                    {{ notification.message }}
+                  </p>
+                  <p class="text-xs text-slate-400">
+                    {{ notification.created_at|timesince }} ago
+                  </p>
+                </a>
+                {% endfor %} {% else %}
+                <div class="px-4 py-6 text-center text-slate-500 text-sm">
+                  No new notifications
+                </div>
+                {% endif %}
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -507,6 +549,25 @@
 
       // Initialize
       initSidebar();
+
+      // Notification Dropdown Logic
+      const notificationBell = document.getElementById("notification-bell");
+      const notificationDropdown = document.getElementById(
+        "notification-dropdown"
+      );
+
+      if (notificationBell && notificationDropdown) {
+        notificationBell.addEventListener("click", (e) => {
+          e.stopPropagation();
+          notificationDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!notificationBell.contains(e.target)) {
+            notificationDropdown.classList.add("hidden");
+          }
+        });
+      }
 
       // Preloader & Toast Logic (Retained)
       window.addEventListener("load", () => {

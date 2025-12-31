@@ -24,6 +24,7 @@ urlpatterns = [
     path('issues/<int:issue_id>/', views.issue_detail, name='issue_detail'),
     path('article/<int:article_id>/', views.article_detail, name='article_detail'),
     path('search/', views.search, name='search'),
+    path('notifications/read/<int:notification_id>/', views.mark_notification_read, name='mark_notification_read'),
 
     # Static Pages
     path('about/', TemplateView.as_view(template_name='journal/about.html'), name='about'),

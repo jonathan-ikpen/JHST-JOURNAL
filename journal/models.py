@@ -17,6 +17,7 @@ class Manuscript(models.Model):
         ('under_review', 'Under Review'),
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected'),
+        ('published', 'Published'),
     ]
 
     title = models.CharField(max_length=255)
@@ -39,7 +40,7 @@ class Manuscript(models.Model):
             return 'w-1/3'
         elif self.status == 'under_review':
             return 'w-2/3'
-        elif self.status in ['accepted', 'rejected']:
+        elif self.status in ['accepted', 'rejected', 'published']:
             return 'w-full'
         return 'w-0'
 
@@ -91,3 +92,16 @@ class Article(models.Model):
 
     def __str__(self):
         return self.manuscript.title
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    link = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Notification for {self.recipient.username}: {self.message}"

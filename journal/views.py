@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm
-from .models import Manuscript, Review, User, Issue, Article, Volume
+from .models import Manuscript, Review, User, Issue, Article, Volume, Notification
 
 def _send_notification_email(subject, message, recipient_list):
     """
@@ -58,7 +58,8 @@ def dashboard(request):
         return render(request, 'dashboard/editor_dashboard.html', {
             'submissions': submissions,
             'my_submissions': my_submissions,
-            'unassigned_count': unassigned_count
+            'unassigned_count': unassigned_count,
+            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
     elif request.user.is_reviewer:
         # Get manuscripts through the Review model
@@ -67,12 +68,19 @@ def dashboard(request):
         return render(request, 'dashboard/reviewer_dashboard.html', {
             'assigned_manuscripts': assigned_manuscripts, 
             'assigned_reviews': assigned_reviews,
-            'my_submissions': my_submissions
+            'my_submissions': my_submissions,
+            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
     elif request.user.is_researcher:
-        return render(request, 'dashboard/researcher_dashboard.html', {'submissions': my_submissions})
+        return render(request, 'dashboard/researcher_dashboard.html', {
+            'submissions': my_submissions,
+            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
+        })
     else:
-        return render(request, 'dashboard/dashboard.html', {'my_submissions': my_submissions})
+        return render(request, 'dashboard/dashboard.html', {
+            'my_submissions': my_submissions,
+            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
+        })
 
 @login_required
 def my_submissions(request):
@@ -94,6 +102,21 @@ def submit_manuscript(request):
                 f"Dear {manuscript.author.get_full_name()},\n\nYour manuscript '{manuscript.title}' has been successfully submitted to JHST. You can track its status in your dashboard.\n\nBest regards,\nJHST Editorial Team",
                 [manuscript.author.email]
             )
+            
+            # In-app notification for Author
+            Notification.objects.create(
+                recipient=manuscript.author,
+                message=f"Submission Received: Your manuscript '{manuscript.title}' has been successfully submitted.",
+                link='/dashboard/my-submissions/'
+            )
+            
+            # Notify Editors
+            for editor in User.objects.filter(is_editor=True):
+                 Notification.objects.create(
+                    recipient=editor,
+                    message=f"New Submission: '{manuscript.title}' by {manuscript.author.get_full_name()}.",
+                    link='/dashboard/'
+                )
             
             messages.success(request, "Your manuscript has been submitted successfully!")
             return redirect('dashboard')
@@ -135,6 +158,13 @@ def assign_reviewer(request, manuscript_id):
                     f"Review Invitation: {manuscript.title}",
                     f"Dear {reviewer.get_full_name()},\n\nYou have been assigned to review the manuscript: '{manuscript.title}'.\nPlease log in to the JHST dashboard to accept and complete this review by {due_date.strftime('%Y-%m-%d')}.\n\nBest regards,\nJHST Editorial Team",
                     [reviewer.email]
+                )
+
+                # In-app notification for Reviewer
+                Notification.objects.create(
+                    recipient=reviewer,
+                    message=f"New Review Assignment: You have been assigned to review '{manuscript.title}'. Due in 14 days.",
+                    link='/dashboard/'
                 )
                 
             # Update manuscript status if it was just submitted
@@ -189,6 +219,13 @@ def make_decision(request, manuscript_id):
                 f"Dear {manuscript.author.get_full_name()},\n\nA decision has been reached regarding your manuscript '{manuscript.title}': {decision.upper()}.\nPlease log in to your dashboard to view details and reviews.\n\nBest regards,\nJHST Editorial Team",
                 [manuscript.author.email]
             )
+
+            # In-app notification for Author
+            Notification.objects.create(
+                recipient=manuscript.author,
+                message=f"Decision Reached: Your manuscript '{manuscript.title}' has been {decision.upper()}.",
+                link='/dashboard/my-submissions/'
+            )
             
             messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
         return redirect('dashboard')
@@ -215,7 +252,25 @@ def publish_article(request, manuscript_id):
             issue=issue,
             page_start=page_start if page_start else None,
             page_end=page_end if page_end else None,
-            doi=doi
+            doi=doi if doi else None
+        )
+
+        # Update manuscript status
+        manuscript.status = 'published'
+        manuscript.save()
+
+        # Notify Author
+        _send_notification_email(
+            f"Manuscript Published: {manuscript.title}",
+            f"Dear {manuscript.author.get_full_name()},\n\nWe are pleased to inform you that your manuscript '{manuscript.title}' has been published in {issue}.\nYou can view it here: {request.build_absolute_uri(f'/article/{Article.objects.get(manuscript=manuscript).id}/')}\n\nCongratulations!\nJHST Editorial Team",
+            [manuscript.author.email]
+        )
+
+        # In-app notification for Author
+        Notification.objects.create(
+            recipient=manuscript.author,
+            message=f"Published: Your manuscript '{manuscript.title}' is now published in {issue}.",
+            link=f"/article/{Article.objects.get(manuscript=manuscript).id}/"
         )
         messages.success(request, f"Article published to {issue} successfully.")
         return redirect('dashboard')
@@ -300,4 +355,11 @@ def archives(request):
 def current_issue(request):
     issue = Issue.objects.order_by('-publication_date').first()
     return render(request, 'journal/current_issue.html', {'issue': issue})
+
+@login_required
+def mark_notification_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id, recipient=request.user)
+    notification.is_read = True
+    notification.save()
+    return redirect(request.META.get('HTTP_REFERER', 'dashboard'))
 
