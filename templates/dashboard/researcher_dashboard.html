@@ -1,119 +1,198 @@
 ﻿{% extends 'dashboard/dashboard_base.html' %}
-<!-- researcher dashboard -->
-{% block dashboard_title %}Researcher Dashboard{% endblock %}
-
-<!-- researcher dashboard content -->
-{% block content %}
-<div class="flex justify-between items-center mb-6">
-  <div>
-    <h2 class="text-2xl font-bold font-display text-gray-800 dark:text-white">
-      Your Manuscripts
-    </h2>
-    <p class="text-gray-500 text-sm">Track the status of your submissions.</p>
-  </div>
-  <a
-    href="{% url 'submit_manuscript' %}"
-    class="flex items-center bg-primary text-white font-bold py-2.5 px-5 rounded hover:bg-opacity-90 transition hover:"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="h-5 w-5 mr-2"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M12 4v16m8-8H4"
-      />
-    </svg>
-    New Submission
-  </a>
-</div>
-
-{% if submissions %}
-<div class="space-y-6">
-  {% for manuscript in submissions %}
+<!-- prettier-ignore -->
+{% block dashboard_title %}Researcher Dashboard{% endblock %} {% block content %}
+<div class="">
+  <!-- Welcome Header -->
   <div
-    class="bg-white dark:bg-card-dark rounded-2xl shadow-card overflow-hidden border border-slate-100 dark:border-slate-800/50 hover:shadow-lg transition-shadow duration-300"
+    class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4"
   >
-    <div class="p-6">
-      <div class="flex flex-col md:flex-row justify-between mb-6 gap-4">
-        <div>
-          <h3
-            class="text-lg font-bold font-display text-slate-800 dark:text-white"
-          >
-            {{ manuscript.title }}
-          </h3>
-          <p class="text-sm text-slate-500 mt-1 font-medium">
-            Submitted on {{ manuscript.submitted_date|date:"F d, Y" }}
-          </p>
-        </div>
-        <div class="flex-shrink-0">
-          <span
-            class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border {% if manuscript.status == 'accepted' %}bg-green-50 text-green-600 border-green-200 {% elif manuscript.status == 'rejected' %}bg-red-50 text-red-600 border-red-200 {% elif manuscript.status == 'under_review' %}bg-amber-50 text-amber-600 border-amber-200 {% else %}bg-blue-50 text-blue-600 border-blue-200{% endif %}"
-          >
-            {{ manuscript.get_status_display }}
-          </span>
-        </div>
-      </div>
+    <div>
+      <h2
+        class="text-2xl font-bold font-display text-slate-800 dark:text-white"
+      >
+        Overview
+      </h2>
+      <p class="text-slate-500 text-sm">
+        Track your research impact and submission status.
+      </p>
+    </div>
+    <a
+      href="{% url 'submit_manuscript' %}"
+      class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-bold rounded hover:bg-primary-dark transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+    >
+      <span class="material-icons text-sm mr-2">add</span> Submit New Manuscript
+    </a>
+  </div>
 
-      <!-- Progress Tracker -->
-      <div class="relative mt-4">
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <!-- Total Submissions -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 mr-4"
+      >
+        <span class="material-icons text-2xl">library_books</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          Total Submissions
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ total_submissions }}
+        </p>
+      </div>
+    </div>
+
+    <!-- In Review -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500 mr-4"
+      >
+        <span class="material-icons text-2xl">hourglass_empty</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          In Review
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ in_review_count }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Approved -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 mr-4"
+      >
+        <span class="material-icons text-2xl">check_circle</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          Approved
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ approved_count }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Published -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500 mr-4"
+      >
+        <span class="material-icons text-2xl">auto_stories</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          Published
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ published_count }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Recent Submissions Left Col -->
+    <div class="lg:col-span-2">
+      <div
+        class="bg-white dark:bg-card-dark rounded shadow-card border border-slate-100 dark:border-slate-800/50 overflow-hidden"
+      >
         <div
-          class="overflow-hidden h-2.5 mb-2 text-xs flex rounded-full bg-slate-100 dark:bg-slate-700"
+          class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/20"
         >
-          <div
-            class="flex flex-col text-center whitespace-nowrap text-white justify-center {{ manuscript.progress_width_class }} {{ manuscript.progress_color_class }} shadow-sm transition-all duration-1000 ease-in-out"
-          ></div>
+          <h3 class="font-bold text-slate-800 dark:text-white">
+            Recent Activity
+          </h3>
+          <a
+            href="{% url 'my_submissions' %}"
+            class="text-sm text-primary hover:underline font-medium"
+            >View All</a
+          >
         </div>
-        <div
-          class="flex justify-between text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest"
-        >
+
+        {% if submissions %}
+        <div class="divide-y divide-slate-100 dark:divide-slate-800">
+          {% for ms in submissions %}
           <div
-            class="{% if manuscript.status != '' %}text-primary dark:text-green-400{% endif %} transition-colors"
+            class="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
           >
-            Submitted
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-slate-800 dark:text-white mb-1">
+                  <a
+                    href="{% url 'my_submission_detail' ms.id %}"
+                    class="hover:text-primary"
+                    >{{ ms.title }}</a
+                  >
+                </h4>
+                <div class="flex items-center text-xs text-slate-500 gap-3">
+                  <span>ID: #{{ ms.id }}</span>
+                  <span>•</span>
+                  <span>{{ ms.submitted_date|date:"M d, Y" }}</span>
+                </div>
+              </div>
+              <span
+                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border {% if ms.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif ms.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif ms.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif ms.status == 'published' %}bg-blue-50 text-blue-700 border-blue-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
+              >
+                {{ ms.get_status_display }}
+              </span>
+            </div>
           </div>
-          <div
-            class="{% if manuscript.status == 'under_review' or manuscript.status == 'accepted' or manuscript.status == 'rejected' %}text-primary dark:text-green-400{% endif %} transition-colors"
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-12 text-center text-slate-500">
+          <p class="mb-4">No submissions yet.</p>
+          <a
+            href="{% url 'submit_manuscript' %}"
+            class="text-primary hover:underline"
+            >Submit your first manuscript</a
           >
-            Under Review
-          </div>
-          <div
-            class="{% if manuscript.status == 'accepted' %}text-green-600 dark:text-green-400{% elif manuscript.status == 'rejected' %}text-red-600 dark:text-red-400{% endif %} transition-colors"
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Sidebar Right Col -->
+    <div class="space-y-6">
+      <!-- Quick Links / Info -->
+      <div
+        class="bg-slate-50 text-slate-800 rounded shadow-sm border border-slate-200 p-6 relative overflow-hidden"
+      >
+        <h3 class="font-bold text-lg mb-2 relative z-10">Author Resources</h3>
+        <p class="text-slate-600 text-sm mb-6 relative z-10 leading-relaxed">
+          Need help with formatting or submission guidelines? Check out our
+          resources before submitting.
+        </p>
+        <div class="space-y-2 relative z-10">
+          <a
+            href="{% url 'author_guidelines' %}"
+            class="block bg-white hover:bg-slate-100 text-slate-700 py-2 px-4 rounded text-sm font-bold transition text-center shadow-sm border border-slate-200"
           >
-            Decision
-          </div>
+            Author Guidelines
+          </a>
+          <a
+            href="{% url 'publication_fees' %}"
+            class="block bg-white hover:bg-slate-100 text-slate-700 py-2 px-4 rounded text-sm font-bold transition text-center shadow-sm border border-slate-200"
+          >
+            Publication Fees
+          </a>
         </div>
       </div>
     </div>
   </div>
-  {% endfor %}
 </div>
-{% else %}
-<div
-  class="bg-white dark:bg-card-dark rounded-2xl shadow-card p-12 text-center border border-slate-100 dark:border-slate-800/50"
->
-  <div
-    class="mx-auto h-20 w-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-sm"
-  >
-    <span class="material-icons text-4xl text-slate-300">note_add</span>
-  </div>
-  <h3 class="text-xl font-bold font-display text-slate-800 dark:text-white">
-    No Manuscripts Yet
-  </h3>
-  <p class="text-slate-500 mt-2 mb-8 max-w-sm mx-auto">
-    Start your journey by submitting your first research paper to JHST.
-  </p>
-  <a
-    href="{% url 'submit_manuscript' %}"
-    class="inline-flex items-center bg-primary text-white font-bold py-3 px-8 rounded hover:bg-opacity-90 transition shadow-md hover:shadow-lg"
-  >
-    <span class="material-icons text-sm mr-2">upload_file</span>
-    Submit Manuscript
-  </a>
-</div>
-{% endif %} {% endblock %}
+{% endblock %}

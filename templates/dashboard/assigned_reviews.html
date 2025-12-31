@@ -1,0 +1,138 @@
+{% extends 'dashboard/dashboard_base.html' %}
+<!-- Assigned Reviews Page -->
+{% block dashboard_title %}Assigned Reviews{% endblock %} {% block content %}
+<div class="mb-8 flex items-center justify-between">
+  <div>
+    <a
+      href="{% url 'dashboard' %}"
+      class="inline-flex items-center text-sm text-slate-500 hover:text-primary mb-2 transition-colors"
+    >
+      <span class="material-icons text-base mr-1">arrow_back</span> Back to
+      Dashboard
+    </a>
+    <h2 class="text-2xl font-bold font-display text-slate-800 dark:text-white">
+      My Assignments
+    </h2>
+    <p class="text-slate-500 text-sm">
+      Manage your pending and completed manuscript reviews.
+    </p>
+  </div>
+</div>
+
+{% if assigned_reviews %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for review in assigned_reviews %}
+  <div
+    class="bg-white dark:bg-card-dark rounded shadow-card hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full border border-slate-100 dark:border-slate-800/50 overflow-hidden"
+  >
+    <!-- Card Header -->
+    <div class="px-6 pt-6 pb-2">
+      <div class="flex justify-between items-start mb-4">
+        <!-- ID Pill -->
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+        >
+          #{{ review.manuscript.id }}
+        </span>
+
+        <!-- Status Badge -->
+        {% if review.date_completed %} {% if not review.manuscript.article %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+        >
+          <span class="material-icons text-[14px] mr-1">check_circle</span>
+          Submitted
+        </span>
+        {% else %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+        >
+          <span class="material-icons text-[14px] mr-1">verified</span>
+          Published
+        </span>
+        {% endif %} {% else %}
+        <span
+          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+        >
+          <span class="material-icons text-[14px] mr-1">schedule</span> Pending
+        </span>
+        {% endif %}
+      </div>
+
+      <!-- Title -->
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white leading-tight mb-2"
+      >
+        <a
+          href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
+          class="hover:text-primary transition-colors"
+        >
+          {{ review.manuscript.title }}
+        </a>
+      </h3>
+
+      <!-- Due Date -->
+      {% if review.due_date %}
+      <p class="text-xs font-medium text-slate-400 mb-3 flex items-center">
+        <span class="material-icons text-[14px] mr-1">event_available</span>
+        Due:
+        <span
+          class="{% if review.is_overdue %}text-red-500 font-bold{% else %}text-slate-500 ml-1{% endif %}"
+          >{{ review.due_date|date:"M d, Y" }}</span
+        >
+      </p>
+      {% endif %}
+
+      <p
+        class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed"
+      >
+        {{ review.manuscript.abstract }}
+      </p>
+    </div>
+
+    <!-- Action Area (Footer) -->
+    <div
+      class="mt-auto p-4 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800"
+    >
+      {% if review.date_completed %} {% if not review.manuscript.article %}
+      <a
+        href="{% url 'submit_review' review.manuscript.id %}"
+        class="block w-full py-2 px-4 rounded border border-slate-300 bg-white text-slate-600 font-bold text-sm text-center hover:bg-slate-50 hover:text-slate-800 transition shadow-sm"
+      >
+        Edit Review
+      </a>
+      {% else %}
+      <button
+        disabled
+        class="block w-full py-2 px-4 rounded bg-slate-100 text-slate-400 font-bold text-sm text-center cursor-not-allowed"
+      >
+        Locked
+      </button>
+      {% endif %} {% else %}
+      <a
+        href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
+        class="block w-full py-2.5 px-4 rounded bg-primary text-white font-bold text-sm text-center hover:bg-primary-dark transition shadow-md hover:shadow-lg flex items-center justify-center"
+      >
+        Review Manuscript
+        <span class="material-icons text-sm ml-1">arrow_forward</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div
+  class="bg-white dark:bg-card-dark rounded border border-slate-100 dark:border-slate-800/50 p-12 text-center"
+>
+  <div
+    class="mx-auto h-20 w-20 bg-green-50 rounded-full flex items-center justify-center mb-4"
+  >
+    <span class="material-icons text-4xl text-green-500">check_circle</span>
+  </div>
+  <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200">
+    All Caught Up!
+  </h3>
+  <p class="text-slate-500 mt-2">You currently have no pending reviews.</p>
+</div>
+{% endif %} {% endblock %}

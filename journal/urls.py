@@ -14,6 +14,7 @@ urlpatterns = [
     path('dashboard/my-submissions/', views.my_submissions, name='my_submissions'),
     path('dashboard/my-submissions/<int:manuscript_id>/', views.my_submission_detail, name='my_submission_detail'),
     path('dashboard/review-assignment/<int:manuscript_id>/', views.reviewer_manuscript_detail, name='reviewer_manuscript_detail'),
+    path('dashboard/assigned-reviews/', views.assigned_reviews, name='assigned_reviews'),
     path('profile/', views.profile, name='profile'),
     path('submit/', views.submit_manuscript, name='submit_manuscript'),
     path('assign_reviewer/<int:manuscript_id>/', views.assign_reviewer, name='assign_reviewer'),

@@ -1,39 +1,36 @@
 ﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Editor
 Dashboard{% endblock %} {% block content %}
-<!-- Stats Overview -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
   <div
-    class="bg-white dark:bg-card-dark p-6 rounded shadow-card flex flex-col hover:shadow-lg transition-shadow duration-300"
+    class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
   >
-    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest"
-      >Total Submissions</span
+    <div
+      class="h-12 w-12 rounded-full bg-green-50 text-primary flex items-center justify-center mr-4"
     >
-    <div class="flex items-center justify-between mt-4">
-      <span class="text-4xl font-display font-bold text-primary dark:text-white"
-        >{{ total_count }}</span
-      >
-      <div
-        class="h-10 w-10 rounded-full bg-green-50 text-primary flex items-center justify-center"
-      >
-        <span class="material-icons">description</span>
-      </div>
+      <span class="material-icons text-2xl">library_books</span>
+    </div>
+    <div>
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+        Total Submissions
+      </p>
+      <p class="text-2xl font-bold text-primary dark:text-white">
+        {{ total_count }}
+      </p>
     </div>
   </div>
   <div
-    class="bg-white dark:bg-card-dark p-6 rounded shadow-card flex flex-col hover:shadow-lg transition-shadow duration-300"
+    class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
   >
-    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest"
-      >Unassigned</span
+    <div
+      class="h-12 w-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mr-4"
     >
-    <div class="flex items-center justify-between mt-4">
-      <span class="text-4xl font-display font-bold text-amber-500 mt-2"
-        >{{ unassigned_count }}</span
-      >
-      <div
-        class="h-10 w-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center"
-      >
-        <span class="material-icons">assignment_late</span>
-      </div>
+      <span class="material-icons text-2xl">assignment_late</span>
+    </div>
+    <div>
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+        Unassigned
+      </p>
+      <p class="text-2xl font-bold text-amber-500">{{ unassigned_count }}</p>
     </div>
   </div>
 </div>

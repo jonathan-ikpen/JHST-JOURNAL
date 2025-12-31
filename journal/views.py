@@ -103,25 +103,52 @@ def dashboard(request):
             'current_search': search_query
         })
     elif request.user.is_reviewer:
-        # Get manuscripts through the Review model
-        assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('date_completed', 'date_assigned')
-        assigned_manuscripts = [review.manuscript for review in assigned_reviews]
+        # Check if user is a reviewer
+        assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('-date_assigned')
+        
+        # Calculate stats
+        total_reviews = assigned_reviews.count()
+        pending_reviews = assigned_reviews.filter(date_completed__isnull=True).count()
+        completed_reviews = assigned_reviews.filter(date_completed__isnull=False).count()
+        
         return render(request, 'dashboard/reviewer_dashboard.html', {
-            'assigned_manuscripts': assigned_manuscripts, 
-            'assigned_reviews': assigned_reviews,
-            'my_submissions': my_submissions,
+            'assigned_reviews': assigned_reviews[:5], # Recent activity
+            'total_reviews': total_reviews,
+            'pending_reviews': pending_reviews,
+            'completed_reviews': completed_reviews,
             'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
     elif request.user.is_researcher:
+        # Calculate stats
+        total_submissions = my_submissions.count()
+        in_review_count = my_submissions.filter(status__in=['submitted', 'under_review']).count()
+        approved_count = my_submissions.filter(status='accepted').count()
+        published_count = my_submissions.filter(status='published').count()
+        
         return render(request, 'dashboard/researcher_dashboard.html', {
-            'submissions': my_submissions,
+            'submissions': my_submissions[:5], # Only show recent 5
+            'total_submissions': total_submissions,
+            'in_review_count': in_review_count,
+            'approved_count': approved_count,
+            'published_count': published_count,
             'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
+
     else:
         return render(request, 'dashboard/dashboard.html', {
             'my_submissions': my_submissions,
             'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
+
+@login_required
+def assigned_reviews(request):
+    if not request.user.is_reviewer:
+        return redirect('dashboard')
+        
+    assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('date_completed', 'date_assigned')
+    return render(request, 'dashboard/assigned_reviews.html', {
+        'assigned_reviews': assigned_reviews
+    })
 
 @login_required
 def my_submissions(request):

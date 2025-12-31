@@ -1,142 +1,178 @@
 ﻿{% extends 'dashboard/dashboard_base.html' %}
-<!-- Reviewer Dashboard -->
+<!-- prettier-ignore -->
 {% block dashboard_title %}Reviewer Dashboard{% endblock %} {% block content %}
-<div class="mb-8">
-  <h2 class="text-2xl font-bold font-display text-primary dark:text-white">
-    Assignments
-  </h2>
-  <p class="text-gray-500 text-sm">
-    Manage your pending and completed reviews.
-  </p>
-</div>
-
-{% if assigned_reviews %}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {% for review in assigned_reviews %}
+<div class="">
+  <!-- Welcome Header -->
   <div
-    class="bg-white dark:bg-card-dark rounded shadow-card hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full border border-slate-100 dark:border-slate-800/50 overflow-hidden"
+    class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4"
   >
-    <!-- Card Header -->
-    <div class="px-6 pt-6 pb-2">
-      <div class="flex justify-between items-start mb-4">
-        <!-- ID Pill -->
-        <span
-          class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
-        >
-          #{{ review.manuscript.id }}
-        </span>
+    <div>
+      <h2
+        class="text-2xl font-bold font-display text-slate-800 dark:text-white"
+      >
+        Overview
+      </h2>
+      <p class="text-slate-500 text-sm">
+        Track your review contributions and pending assignments.
+      </p>
+    </div>
+    <a
+      href="{% url 'assigned_reviews' %}"
+      class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-bold rounded hover:bg-primary-dark transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+    >
+      <span class="material-icons text-sm mr-2">list_alt</span> View Assignments
+    </a>
+  </div>
 
-        <!-- Status Badge -->
-        {% if review.date_completed %} {% if not review.manuscript.article %}
-        <span
-          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+    <!-- Total Reviews -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 mr-4"
+      >
+        <span class="material-icons text-2xl">rate_review</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          Total Reviews Assigned
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ total_reviews }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500 mr-4"
+      >
+        <span class="material-icons text-2xl">hourglass_empty</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          Pending Review
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ pending_reviews }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Completed -->
+    <div
+      class="bg-white dark:bg-card-dark p-6 rounded shadow-card border border-slate-100 dark:border-slate-800/50 flex items-center"
+    >
+      <div
+        class="h-12 w-12 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500 mr-4"
+      >
+        <span class="material-icons text-2xl">check_circle</span>
+      </div>
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          Reviews Completed
+        </p>
+        <p class="text-2xl font-bold text-slate-800 dark:text-white">
+          {{ completed_reviews }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Recent Submissions Left Col -->
+    <div class="lg:col-span-2">
+      <div
+        class="bg-white dark:bg-card-dark rounded shadow-card border border-slate-100 dark:border-slate-800/50 overflow-hidden"
+      >
+        <div
+          class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/20"
         >
-          <span class="material-icons text-[14px] mr-1">check_circle</span>
-          Submitted
-        </span>
+          <h3 class="font-bold text-slate-800 dark:text-white">
+            Recent Activity
+          </h3>
+          <a
+            href="{% url 'assigned_reviews' %}"
+            class="text-sm text-primary hover:underline font-medium"
+            >View All</a
+          >
+        </div>
+
+        {% if assigned_reviews %}
+        <div class="divide-y divide-slate-100 dark:divide-slate-800">
+          {% for review in assigned_reviews %}
+          <div
+            class="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-slate-800 dark:text-white mb-1">
+                  <a
+                    href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
+                    class="hover:text-primary"
+                    >{{ review.manuscript.title }}</a
+                  >
+                </h4>
+                <div class="flex items-center text-xs text-slate-500 gap-3">
+                  <span>ID: #{{ review.manuscript.id }}</span>
+                  <span>•</span>
+                  <span
+                    >Assigned: {{ review.date_assigned|date:"M d, Y" }}</span
+                  >
+                </div>
+              </div>
+
+              {% if review.date_completed %}
+              <span
+                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-green-50 text-green-700 border-green-200"
+              >
+                Submitted
+              </span>
+              {% else %}
+              <span
+                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200"
+              >
+                Pending
+              </span>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
         {% else %}
-        <span
-          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-        >
-          <span class="material-icons text-[14px] mr-1">verified</span>
-          Published
-        </span>
-        {% endif %} {% else %}
-        <span
-          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-        >
-          <span class="material-icons text-[14px] mr-1">schedule</span> Pending
-        </span>
+        <div class="p-12 text-center text-slate-500">
+          <p class="mb-4">No assignments yet.</p>
+        </div>
         {% endif %}
       </div>
-
-      <!-- Title -->
-      <h3
-        class="text-lg font-bold font-display text-slate-800 dark:text-white leading-tight mb-2"
-      >
-        <a
-          href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
-          class="hover:text-primary transition-colors"
-        >
-          {{ review.manuscript.title }}
-        </a>
-      </h3>
-
-      <!-- Due Date -->
-      {% if review.due_date %}
-      <p class="text-xs font-medium text-slate-400 mb-3 flex items-center">
-        <span class="material-icons text-[14px] mr-1">event_available</span>
-        Due:
-        <span
-          class="{% if review.is_overdue %}text-red-500 font-bold{% else %}text-slate-500 ml-1{% endif %}"
-          >{{ review.due_date|date:"M d, Y" }}</span
-        >
-      </p>
-      {% endif %}
-
-      <p
-        class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed"
-      >
-        {{ review.manuscript.abstract }}
-      </p>
     </div>
 
-    <!-- Action Area (Footer) -->
-    <div
-      class="mt-auto p-4 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800"
-    >
-      {% if review.date_completed %} {% if not review.manuscript.article %}
-      <a
-        href="{% url 'submit_review' review.manuscript.id %}"
-        class="block w-full py-2 px-4 rounded border border-slate-300 bg-white text-slate-600 font-bold text-sm text-center hover:bg-slate-50 hover:text-slate-800 transition shadow-sm"
+    <!-- Sidebar Right Col -->
+    <div class="space-y-6">
+      <!-- Quick Links / Info -->
+      <div
+        class="bg-slate-50 text-slate-800 rounded shadow-sm border border-slate-200 p-6 relative overflow-hidden"
       >
-        Edit Review
-      </a>
-      {% else %}
-      <button
-        disabled
-        class="block w-full py-2 px-4 rounded bg-slate-100 text-slate-400 font-bold text-sm text-center cursor-not-allowed"
-      >
-        Locked
-      </button>
-      {% endif %} {% else %}
-      <a
-        href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
-        class="block w-full py-2.5 px-4 rounded bg-primary text-white font-bold text-sm text-center hover:bg-primary-dark transition shadow-md hover:shadow-lg flex items-center justify-center"
-      >
-        Review Manuscript
-        <span class="material-icons text-sm ml-1">arrow_forward</span>
-      </a>
-      {% endif %}
+        <h3 class="font-bold text-lg mb-2 relative z-10">Reviewer Resources</h3>
+        <p class="text-slate-600 text-sm mb-6 relative z-10 leading-relaxed">
+          Guidelines for conducting a fair and constructive review.
+        </p>
+        <div class="space-y-2 relative z-10">
+          <a
+            href="{% url 'reviewer_guidelines' %}"
+            class="block bg-white hover:bg-slate-100 text-slate-700 py-2 px-4 rounded text-sm font-bold transition text-center shadow-sm border border-slate-200"
+          >
+            Reviewer Guidelines
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-  {% endfor %}
 </div>
-{% else %}
-<div
-  class="bg-white dark:bg-card-dark rounded border border-border-light dark:border-border-dark p-12 text-center"
->
-  <div
-    class="mx-auto h-20 w-20 bg-green-50 rounded-full flex items-center justify-center mb-4"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="h-10 w-10 text-green-500"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  </div>
-  <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200">
-    All Caught Up!
-  </h3>
-  <p class="text-gray-500 mt-2">You currently have no pending reviews.</p>
-</div>
-{% endif %} {% endblock %}
+{% endblock %}

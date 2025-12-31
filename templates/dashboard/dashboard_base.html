@@ -278,7 +278,19 @@
             <span class="link-text whitespace-nowrap">My Submissions</span>
           </a>
 
-          {% if user.is_researcher %}
+          {% if user.is_reviewer %}
+          <a
+            href="{% url 'assigned_reviews' %}"
+            class="sidebar-link group flex items-center px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-gray-300 rounded hover:text-primary dark:hover:text-white transition-colors duration-200 mb-1 {% if request.resolver_match.url_name == 'assigned_reviews' %}active{% endif %}"
+            title="Assigned Reviews"
+          >
+            <span
+              class="material-icons text-xl mr-3 text-slate-400 group-hover:text-primary transition-colors"
+              >rate_review</span
+            >
+            <span class="link-text whitespace-nowrap">Assigned Reviews</span>
+          </a>
+          {% endif %} {% if user.is_researcher %}
           <a
             href="{% url 'submit_manuscript' %}"
             class="sidebar-link group flex items-center px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-gray-300 rounded hover:text-primary dark:hover:text-white transition-colors duration-200 mb-1"
