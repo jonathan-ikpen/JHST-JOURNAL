@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm
+from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm
 from .models import Manuscript, Review, User, Issue, Article, Volume, Notification
 
 def _send_notification_email(subject, message, recipient_list):
@@ -37,15 +37,18 @@ def register(request):
 @login_required
 def profile(request):
     if request.method == 'POST':
-        user = request.user
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        user.affiliation = request.POST.get('affiliation')
-        user.save()
-        messages.success(request, "Your profile has been updated successfully.")
-        return redirect('profile')
-    return render(request, 'journal/profile.html', {'user': request.user})
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=request.user)
+    
+    return render(request, 'journal/profile.html', {
+        'form': form,
+        'user': request.user
+    })
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 

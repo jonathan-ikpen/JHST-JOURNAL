@@ -7,6 +7,7 @@ class User(AbstractUser):
     is_reviewer = models.BooleanField(default=False)
     is_editor = models.BooleanField(default=False)
     affiliation = models.CharField(max_length=255, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
     def __str__(self):
         return self.username
