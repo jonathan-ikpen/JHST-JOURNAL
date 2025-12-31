@@ -5,7 +5,7 @@ Review{% endblock %} {% block content %}
     <!-- Left Column: Review Form -->
     <div class="lg:col-span-2">
       <div
-        class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl p-8 "
+        class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded p-8"
       >
         <div class="mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
           <h2
@@ -44,7 +44,7 @@ Review{% endblock %} {% block content %}
           <div class="pt-4">
             <button
               type="submit"
-              class="bg-primary text-white font-bold py-2.5 px-8 rounded-lg hover:bg-opacity-90 transition  flex items-center"
+              class="bg-primary text-white font-bold py-2.5 px-8 rounded hover:bg-opacity-90 transition flex items-center"
             >
               <span class="material-icons text-sm mr-2">send</span> Submit
               Review
@@ -57,7 +57,7 @@ Review{% endblock %} {% block content %}
     <!-- Right Column: Manuscript Details (Sticky) -->
     <div class="lg:col-span-1">
       <div
-        class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl p-6  sticky top-6"
+        class="bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded p-6 sticky top-6"
       >
         <h3
           class="text-lg font-bold text-gray-800 dark:text-white mb-4 flex items-center"
@@ -93,7 +93,7 @@ Review{% endblock %} {% block content %}
         <a
           href="{{ manuscript.file.url }}"
           target="_blank"
-          class="w-full flex justify-center items-center bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-bold py-2.5 px-4 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition border border-gray-200 dark:border-gray-600"
+          class="w-full flex justify-center items-center bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-bold py-2.5 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition border border-gray-200 dark:border-gray-600"
         >
           <span class="material-icons text-sm mr-2">download</span> Download PDF
         </a>

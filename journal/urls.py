@@ -10,6 +10,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='journal/login.html', authentication_form=UserLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/my-submissions/', views.my_submissions, name='my_submissions'),
     path('profile/', views.profile, name='profile'),
     path('submit/', views.submit_manuscript, name='submit_manuscript'),
     path('assign_reviewer/<int:manuscript_id>/', views.assign_reviewer, name='assign_reviewer'),

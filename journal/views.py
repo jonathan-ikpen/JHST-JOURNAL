@@ -49,26 +49,35 @@ def profile(request):
 
 @login_required
 def dashboard(request):
+    # Always get personal submissions
+    my_submissions = Manuscript.objects.filter(author=request.user).order_by('-submitted_date')
+
     if request.user.is_editor:
         submissions = Manuscript.objects.all().order_by('-submitted_date')
-        
-        # Also get personal submissions if they are a researcher
-        my_submissions = Manuscript.objects.filter(author=request.user) if request.user.is_researcher else None
-        
+        unassigned_count = submissions.filter(status='submitted').count()
         return render(request, 'dashboard/editor_dashboard.html', {
             'submissions': submissions,
-            'my_submissions': my_submissions
+            'my_submissions': my_submissions,
+            'unassigned_count': unassigned_count
         })
     elif request.user.is_reviewer:
         # Get manuscripts through the Review model
-        assigned_reviews = Review.objects.filter(reviewer=request.user)
+        assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('date_completed', 'date_assigned')
         assigned_manuscripts = [review.manuscript for review in assigned_reviews]
-        return render(request, 'dashboard/reviewer_dashboard.html', {'assigned_manuscripts': assigned_manuscripts, 'assigned_reviews': assigned_reviews})
+        return render(request, 'dashboard/reviewer_dashboard.html', {
+            'assigned_manuscripts': assigned_manuscripts, 
+            'assigned_reviews': assigned_reviews,
+            'my_submissions': my_submissions
+        })
     elif request.user.is_researcher:
-        submissions = Manuscript.objects.filter(author=request.user)
-        return render(request, 'dashboard/researcher_dashboard.html', {'submissions': submissions})
+        return render(request, 'dashboard/researcher_dashboard.html', {'submissions': my_submissions})
     else:
-        return render(request, 'dashboard/dashboard.html')
+        return render(request, 'dashboard/dashboard.html', {'my_submissions': my_submissions})
+
+@login_required
+def my_submissions(request):
+    submissions = Manuscript.objects.filter(author=request.user).order_by('-submitted_date')
+    return render(request, 'dashboard/my_submissions.html', {'submissions': submissions})
 
 @login_required
 def submit_manuscript(request):
@@ -88,6 +97,8 @@ def submit_manuscript(request):
             
             messages.success(request, "Your manuscript has been submitted successfully!")
             return redirect('dashboard')
+        else:
+            messages.error(request, "Please correct the errors below and try again.")
     else:
         form = ManuscriptForm()
     return render(request, 'dashboard/submit_manuscript.html', {'form': form})

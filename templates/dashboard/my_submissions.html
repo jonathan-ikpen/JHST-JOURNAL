@@ -1,0 +1,167 @@
+{% extends 'dashboard/dashboard_base.html' %}
+<!-- My Submissions Page -->
+{% block dashboard_title %}My Submissions{% endblock %} {% block content %}
+<div class="flex justify-between items-center mb-8">
+  <div>
+    <h2 class="text-2xl font-bold font-display text-slate-800 dark:text-white">
+      Your Manuscripts
+    </h2>
+    <p class="text-slate-500 text-sm mt-1">
+      Track the status of your submitted papers.
+    </p>
+  </div>
+  <a
+    href="{% url 'submit_manuscript' %}"
+    class="flex items-center bg-primary text-white font-bold py-2.5 px-5 rounded hover:bg-opacity-90 transition shadow-md hover:shadow-lg"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 mr-2"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 4v16m8-8H4"
+      />
+    </svg>
+    New Submission
+  </a>
+</div>
+
+{% if submissions %}
+<div
+  class="bg-white dark:bg-card-dark rounded shadow-card overflow-hidden border border-slate-200 dark:border-slate-800/50"
+>
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-slate-100 dark:divide-slate-800">
+      <thead class="bg-slate-50 dark:bg-slate-900/50">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider"
+          >
+            Manuscript
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider"
+          >
+            Date Submitted
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider"
+          >
+            Status
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+        {% for manuscript in submissions %}
+        <tr
+          class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors"
+        >
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+              <div
+                class="flex-shrink-0 h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary dark:text-green-400"
+              >
+                <span class="material-icons text-xl">description</span>
+              </div>
+              <div class="ml-4">
+                <div
+                  class="text-sm font-bold text-slate-900 dark:text-white max-w-xs truncate"
+                  title="{{ manuscript.title }}"
+                >
+                  {{ manuscript.title }}
+                </div>
+                <div class="text-xs text-slate-500">
+                  ID: #{{ manuscript.id }}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-slate-600 dark:text-slate-400">
+              {{ manuscript.submitted_date|date:"M d, Y" }}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span
+              class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border {% if manuscript.status == 'accepted' %}bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/30{% elif manuscript.status == 'rejected' %}bg-red-50 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30{% elif manuscript.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-900/30{% else %}bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/30{% endif %}"
+            >
+              {{ manuscript.get_status_display }}
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <div class="flex items-center space-x-3">
+              <!-- View/Edit Link (Depending on status, logic could be refined but mostly View for now) -->
+              <!-- Currently no explicit detail view for author, so maybe just a dummy view or link to nothing? 
+                    Actually, we don't have a 'manuscript_detail' view for authors yet. 
+                    So I will hide the view button or link to '#' for now or maybe 'submit_manuscript' if we want to allow editing?
+                    User previously asked for review editing, not manuscript editing.
+                    But typically authors want to see their submission.
+                    I will add a 'View Logic' place holder or just removal.
+                    BUT high end dashboards have actions.
+                    Let's just show a 'Check Status' button that does nothing for now or links to same page? 
+                    Actually, I'll exclude it if no detail page exists. 
+                    Wait, `submit_manuscript` creates new.
+                    I will leave it blank for now or add a dummy 'View' button.
+               -->
+              <!-- Adding a simple 'View' that perhaps opens a modal? No, too complex.
+                    Let's just show the ID which is already there. 
+                    I'll add a 'Download' button if we had the file URL.
+                    Manuscript has 'file'.
+               -->
+              {% if manuscript.file %}
+              <a
+                href="{{ manuscript.file.url }}"
+                target="_blank"
+                class="text-slate-400 hover:text-primary transition-colors flex items-center"
+                title="Download PDF"
+              >
+                <span class="material-icons text-lg">download</span>
+              </a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div
+  class="bg-white dark:bg-card-dark rounded shadow-card p-12 text-center border border-slate-100 dark:border-slate-800/50"
+>
+  <div
+    class="mx-auto h-20 w-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-sm"
+  >
+    <span class="material-icons text-4xl text-slate-300">note_add</span>
+  </div>
+  <h3 class="text-xl font-bold font-display text-slate-800 dark:text-white">
+    No Manuscripts Yet
+  </h3>
+  <p class="text-slate-500 mt-2 mb-8 max-w-sm mx-auto">
+    Start your journey by submitting your first research paper to JHST.
+  </p>
+  <a
+    href="{% url 'submit_manuscript' %}"
+    class="inline-flex items-center bg-primary text-white font-bold py-3 px-8 rounded hover:bg-opacity-90 transition shadow-md hover:shadow-lg"
+  >
+    <span class="material-icons text-sm mr-2">upload_file</span>
+    Submit Manuscript
+  </a>
+</div>
+{% endif %} {% endblock %}

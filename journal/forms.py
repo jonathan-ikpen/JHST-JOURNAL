@@ -12,7 +12,7 @@ class ResearcherRegistrationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm'
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })
 
     def save(self, commit=True):
@@ -27,7 +27,7 @@ class ManuscriptForm(forms.ModelForm):
         model = Manuscript
         fields = ['title', 'abstract', 'file', 'keywords', 'co_authors', 'affiliations']
         widgets = {
-            'abstract': forms.Textarea(attrs={'rows': 4}),
+            'abstract': forms.Textarea(attrs={'rows': 12}),
             'affiliations': forms.Textarea(attrs={'rows': 2}),
         }
 
@@ -35,7 +35,7 @@ class ManuscriptForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm'
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })
 
 class ReviewForm(forms.ModelForm):
@@ -47,7 +47,7 @@ class ReviewForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm'
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })
 
 class VolumeForm(forms.ModelForm):
@@ -59,7 +59,7 @@ class VolumeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm'
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })
 
 class IssueForm(forms.ModelForm):
@@ -73,7 +73,7 @@ class IssueForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm'
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })
 
 class UserLoginForm(AuthenticationForm):
@@ -81,5 +81,5 @@ class UserLoginForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm'
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })

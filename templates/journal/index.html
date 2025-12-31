@@ -221,44 +221,52 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">
           Published: {{ issue.publication_date|date:"F Y" }}
         </p>
-        {% endwith %}
       </div>
       <h3 class="font-bold text-lg mb-4">Articles</h3>
       <div class="space-y-4">
-        <!-- Original static content had hardcoded articles. 
-             Ideally we loop through articles of the latest issue here. 
-             Since I don't see article context in the original simple index view, 
-             I will keep the static content but comment on where dynamic data goes. -->
-        <div class="border-b border-border-light dark:border-border-dark pb-4">
-          <p class="font-semibold">
-            Revolutionizing Environmental Foresight: Harnessing Big Data
-            Analytics for Enhanced Stewardship in the African Oil and Gas Sector
+        {% if issue.articles.all %} {% for article in issue.articles.all %}
+        <div
+          class="border-b border-border-light dark:border-border-dark pb-4 last:border-0"
+        >
+          <p class="font-semibold text-lg mb-1">
+            <a
+              href="{% url 'article_detail' article.id %}"
+              class="hover:text-primary transition-colors"
+            >
+              {{ article.manuscript.title }}
+            </a>
           </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            Ladini Bongo Mark
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            <!-- prettier-ignore -->
+            {{ article.manuscript.author.get_full_name|default:article.manuscript.author.username }}
           </p>
-          <a
-            class="inline-flex items-center bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-            href="#"
-          >
-            <span class="material-icons text-base mr-1">picture_as_pdf</span>
-            PDF
-          </a>
-        </div>
-        <!-- [Other articles would be looped here] -->
 
-        <!-- Trying to keep some dynamic capability if available -->
-        {% for issue in latest_issues %}
-        <div class="border-b border-border-light dark:border-border-dark pb-4">
-          <p class="font-semibold">
-            <a href="{% url 'issue_detail' issue.id %}">{{ issue }}</a>
-          </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            {{ issue.publication_date }}
-          </p>
+          <div class="flex items-center gap-3">
+            <a
+              href="{% url 'article_detail' article.id %}"
+              class="inline-flex items-center text-sm font-medium text-primary hover:underline"
+            >
+              Read Abstract
+            </a>
+            {% if article.manuscript.file %}
+            <a
+              class="inline-flex items-center bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 transition"
+              href="{{ article.manuscript.file.url }}"
+              target="_blank"
+            >
+              <span class="material-icons text-sm mr-1">picture_as_pdf</span>
+              PDF
+            </a>
+            {% endif %}
+          </div>
         </div>
-        {% endfor %}
+        {% endfor %} {% else %}
+        <p class="text-gray-500 italic">
+          No articles published in this issue yet.
+        </p>
+        {% endif %}
       </div>
+      {% endwith %}
       <div class="mt-6">
         <a class="text-primary hover:underline font-semibold" href="#"
           >View All Issues →</a
