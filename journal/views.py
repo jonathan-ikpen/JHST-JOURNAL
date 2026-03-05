@@ -507,18 +507,43 @@ def article_detail(request, article_id):
     return render(request, 'journal/article_detail.html', {'article': article})
 
 def search(request):
-    query = request.GET.get('q')
-    results = []
+    query = request.GET.get('q', '')
+    author_query = request.GET.get('author', '')
+    year_query = request.GET.get('year', '')
+    
+    results = Article.objects.all()
+    has_filters = False
+
     if query:
-        results = Article.objects.filter(
+        has_filters = True
+        results = results.filter(
             Q(manuscript__title__icontains=query) | 
             Q(manuscript__abstract__icontains=query) |
-            Q(manuscript__keywords__icontains=query) |
-            Q(manuscript__author__username__icontains=query) |
-            Q(manuscript__author__first_name__icontains=query) |
-            Q(manuscript__author__last_name__icontains=query)
+            Q(manuscript__keywords__icontains=query)
         )
-    return render(request, 'journal/search_results.html', {'results': results, 'query': query})
+        
+    if author_query:
+        has_filters = True
+        results = results.filter(
+            Q(manuscript__author__username__icontains=author_query) |
+            Q(manuscript__author__first_name__icontains=author_query) |
+            Q(manuscript__author__last_name__icontains=author_query) |
+            Q(manuscript__co_authors__icontains=author_query)
+        )
+        
+    if year_query and year_query.isdigit():
+        has_filters = True
+        results = results.filter(issue__volume__year=int(year_query))
+
+    if not has_filters:
+        results = []
+
+    return render(request, 'journal/search_results.html', {
+        'results': results, 
+        'query': query,
+        'author_query': author_query,
+        'year_query': year_query
+    })
 def archives(request):
     volumes = Volume.objects.prefetch_related('issues').order_by('-year', '-number')
     return render(request, 'journal/archives.html', {'volumes': volumes})

@@ -6,7 +6,7 @@ from .models import User, Manuscript, Review, Volume, Issue
 class ResearcherRegistrationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'affiliation']
+        fields = ['username', 'email', 'first_name', 'last_name', 'affiliation', 'orcid']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,7 +87,7 @@ class UserLoginForm(AuthenticationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'affiliation', 'avatar']
+        fields = ['email', 'first_name', 'last_name', 'affiliation', 'orcid', 'avatar']
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

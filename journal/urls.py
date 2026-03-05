@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, feeds
 from .forms import UserLoginForm
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
@@ -58,4 +58,5 @@ urlpatterns = [
     path('announcements/', views.announcements, name='announcements'),
     path('announcements/<int:announcement_id>/', views.announcement_detail, name='announcement_detail'),
     path('jhst-journals/', TemplateView.as_view(template_name='journal/jhst_journals.html'), name='jhst_journals'),
+    path('rss/', feeds.LatestArticlesFeed(), name='article_feed'),
 ]

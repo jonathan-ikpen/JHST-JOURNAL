@@ -101,6 +101,16 @@ Profile{% endblock %} {% block content %}
           >
           {{ form.affiliation }}
         </div>
+
+        <div class="md:col-span-2">
+          <label
+            for="orcid"
+            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1"
+            >ORCID iD</label
+          >
+          {{ form.orcid }}
+          <p class="text-xs text-gray-500 mt-1">Format: XXXX-XXXX-XXXX-XXXX</p>
+        </div>
       </div>
 
       <div
