@@ -279,27 +279,8 @@ def assign_reviewer(request, manuscript_id):
                     due_date = timezone.now().date() + timezone.timedelta(days=14)
                 
                 Review.objects.create(manuscript=manuscript, reviewer=reviewer, due_date=due_date)
-                
-                # Notify Reviewer
-                _send_notification_email(
-                    f"Review Invitation: {manuscript.title}",
-                    f"Dear {reviewer.get_full_name()},\n\nYou have been assigned to review the manuscript: '{manuscript.title}'.\nPlease log in to the JHST dashboard to accept and complete this review by {due_date.strftime('%Y-%m-%d')}.\n\nBest regards,\nJHST Editorial Team",
-                    [reviewer.email]
-                )
-
-                # In-app notification for Reviewer
-                Notification.objects.create(
-                    recipient=reviewer,
-                    message=f"New Review Assignment: You have been assigned to review '{manuscript.title}'. Due in 14 days.",
-                    link='/dashboard/'
-                )
-                
-            # Update manuscript status if it was just submitted
-                manuscript.status = 'under_review'
-                manuscript.save()
-            
-            messages.success(request, f"Reviewer {reviewer.username} assigned successfully.")
-            return redirect('dashboard')
+                messages.success(request, f"Reviewer {reviewer.username} assigned successfully.")
+                return redirect('dashboard')
     
     # Filter out reviewers who are already assigned
     reviewers = User.objects.filter(is_reviewer=True).exclude(id__in=assigned_reviewer_ids)
