@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement
+from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement, Page, PageSection
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -11,6 +11,17 @@ class CustomUserAdmin(UserAdmin):
     )
     list_display = UserAdmin.list_display + ('is_researcher', 'is_reviewer', 'is_editor', 'affiliation')
     list_filter = UserAdmin.list_filter + ('is_researcher', 'is_reviewer', 'is_editor')
+
+class PageSectionInline(admin.TabularInline):
+    model = PageSection
+    fields = ('location', 'section_title', 'content', 'image', 'order')
+    extra = 1
+
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'updated_at')
+    prepopulated_fields = {'slug': ('title',)}
+    inlines = [PageSectionInline]
 
 class ReviewInline(admin.TabularInline):
     model = Review
