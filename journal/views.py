@@ -7,7 +7,11 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm
-from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement
+from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement, Page
+
+def cms_page(request, slug):
+    page = get_object_or_404(Page, slug=slug)
+    return render(request, page.template_name, {'page': page})
 
 def _send_notification_email(subject, message, recipient_list):
     """
@@ -496,7 +500,11 @@ def manage_issue(request, issue_id):
 
 def index(request):
     latest_issues = Issue.objects.all().order_by('-publication_date')[:5]
-    return render(request, 'journal/index.html', {'latest_issues': latest_issues})
+    home_page = Page.objects.filter(slug='home').first()
+    return render(request, 'journal/index.html', {
+        'latest_issues': latest_issues,
+        'page': home_page
+    })
 
 def issue_detail(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)

@@ -145,19 +145,14 @@ class Announcement(models.Model):
     def color_class(self):
         colors = {
             'news': 'blue',
-            'call_for_papers': 'primary', # Using primary for consistency with design
+            'call_for_papers': 'primary', 
             'maintenance': 'amber',
             'general': 'gray',
         }
-        # This returns the base color name, templates will need to construct the full class
-        # e.g. bg-{color}-100 text-{color}-600
-        # Wait, primary is a custom color in tailwind config probably, but 'bg-primary/10' is used in template.
-        # Let's return a dictionary or object with specific classes to match the design exactly.
         return colors.get(self.category, 'gray')
 
     @property
     def icon_bg_class(self):
-        # Precise mapping to match the template's aesthetics
         if self.category == 'call_for_papers':
             return 'bg-primary/10 text-primary'
         elif self.category == 'news':
@@ -175,3 +170,52 @@ class Announcement(models.Model):
         elif self.category == 'maintenance':
             return 'bg-amber-600 text-white'
         return 'bg-gray-600 text-white'
+
+class Page(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, help_text="The URL component for this page (e.g., 'about')")
+    template_name = models.CharField(max_length=100, default='journal/page.html', help_text="The template to use for rendering this page")
+    meta_description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def main_sections(self):
+        return self.sections.filter(location='main')
+
+    @property
+    def sidebar_sections(self):
+        return self.sections.filter(location='sidebar')
+
+    class Meta:
+        ordering = ['title']
+
+class PageSection(models.Model):
+    LOCATION_CHOICES = [
+        ('main', 'Main Content'),
+        ('sidebar', 'Sidebar'),
+    ]
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='sections')
+    section_title = models.CharField(max_length=255, blank=True, null=True)
+    content = models.TextField(help_text="HTML content for this section")
+    image = models.ImageField(upload_to='page_sections/', blank=True, null=True)
+    location = models.CharField(max_length=10, choices=LOCATION_CHOICES, default='main')
+    order = models.IntegerField(default=0, help_text="Order within chosen location. Leave as 0 to append.")
+
+    def __str__(self):
+        return f"{self.get_location_display()}: {self.section_title or f'Section {self.id}'}"
+
+    class Meta:
+        ordering = ['location', 'order', 'id']
+
+    def save(self, *args, **kwargs):
+        if not self.pk and self.order == 0:
+            last_section = PageSection.objects.filter(page=self.page, location=self.location).order_by('-order').first()
+            if last_section:
+                self.order = last_section.order + 1
+            else:
+                self.order = 1
+        super().save(*args, **kwargs)
