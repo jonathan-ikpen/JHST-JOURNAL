@@ -23,8 +23,24 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     inlines = [PageSectionInline]
 
+class ReviewInline(admin.TabularInline):
+    model = Review
+    extra = 1
+    fields = ('reviewer', 'due_date', 'comments', 'recommendation')
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "reviewer":
+            kwargs["queryset"] = User.objects.filter(is_reviewer=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+class ManuscriptAdmin(admin.ModelAdmin):
+    inlines = [ReviewInline]
+    list_display = ('title', 'author', 'status', 'submitted_date')
+    list_filter = ('status', 'submitted_date')
+    search_fields = ('title', 'author__username')
+
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Manuscript)
+admin.site.register(Manuscript, ManuscriptAdmin)
 admin.site.register(Review)
 admin.site.register(Volume)
 admin.site.register(Issue)

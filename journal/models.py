@@ -28,7 +28,6 @@ class Manuscript(models.Model):
     co_authors = models.CharField(max_length=500, blank=True, help_text="Names of co-authors, separated by commas")
     affiliations = models.TextField(blank=True, help_text="Author affiliations")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='manuscripts')
-    reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_manuscripts')
     submitted_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='submitted')
     keywords = models.CharField(max_length=255, help_text="Comma-separated keywords")
