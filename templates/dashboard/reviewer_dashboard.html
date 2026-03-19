@@ -1,4 +1,4 @@
-﻿{% extends 'dashboard/dashboard_base.html' %}
+{% extends 'dashboard/dashboard_base.html' %}
 <!-- prettier-ignore -->
 {% block dashboard_title %}Reviewer Dashboard{% endblock %} {% block content %}
 <div class="">
@@ -114,12 +114,14 @@
               <div>
                 <h4 class="font-bold text-slate-800 dark:text-white mb-1">
                   <a
-                    href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
+                    href="{% url 'reviewer_manuscript_detail' review.id %}"
                     class="hover:text-primary"
                     >{{ review.manuscript.title }}</a
                   >
                 </h4>
                 <div class="flex items-center text-xs text-slate-500 gap-3">
+                  <span class="font-bold text-primary">Round {{ review.round }}</span>
+                  <span>•</span>
                   <span>ID: #{{ review.manuscript.id }}</span>
                   <span>•</span>
                   <span

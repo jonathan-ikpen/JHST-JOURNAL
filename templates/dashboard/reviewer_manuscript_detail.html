@@ -11,7 +11,7 @@ Assignment{% endblock %} {% block content %}
   <h2
     class="text-2xl font-bold font-display text-slate-800 dark:text-white leading-tight"
   >
-    {{ manuscript.title }}
+    {{ manuscript.title }} - <span class="text-primary truncate">Round {{ review.round }}</span>
   </h2>
   <div class="flex flex-wrap items-center gap-3 mt-2">
     <span class="text-sm text-slate-500"> ID: #{{ manuscript.id }} </span>
@@ -96,6 +96,54 @@ Assignment{% endblock %} {% block content %}
       <p class="text-slate-400 italic">No file uploaded.</p>
       {% endif %}
     </div>
+
+    <!-- Review History -->
+    {% if reviewer_history %}
+    <div
+      class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
+    >
+      <h3
+        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2"
+      >
+        <span class="material-icons text-primary text-base">history</span>
+        Your Review History
+      </h3>
+      <div class="space-y-4">
+        {% for hist in reviewer_history %}
+          <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded border {% if review.id == hist.id %}border-primary/50 bg-primary/5{% else %}border-slate-100 dark:border-slate-800/50{% endif %} transition-all">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Round {{ hist.round }}</span>
+                {% if review.id == hist.id %}
+                <span class="bg-primary/10 text-primary text-[10px] px-1.5 py-0.5 rounded font-bold uppercase">Current View</span>
+                {% endif %}
+              </div>
+              <div class="flex items-center gap-3">
+                {% if hist.date_completed %}
+                <span class="text-[10px] text-slate-400 italic">Submitted {{ hist.date_completed|date:"M d, Y" }}</span>
+                {% else %}
+                <span class="text-[10px] text-amber-500 font-bold uppercase">Work In Progress</span>
+                {% endif %}
+                
+                {% if review.id != hist.id %}
+                <a href="{% url 'reviewer_manuscript_detail' hist.id %}" class="text-[10px] font-bold text-primary hover:underline uppercase">View Details</a>
+                {% endif %}
+              </div>
+            </div>
+            
+            {% if hist.comments %}
+            <p class="text-sm text-slate-600 dark:text-slate-400 italic">"{{ hist.comments }}"</p>
+            <div class="mt-2 text-[10px] font-bold uppercase {% if hist.recommendation == 'accept' %}text-green-600{% elif hist.recommendation == 'reject' %}text-red-600{% else %}text-amber-600{% endif %}">
+              Recommendation: {{ hist.recommendation|capfirst }}
+            </div>
+            {% else %}
+            <p class="text-xs text-slate-400 italic">No comments yet for this round.</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
   </div>
 
   <!-- Right Column: Actions -->
@@ -107,7 +155,7 @@ Assignment{% endblock %} {% block content %}
       <h3
         class="text-lg font-bold font-display text-slate-800 dark:text-white mb-2"
       >
-        Review Status
+        Review Status (Round {{ review.round }})
       </h3>
 
       {% if review.due_date %}
@@ -116,7 +164,9 @@ Assignment{% endblock %} {% block content %}
         <!-- prettier-ignore -->
         Due: {{ review.due_date|date:"F d, Y" }}
       </p>
-      {% endif %} {% if review.date_completed %}
+      {% endif %}
+      
+      {% if review.date_completed %}
       <div
         class="bg-green-50 dark:bg-green-900/10 p-4 rounded mb-4 text-center"
       >
@@ -131,9 +181,9 @@ Assignment{% endblock %} {% block content %}
         </p>
       </div>
 
-      {% if not manuscript.article %}
+      {% if not manuscript.article and review.is_latest_round %}
       <a
-        href="{% url 'submit_review' manuscript.id %}"
+        href="{% url 'submit_review' review.id %}"
         class="block w-full text-center py-2.5 px-4 bg-white border border-slate-300 text-slate-700 font-bold rounded hover:bg-slate-50 transition"
       >
         Edit Review
@@ -143,9 +193,11 @@ Assignment{% endblock %} {% block content %}
         disabled
         class="block w-full text-center py-2.5 px-4 bg-slate-100 text-slate-400 font-bold rounded cursor-not-allowed"
       >
-        Review Locked
+        {% if manuscript.article %}Review Locked{% else %}History (Read Only){% endif %}
       </button>
-      {% endif %} {% else %}
+      {% endif %}
+      
+      {% else %}
       <div
         class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded mb-6 text-center"
       >

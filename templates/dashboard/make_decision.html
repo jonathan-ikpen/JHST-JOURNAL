@@ -1,4 +1,4 @@
-﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Make
+{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Make
 Decision{% endblock %} {% block content %}
 <div class="max-w-5xl mx-auto">
   <div
@@ -40,8 +40,9 @@ Decision{% endblock %} {% block content %}
                   {{ review.reviewer.username|slice:":2" }}
                 </div>
                 <div>
-                  <p class="text-sm font-bold text-gray-900 dark:text-white">
+                  <p class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     {{ review.reviewer.username }}
+                    <span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-500 uppercase tracking-widest font-bold">Round {{ review.round }}</span>
                   </p>
                   <p class="text-xs text-gray-500">
                     {{ review.reviewer.affiliation }}
@@ -96,6 +97,7 @@ Decision{% endblock %} {% block content %}
                 class="w-full rounded-md border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2.5"
               >
                 <option value="accepted">Accept Manuscript</option>
+                <option value="needs_revision">Needs Revision / Resubmission</option>
                 <option value="rejected">Reject Manuscript</option>
               </select>
             </div>

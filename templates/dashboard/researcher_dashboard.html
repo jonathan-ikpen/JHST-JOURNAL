@@ -1,4 +1,4 @@
-﻿{% extends 'dashboard/dashboard_base.html' %}
+{% extends 'dashboard/dashboard_base.html' %}
 <!-- prettier-ignore -->
 {% block dashboard_title %}Researcher Dashboard{% endblock %} {% block content %}
 <div class="">
@@ -145,7 +145,7 @@
                 </div>
               </div>
               <span
-                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border {% if ms.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif ms.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif ms.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif ms.status == 'published' %}bg-blue-50 text-blue-700 border-blue-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
+                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border {% if ms.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif ms.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif ms.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif ms.status == 'needs_revision' %}bg-orange-50 text-orange-700 border-orange-200{% elif ms.status == 'revision_submitted' %}bg-blue-50 text-blue-700 border-blue-200{% elif ms.status == 'published' %}bg-indigo-50 text-indigo-700 border-indigo-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
               >
                 {{ ms.get_status_display }}
               </span>

@@ -17,6 +17,8 @@ class Manuscript(models.Model):
     STATUS_CHOICES = [
         ('submitted', 'Submitted'),
         ('under_review', 'Under Review'),
+        ('needs_revision', 'Needs Revision'),
+        ('revision_submitted', 'Revision Submitted'),
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected'),
         ('published', 'Published'),
@@ -32,6 +34,19 @@ class Manuscript(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='submitted')
     keywords = models.CharField(max_length=255, help_text="Comma-separated keywords")
     is_paid = models.BooleanField(default=False, help_text="Has the publication fee been paid?")
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._initial_status = self.status
+
+    @property
+    def visible_reviews(self):
+        return self.reviews.filter(is_visible_to_author=True).order_by('-round')
+
+    def save(self, *args, **kwargs):
+        self.status_changed = self.status != self._initial_status
+        super().save(*args, **kwargs)
+        self._initial_status = self.status
 
     def __str__(self):
         return self.title
@@ -39,9 +54,13 @@ class Manuscript(models.Model):
     @property
     def progress_width_class(self):
         if self.status == 'submitted':
-            return 'w-1/3'
+            return 'w-1/4'
         elif self.status == 'under_review':
-            return 'w-2/3'
+            return 'w-2/4'
+        elif self.status == 'needs_revision':
+            return 'w-3/4'
+        elif self.status == 'revision_submitted':
+            return 'w-3/4'
         elif self.status in ['accepted', 'rejected', 'published']:
             return 'w-full'
         return 'w-0'
@@ -66,6 +85,27 @@ class Review(models.Model):
     date_completed = models.DateTimeField(null=True, blank=True)
     comments = models.TextField(blank=True)
     recommendation = models.CharField(max_length=20, choices=RECOMMENDATION_CHOICES, blank=True)
+    is_visible_to_author = models.BooleanField(default=False)
+    round = models.PositiveIntegerField(default=1)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._initial_date_completed = self.date_completed
+
+    def save(self, *args, **kwargs):
+        self.date_completed_changed = self.date_completed != self._initial_date_completed
+        super().save(*args, **kwargs)
+        self._initial_date_completed = self.date_completed
+
+    @property
+    def is_latest_round(self):
+        # Use _id fields to avoid triggering full object instantiation or recursive property lookups
+        from django.db.models import Max
+        res = self.__class__.objects.filter(
+            manuscript_id=self.manuscript_id, 
+            reviewer_id=self.reviewer_id
+        ).aggregate(max=Max('round'))
+        return self.round == res['max']
 
     def __str__(self):
         return f"Review of {self.manuscript.title} by {self.reviewer.username}"
