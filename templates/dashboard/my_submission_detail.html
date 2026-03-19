@@ -22,7 +22,7 @@
     </span>
     <span class="text-slate-300">•</span>
     <span
-      class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide border {% if manuscript.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif manuscript.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif manuscript.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif manuscript.status == 'published' %}bg-blue-50 text-blue-700 border-blue-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
+      class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide border {% if manuscript.status == 'accepted' %}bg-green-50 text-green-700 border-green-200{% elif manuscript.status == 'rejected' %}bg-red-50 text-red-700 border-red-200{% elif manuscript.status == 'under_review' %}bg-amber-50 text-amber-700 border-amber-200{% elif manuscript.status == 'needs_revision' %}bg-orange-50 text-orange-700 border-orange-200{% elif manuscript.status == 'revision_submitted' %}bg-blue-50 text-blue-700 border-blue-200{% elif manuscript.status == 'published' %}bg-indigo-50 text-indigo-700 border-indigo-200{% else %}bg-slate-50 text-slate-700 border-slate-200{% endif %}"
     >
       {{ manuscript.get_status_display }}
     </span>
@@ -65,15 +65,52 @@
       </div>
     </div>
 
+    <!-- Reviewer Feedback -->
+    {% if manuscript.visible_reviews.exists %}
+    <div class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50">
+      <h3 class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
+        Reviewer Feedback
+      </h3>
+      <div class="space-y-6">
+        {% for review in manuscript.visible_reviews %}
+        <div class="bg-slate-50 dark:bg-slate-800/30 p-5 rounded border border-slate-100 dark:border-slate-800/50">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <span class="text-xs font-bold text-primary uppercase tracking-wider">Reviewer #{{ review.reviewer.id }}</span>
+              <span class="ml-2 text-[10px] font-bold bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded uppercase">Round {{ review.round }}</span>
+            </div>
+            <span class="text-xs text-slate-400 italic">{{ review.date_completed|date:"M d, Y" }}</span>
+          </div>
+          <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap italic">
+            "{{ review.comments }}"
+          </p>
+          {% if review.recommendation == 'revise' %}
+          <div class="mt-3 inline-flex items-center text-[10px] font-bold uppercase bg-amber-100 text-amber-700 px-2 py-0.5 rounded">
+            Revisions Suggested
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+
     <!-- Files -->
     <div
       class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50"
     >
-      <h3
-        class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2"
-      >
-        Manuscript File
-      </h3>
+      <div class="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
+        <h3 class="text-lg font-bold font-display text-slate-800 dark:text-white">
+          Manuscript File
+        </h3>
+        {% if manuscript.status == 'needs_revision' %}
+        <a href="{% url 'submit_revision' manuscript.id %}" class="inline-flex items-center text-xs font-bold bg-primary text-white px-3 py-1.5 rounded hover:bg-primary-dark transition shadow-sm">
+          <span class="material-icons text-xs mr-1">upload</span> Submit Revision
+        </a>
+        {% endif %}
+      </div>
+
       {% if manuscript.file %}
       <div
         class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-4 rounded border border-slate-200 dark:border-slate-800"
@@ -195,6 +232,21 @@
           </p>
         </div>
 
+        <!-- Revisions -->
+        {% if manuscript.status == 'needs_revision' or manuscript.status == 'revision_submitted' or manuscript.status == 'accepted' or manuscript.status == 'rejected' or manuscript.status == 'published' %}
+        <div class="relative">
+          <div
+            class="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-white dark:ring-card-dark"
+          ></div>
+          <p class="text-sm font-bold text-slate-800 dark:text-white">
+            Revisions Requested
+          </p>
+          {% if manuscript.status == 'revision_submitted' %}
+          <p class="text-xs text-green-500 font-bold">Revision Uploaded</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
         <!-- Decision -->
         <div class="relative">
           <div
@@ -203,7 +255,7 @@
           <p
             class="text-sm font-bold {% if manuscript.status == 'accepted' or manuscript.status == 'rejected' or manuscript.status == 'published' %}text-slate-800 dark:text-white{% else %}text-slate-400{% endif %}"
           >
-            Decision
+            Final Decision
           </p>
           <!-- prettier-ignore -->
           {% if manuscript.status == 'accepted' or manuscript.status == 'rejected' or manuscript.status == 'published' %}

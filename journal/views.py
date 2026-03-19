@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -128,7 +129,7 @@ def dashboard(request):
     elif request.user.is_researcher:
         # Calculate stats
         total_submissions = my_submissions.count()
-        in_review_count = my_submissions.filter(status__in=['submitted', 'under_review']).count()
+        in_review_count = my_submissions.filter(status__in=['submitted', 'under_review', 'needs_revision', 'revision_submitted']).count()
         approved_count = my_submissions.filter(status='accepted').count()
         published_count = my_submissions.filter(status='published').count()
         
@@ -152,7 +153,7 @@ def assigned_reviews(request):
     if not request.user.is_reviewer:
         return redirect('dashboard')
         
-    assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('date_completed', 'date_assigned')
+    assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('-round', '-date_assigned')
     return render(request, 'dashboard/assigned_reviews.html', {
         'assigned_reviews': assigned_reviews
     })
@@ -192,18 +193,22 @@ def my_submissions(request):
     })
 
 @login_required
-def reviewer_manuscript_detail(request, manuscript_id):
-    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+def reviewer_manuscript_detail(request, review_id):
+    # Fetch the specific review requested
+    review_assignment = get_object_or_404(Review, id=review_id)
+    manuscript = review_assignment.manuscript
     
-    # Security check: Ensure user is a reviewer for this manuscript
-    try:
-        review_assignment = Review.objects.get(manuscript=manuscript, reviewer=request.user)
-    except Review.DoesNotExist:
+    # Security check: Ensure this review belongs to the current user
+    if review_assignment.reviewer != request.user:
         return redirect('dashboard')
+    
+    # Get all reviews by THIS reviewer for THIS manuscript (history)
+    reviewer_history = Review.objects.filter(manuscript=manuscript, reviewer=request.user).order_by('round')
         
     return render(request, 'dashboard/reviewer_manuscript_detail.html', {
         'manuscript': manuscript,
-        'review': review_assignment
+        'review': review_assignment,
+        'reviewer_history': reviewer_history
     })
 
 @login_required
@@ -296,12 +301,23 @@ def assign_reviewer(request, manuscript_id):
     })
 
 @login_required
-def submit_review(request, manuscript_id):
-    # Check if a review already exists for this manuscript and reviewer
-    review = get_object_or_404(Review, manuscript__id=manuscript_id, reviewer=request.user)
+def submit_review(request, review_id):
+    # Fetch the specific review requested
+    review = get_object_or_404(Review, id=review_id)
     manuscript = review.manuscript
     
+    # Security check: Ensure this review belongs to the current user
+    if review.reviewer != request.user:
+        return redirect('dashboard')
+    
+    # Check if this review can be edited (locked if already published OR not the latest round)
+    is_locked = manuscript.status == 'published' or not review.is_latest_round
+    
     if request.method == 'POST':
+        if is_locked:
+            messages.error(request, "This review is locked and cannot be edited.")
+            return redirect('reviewer_manuscript_detail', review_id=review.id)
+            
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             review = form.save(commit=False)
@@ -311,7 +327,44 @@ def submit_review(request, manuscript_id):
             return redirect('dashboard')
     else:
         form = ReviewForm(instance=review)
-    return render(request, 'dashboard/submit_review.html', {'form': form, 'manuscript': manuscript})
+    
+    return render(request, 'dashboard/submit_review.html', {
+        'form': form, 
+        'manuscript': manuscript,
+        'is_locked': is_locked,
+        'review': review
+    })
+
+@login_required
+def request_re_review(request, review_id):
+    if not request.user.is_editor:
+        return redirect('dashboard')
+    
+    old_review = get_object_or_404(Review, id=review_id)
+    manuscript = old_review.manuscript
+    
+    # Create a NEW review for the next round
+    new_round = old_review.round + 1
+    
+    # Check if a review for this round already exists to avoid duplicates
+    if not Review.objects.filter(manuscript=manuscript, reviewer=old_review.reviewer, round=new_round).exists():
+        Review.objects.create(
+            manuscript=manuscript,
+            reviewer=old_review.reviewer,
+            round=new_round,
+            due_date=(timezone.now() + timezone.timedelta(days=7)).date()
+        )
+        
+        # Also update manuscript status back to under_review if needed
+        if manuscript.status == 'revision_submitted':
+            manuscript.status = 'under_review'
+            manuscript.save()
+            
+        messages.success(request, f"Round {new_round} review requested from {old_review.reviewer.username}.")
+    else:
+        messages.info(request, f"Round {new_round} review already requested for this reviewer.")
+
+    return redirect('dashboard_manuscript_detail', manuscript_id=manuscript.id)
 
 @login_required
 def make_decision(request, manuscript_id):
@@ -321,30 +374,61 @@ def make_decision(request, manuscript_id):
     manuscript = get_object_or_404(Manuscript, id=manuscript_id)
     if request.method == 'POST':
         decision = request.POST.get('decision')
-        if decision in ['accepted', 'rejected']:
+        if decision in ['accepted', 'rejected', 'needs_revision']:
             manuscript.status = decision
             manuscript.save()
             
-            # Notify Author
-            _send_notification_email(
-                f"Decision on Manuscript: {manuscript.title}",
-                f"Dear {manuscript.author.get_full_name()},\n\nA decision has been reached regarding your manuscript '{manuscript.title}': {decision.upper()}.\nPlease log in to your dashboard to view details and reviews.\n\nIMPORTANT: If your manuscript has been accepted, please proceed to pay the publication fee. Instructions can be found here: {request.build_absolute_uri('/about/publication-fees/')}\n\nBest regards,\nJHST Editorial Team",
-                [manuscript.author.email]
-            )
+            if decision == 'needs_revision':
+                # Push all completed reviews to author visibility
+                manuscript.reviews.filter(date_completed__isnull=False).update(is_visible_to_author=True)
+            
+            # Notify Author (Decision notification is mostly handled by signals now, 
+            # but let's keep the existing logic or adapt it)
+            # Actually, signals handle needs_revision. accepted/rejected still here?
+            # Let's keep accepted/rejected here for now since they are not in signals yet.
+            if decision in ['accepted', 'rejected']:
+                _send_notification_email(
+                    f"Decision on Manuscript: {manuscript.title}",
+                    f"Dear {manuscript.author.get_full_name()},\n\nA decision has been reached regarding your manuscript '{manuscript.title}': {decision.upper()}.\nPlease log in to your dashboard to view details and reviews.\n\nIMPORTANT: If your manuscript has been accepted, please proceed to pay the publication fee. Instructions can be found here: {request.build_absolute_uri('/about/publication-fees/')}\n\nBest regards,\nJHST Editorial Team",
+                    [manuscript.author.email]
+                )
 
-            # In-app notification for Author
-            Notification.objects.create(
-                recipient=manuscript.author,
-                message=f"Decision Reached: Your manuscript '{manuscript.title}' has been {decision.upper()}.",
-                link='/dashboard/my-submissions/'
-            )
+                # In-app notification for Author
+                Notification.objects.create(
+                    recipient=manuscript.author,
+                    message=f"Decision Reached: Your manuscript '{manuscript.title}' has been {decision.upper()}.",
+                    link='/dashboard/my-submissions/'
+                )
             
             messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
         return redirect('dashboard')
     
-    reviews = manuscript.reviews.all()
-    reviews = manuscript.reviews.all()
+    reviews = manuscript.reviews.filter(date_completed__isnull=False).order_by('-round')
     return render(request, 'dashboard/make_decision.html', {'manuscript': manuscript, 'reviews': reviews})
+
+@login_required
+def submit_revision(request, manuscript_id):
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id, author=request.user)
+    
+    if manuscript.status != 'needs_revision':
+        messages.error(request, "This manuscript does not require a revision at this time.")
+        return redirect('my_submission_detail', manuscript_id=manuscript.id)
+        
+    if request.method == 'POST':
+        form = ManuscriptForm(request.POST, request.FILES, instance=manuscript)
+        if form.is_valid():
+            manuscript = form.save(commit=False)
+            manuscript.status = 'revision_submitted'
+            manuscript.save()
+            messages.success(request, "Your revision has been submitted successfully.")
+            return redirect('my_submission_detail', manuscript_id=manuscript.id)
+    else:
+        form = ManuscriptForm(instance=manuscript)
+        
+    return render(request, 'dashboard/submit_revision.html', {
+        'form': form, 
+        'manuscript': manuscript
+    })
 
 @login_required
 def mark_as_paid(request, manuscript_id):
@@ -426,7 +510,7 @@ def dashboard_manuscript_detail(request, manuscript_id):
         return redirect('dashboard')
     
     manuscript = get_object_or_404(Manuscript, id=manuscript_id)
-    reviews = manuscript.reviews.all()
+    reviews = manuscript.reviews.all().order_by('-round')
     
     return render(request, 'dashboard/manuscript_detail.html', {
         'manuscript': manuscript,
