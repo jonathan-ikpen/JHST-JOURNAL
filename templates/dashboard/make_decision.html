@@ -72,6 +72,36 @@ Decision{% endblock %} {% block content %}
           </p>
         </div>
         {% endif %}
+
+        <!-- Author's Responses -->
+        <div class="mt-10 pt-6 border-t border-gray-100 dark:border-gray-800">
+          <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center mb-6">
+            <span class="material-icons text-primary mr-2 text-base">reply</span>
+            Author's Responses
+          </h3>
+
+          {% if author_responses %}
+          <div class="space-y-4">
+            {% for resp in author_responses %}
+            <div class="bg-blue-50/50 dark:bg-blue-900/10 p-5 rounded border border-blue-100 dark:border-blue-900/20">
+              <div class="flex justify-between items-start mb-3">
+                <span class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  Response Round {{ resp.round }}
+                </span>
+                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold italic">{{ resp.date_submitted|date:"M d, Y" }}</span>
+              </div>
+              <p class="text-gray-700 dark:text-gray-300 text-sm italic border-l-2 border-primary/30 pl-3 leading-relaxed">
+                "{{ resp.content|linebreaksbr }}"
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="text-center py-6 bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-600">
+            <p class="text-gray-500 italic text-sm">No author responses filed yet.</p>
+          </div>
+          {% endif %}
+        </div>
       </div>
 
       <!-- Decision Form Column -->

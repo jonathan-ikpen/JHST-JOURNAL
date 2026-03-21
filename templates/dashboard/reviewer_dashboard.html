@@ -130,19 +130,35 @@
                 </div>
               </div>
 
-              {% if review.date_completed %}
-              <span
-                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-green-50 text-green-700 border-green-200"
-              >
-                Submitted
-              </span>
-              {% else %}
-              <span
-                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200"
-              >
-                Pending
-              </span>
-              {% endif %}
+              <div class="flex flex-col items-end gap-2">
+                {% if review.date_completed %}
+                <span
+                  class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-green-50 text-green-700 border-green-200"
+                >
+                  Submitted
+                </span>
+                {% if review.manuscript.status == 'revision_submitted' and review.has_unreviewed_revision %}
+                <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold border border-blue-100 flex items-center gap-1">
+                  <span class="material-icons text-[10px]">update</span> REVISION FILED
+                </span>
+                {% endif %}
+                {% else %}
+                {% if review.manuscript.status == 'revision_submitted' and review.is_latest_round %}
+                <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full font-bold border border-emerald-100 flex items-center gap-1 animate-pulse">
+                  <span class="material-icons text-[10px]">new_releases</span> NEW REVISION
+                </span>
+                {% elif review.is_awaiting_author %}
+                <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full font-bold border border-slate-200 flex items-center gap-1">
+                  <span class="material-icons text-[10px]">hourglass_empty</span> AWAITING AUTHOR
+                </span>
+                {% endif %}
+                <span
+                  class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200"
+                >
+                  Pending
+                </span>
+                {% endif %}
+              </div>
             </div>
           </div>
           {% endfor %}

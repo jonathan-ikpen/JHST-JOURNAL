@@ -57,6 +57,59 @@ Assignment{% endblock %} {% block content %}
         </div>
       </div>
     </div>
+    
+    <!-- Author's Responses -->
+    <div class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50">
+      <h3 class="text-lg font-bold font-display text-slate-800 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-2">
+        <span class="material-icons text-primary text-base">reply</span>
+        Author's Responses
+      </h3>
+      
+      <div class="space-y-6">
+        {% if author_responses %}
+          {% for resp in author_responses %}
+          <div class="bg-primary/5 dark:bg-primary/10 p-5 rounded border border-primary/10">
+            <div class="flex justify-between items-center mb-3">
+              <div>
+                <span class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Author Response</span>
+                <span class="ml-2 text-[10px] font-bold bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase">Round {{ resp.round }}</span>
+              </div>
+              <span class="text-xs text-slate-400 italic">{{ resp.date_submitted|date:"M d, Y" }}</span>
+            </div>
+            <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap italic">"{{ resp.content }}"</p>
+          </div>
+          {% endfor %}
+        {% elif manuscript.response_to_reviewers and not manuscript.author_responses.exists %}
+          <div class="bg-primary/5 dark:bg-primary/10 p-5 rounded border border-primary/10">
+            <div class="flex justify-between items-center mb-3">
+              <div>
+                <span class="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider">Author Response</span>
+                <span class="ml-2 text-[10px] font-bold bg-slate-200 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded uppercase">Legacy</span>
+              </div>
+            </div>
+            <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap italic">"{{ manuscript.response_to_reviewers }}"</p>
+          </div>
+        {% else %}
+          <p class="text-sm text-slate-400 italic">No author responses available for this stage.</p>
+        {% endif %}
+      </div>
+
+      <p class="text-[10px] text-slate-400 mt-4">
+        <span class="font-bold">Note for Reviewer:</span> These responses were submitted by the author along with their revised manuscripts to address previous concerns.
+      </p>
+
+      {% if manuscript.status == 'revision_submitted' and review.has_unreviewed_revision %}
+      <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <a
+          href="{% url 'reviewer_check_revision' review.id %}"
+          class="inline-flex items-center gap-2 py-2.5 px-6 bg-primary text-white font-bold rounded hover:bg-primary-dark transition shadow-lg transform hover:-translate-y-0.5"
+        >
+          <span class="material-icons text-base">rate_review</span>
+          Check this Revision
+        </a>
+      </div>
+      {% endif %}
+    </div>
 
     <!-- Files -->
     <div
@@ -165,8 +218,18 @@ Assignment{% endblock %} {% block content %}
         Due: {{ review.due_date|date:"F d, Y" }}
       </p>
       {% endif %}
-      
-      {% if review.date_completed %}
+            {% if review.manuscript.status == 'revision_submitted' and review.is_latest_round %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold uppercase tracking-wider border border-emerald-200 dark:border-emerald-800 animate-pulse">
+          <span class="material-icons text-xs">new_releases</span>
+          NEW REVISION
+        </span>
+        {% elif review.is_awaiting_author %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-slate-900/30 text-slate-500 rounded-full text-[10px] font-bold uppercase tracking-wider border border-slate-200 dark:border-slate-800">
+          <span class="material-icons text-xs">hourglass_empty</span>
+          AWAITING AUTHOR
+        </span>
+        {% endif %}
+        {% if review.date_completed %}
       <div
         class="bg-green-50 dark:bg-green-900/10 p-4 rounded mb-4 text-center"
       >
@@ -201,18 +264,27 @@ Assignment{% endblock %} {% block content %}
       <div
         class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded mb-6 text-center"
       >
-        <span class="material-icons text-slate-400 text-3xl mb-2">pending</span>
+        <span class="material-icons text-slate-400 text-3xl mb-2">{% if review.is_awaiting_author %}hourglass_empty{% else %}pending{% endif %}</span>
         <p class="font-bold text-slate-700 dark:text-slate-200">
-          Pending Review
+          {% if review.is_awaiting_author %}Author Revision Pending{% else %}Pending Review{% endif %}
         </p>
       </div>
 
+      {% if review.is_awaiting_author %}
+      <button
+        disabled
+        class="block w-full text-center py-3 px-4 bg-slate-100 text-slate-400 font-bold rounded cursor-not-allowed border border-slate-200"
+      >
+        Waiting for Author...
+      </button>
+      {% else %}
       <a
-        href="{% url 'submit_review' manuscript.id %}"
+        href="{% url 'submit_review' review.id %}"
         class="block w-full text-center py-3 px-4 bg-primary text-white font-bold rounded hover:bg-primary-dark shadow-md transition transform hover:-translate-y-0.5"
       >
         Start Review Assessment
       </a>
+      {% endif %}
       {% endif %}
     </div>
   </div>

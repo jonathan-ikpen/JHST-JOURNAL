@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm
+from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm, RevisionForm
 from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement
 
 def _send_notification_email(subject, message, recipient_list):
@@ -101,26 +101,56 @@ def dashboard(request):
             'my_submissions': my_submissions,
             'unassigned_count': unassigned_count,
             'total_count': total_count,
-            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5],
             'current_status': status_filter,
             'current_sort': sort_by,
             'current_search': search_query
         })
     elif request.user.is_reviewer:
-        # Check if user is a reviewer
-        assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('-date_assigned')
+        # Get ALL reviews to calculate stats correctly
+        all_reviews = Review.objects.filter(reviewer=request.user)
         
-        # Calculate stats
-        total_reviews = assigned_reviews.count()
-        pending_reviews = assigned_reviews.filter(date_completed__isnull=True).count()
-        completed_reviews = assigned_reviews.filter(date_completed__isnull=False).count()
+        # LAZY SYNC: Ensure reviewer has assignments for the latest rounds 
+        # (Fixes cases where revision was submitted before automation was added)
+        # Find all manuscripts this reviewer is involved with
+        involved_manuscripts = Manuscript.objects.filter(
+            reviews__reviewer=request.user, 
+            status__in=['revision_submitted', 'under_review', 'needs_revision']
+        ).distinct()
+        
+        for ms in involved_manuscripts:
+            latest_rev = all_reviews.filter(manuscript=ms).order_by('-round', '-id').first()
+            if latest_rev and ms.current_round > latest_rev.round:
+                # Create the missing assignment for the current round
+                Review.objects.get_or_create(
+                    manuscript=ms,
+                    reviewer=request.user,
+                    round=ms.current_round,
+                    defaults={'invitation_status': 'accepted'}
+                )
+        
+        # Refresh all_reviews after sync
+        all_reviews = Review.objects.filter(reviewer=request.user)
+        total_reviews = all_reviews.count()
+        pending_reviews = all_reviews.filter(date_completed__isnull=True).count()
+        completed_reviews = all_reviews.filter(date_completed__isnull=False).count()
+
+        # Consolidate for the "Recent Activity" list: only one entry per (manuscript, round)
+        recent_all = all_reviews.order_by('-id')
+        seen_keys = set()
+        recent_consolidated = []
+        for r in recent_all:
+            key = (r.manuscript_id, r.round)
+            if key not in seen_keys:
+                recent_consolidated.append(r)
+                seen_keys.add(key)
+                if len(recent_consolidated) >= 5:
+                    break
         
         return render(request, 'dashboard/reviewer_dashboard.html', {
-            'assigned_reviews': assigned_reviews[:5], # Recent activity
+            'assigned_reviews': recent_consolidated, # Already limited to 5
             'total_reviews': total_reviews,
             'pending_reviews': pending_reviews,
             'completed_reviews': completed_reviews,
-            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
     elif request.user.is_researcher:
         # Calculate stats
@@ -135,13 +165,11 @@ def dashboard(request):
             'in_review_count': in_review_count,
             'approved_count': approved_count,
             'published_count': published_count,
-            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
 
     else:
         return render(request, 'dashboard/dashboard.html', {
             'my_submissions': my_submissions,
-            'notifications': Notification.objects.filter(recipient=request.user, is_read=False)[:5]
         })
 
 @login_required
@@ -149,9 +177,111 @@ def assigned_reviews(request):
     if not request.user.is_reviewer:
         return redirect('dashboard')
         
-    assigned_reviews = Review.objects.filter(reviewer=request.user).order_by('-round', '-date_assigned')
+    # LAZY SYNC: Ensure reviewer has assignments for the latest rounds 
+    # (Fixes cases where revision was submitted before automation was added)
+    involved_manuscripts = Manuscript.objects.filter(
+        reviews__reviewer=request.user, 
+        status__in=['revision_submitted', 'under_review', 'needs_revision']
+    ).distinct()
+    
+    for ms in involved_manuscripts:
+        latest_rev = Review.objects.filter(reviewer=request.user, manuscript=ms).order_by('-round', '-id').first()
+        if latest_rev and ms.current_round > latest_rev.round:
+            # Create the missing assignment for the current round
+            Review.objects.get_or_create(
+                manuscript=ms,
+                reviewer=request.user,
+                round=ms.current_round,
+                defaults={'invitation_status': 'accepted'}
+            )
+
+    # Consolidate: only show the LATEST review for each manuscript/round pair
+    all_assigned = Review.objects.filter(reviewer=request.user).order_by('-round', '-id')
+    seen_keys = set()
+    consolidated_reviews = []
+    
+    for r in all_assigned:
+        key = (r.manuscript_id, r.round)
+        if key not in seen_keys:
+            consolidated_reviews.append(r)
+            seen_keys.add(key)
+            
     return render(request, 'dashboard/assigned_reviews.html', {
-        'assigned_reviews': assigned_reviews
+        'assigned_reviews': consolidated_reviews
+    })
+
+@login_required
+def accept_review_invitation(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+    if review.invitation_status == 'invited':
+        review.invitation_status = 'accepted'
+        review.save()
+        messages.success(request, f"You have accepted the invitation to review '{review.manuscript.title}'.")
+    return redirect('assigned_reviews')
+
+@login_required
+def decline_review_invitation(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+    if request.method == 'POST' and review.invitation_status == 'invited':
+        reason = request.POST.get('reason')
+        review.invitation_status = 'declined'
+        review.declined_reason = reason
+        review.save()
+        messages.info(request, f"You have declined the invitation to review '{review.manuscript.title}'.")
+    return redirect('assigned_reviews')
+
+@login_required
+def reviewer_check_revision(request, review_id):
+    if not request.user.is_reviewer:
+        return redirect('dashboard')
+    
+    old_review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+    manuscript = old_review.manuscript
+    
+    # Security check: Ensure manuscript is in a state that allows checking revision
+    if manuscript.status not in ['revision_submitted', 'under_review', 'needs_revision']:
+         messages.error(request, "This action is only available for manuscripts currently being revised.")
+         return redirect('assigned_reviews')
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST) # NEW record, no instance
+        if form.is_valid():
+            # Use update_or_create to avoid duplicate records for the same round
+            review, created = Review.objects.update_or_create(
+                manuscript=manuscript,
+                reviewer=request.user,
+                round=manuscript.current_round,
+                defaults={
+                    'recommendation': form.cleaned_data.get('recommendation'),
+                    'comments': form.cleaned_data.get('comments'),
+                    'invitation_status': 'accepted',
+                    'date_completed': timezone.now()
+                }
+            )
+            
+            # Notify editors
+            for editor in User.objects.filter(is_editor=True):
+                Notification.objects.create(
+                    recipient=editor,
+                    message=f"Follow-up Advice: {request.user.get_full_name()} has submitted updated comments for Round {manuscript.current_round} of '{manuscript.title}'.",
+                    link=f'/dashboard/manuscript/{manuscript.id}/'
+                )
+                
+            messages.success(request, "Your follow-up recommendation has been recorded. The editor will be notified.")
+            return redirect('reviewer_manuscript_detail', review_id=review.id)
+    else:
+        # Pre-fill with old review content as a starting point
+        form = ReviewForm(initial={
+            'recommendation': old_review.recommendation,
+            'comments': old_review.comments
+        })
+    
+    return render(request, 'dashboard/submit_review.html', {
+        'form': form,
+        'manuscript': manuscript,
+        'review': old_review, 
+        'current_round': manuscript.current_round, # Used for accurate labeling
+        'is_locked': False
     })
 
 @login_required
@@ -198,13 +328,29 @@ def reviewer_manuscript_detail(request, review_id):
     if review_assignment.reviewer != request.user:
         return redirect('dashboard')
     
+    # Proactive Redirect: If this is NOT the latest round assignment, redirect to the latest one
+    # Note: We only do this if the user is looking at history; we still want them to be able 
+    # to SEE old rounds, but maybe we should clearly distinguish.
+    # Actually, the user says they want to see history. I'll just keep them on the page
+    # but fix the button issue I already found.
+    # Wait, I won't redirect here because "Viewing History" is a valid use case.
+    # I'll just ensure the ACTION BUTTONS point to the latest.
+    
     # Get all reviews by THIS reviewer for THIS manuscript (history)
-    reviewer_history = Review.objects.filter(manuscript=manuscript, reviewer=request.user).order_by('round')
+    reviewer_history = Review.objects.filter(manuscript=manuscript, reviewer=request.user).order_by('-round', '-id')
+    
+    # Filter author responses: Show those for the current review round,
+    # OR if this is the latest review and a new manuscript round has started, show those too
+    if review_assignment.is_latest_round and manuscript.current_round > review_assignment.round:
+        author_responses = manuscript.author_responses.filter(round__in=[review_assignment.round, manuscript.current_round]).order_by('-round', '-id')
+    else:
+        author_responses = manuscript.author_responses.filter(round=review_assignment.round).order_by('-id')
         
     return render(request, 'dashboard/reviewer_manuscript_detail.html', {
         'manuscript': manuscript,
         'review': review_assignment,
-        'reviewer_history': reviewer_history
+        'reviewer_history': reviewer_history,
+        'author_responses': author_responses
     })
 
 @login_required
@@ -215,8 +361,12 @@ def my_submission_detail(request, manuscript_id):
     if manuscript.author != request.user:
         return redirect('my_submissions')
         
+    # Get all responses by this author for this manuscript
+    author_responses = manuscript.author_responses.all().order_by('-round', '-id')
+        
     return render(request, 'dashboard/my_submission_detail.html', {
-        'manuscript': manuscript
+        'manuscript': manuscript,
+        'author_responses': author_responses
     })
 
 @login_required
@@ -228,27 +378,7 @@ def submit_manuscript(request):
             manuscript.author = request.user
             manuscript.save()
             
-            # Send notification to author
-            _send_notification_email(
-                f"Submission Received: {manuscript.title}",
-                f"Dear {manuscript.author.get_full_name()},\n\nYour manuscript '{manuscript.title}' has been successfully submitted to JHST. You can track its status in your dashboard.\n\nBest regards,\nJHST Editorial Team",
-                [manuscript.author.email]
-            )
-            
-            # In-app notification for Author
-            Notification.objects.create(
-                recipient=manuscript.author,
-                message=f"Submission Received: Your manuscript '{manuscript.title}' has been successfully submitted.",
-                link='/dashboard/my-submissions/'
-            )
-            
-            # Notify Editors
-            for editor in User.objects.filter(is_editor=True):
-                 Notification.objects.create(
-                    recipient=editor,
-                    message=f"New Submission: '{manuscript.title}' by {manuscript.author.get_full_name()}.",
-                    link='/dashboard/'
-                )
+            messages.success(request, "Your manuscript has been submitted successfully!")
             
             messages.success(request, "Your manuscript has been submitted successfully!")
             return redirect('dashboard')
@@ -283,8 +413,20 @@ def assign_reviewer(request, manuscript_id):
                 else:
                     due_date = timezone.now().date() + timezone.timedelta(days=14)
                 
-                Review.objects.create(manuscript=manuscript, reviewer=reviewer, due_date=due_date)
-                messages.success(request, f"Reviewer {reviewer.username} assigned successfully.")
+                # Check for invitation status
+                invite_only = request.POST.get('invite_only') == 'on'
+                status = 'invited' if invite_only else 'assigned'
+                
+                Review.objects.create(
+                    manuscript=manuscript, 
+                    reviewer=reviewer, 
+                    due_date=due_date,
+                    round=manuscript.current_round,
+                    invitation_status=status
+                )
+                
+                msg = f"Reviewer {reviewer.username} invited successfully." if invite_only else f"Reviewer {reviewer.username} assigned successfully."
+                messages.success(request, msg)
                 return redirect('dashboard')
     
     # Filter out reviewers who are already assigned
@@ -312,14 +454,24 @@ def submit_review(request, review_id):
     if request.method == 'POST':
         if is_locked:
             messages.error(request, "This review is locked and cannot be edited.")
-            return redirect('reviewer_manuscript_detail', review_id=review.id)
+            latest_assignment = manuscript.reviews.filter(reviewer=request.user).order_by('-round', '-id').first()
+            return redirect('reviewer_manuscript_detail', review_id=latest_assignment.id)
             
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             review = form.save(commit=False)
             review.date_completed = timezone.now()
             review.save()
-            messages.success(request, "Your review has been submitted. Thank you!")
+            
+            # Notify editors that a review has been submitted/updated
+            for editor in User.objects.filter(is_editor=True):
+                Notification.objects.create(
+                    recipient=editor,
+                    message=f"Review Submitted: {request.user.get_full_name()} has submitted their assessment for Round {review.round} of '{manuscript.title}'.",
+                    link=f'/dashboard/manuscript/{manuscript.id}/'
+                )
+                
+            messages.success(request, "Your assessment has been submitted. Thank you!")
             return redirect('dashboard')
     else:
         form = ReviewForm(instance=review)
@@ -372,35 +524,23 @@ def make_decision(request, manuscript_id):
         decision = request.POST.get('decision')
         if decision in ['accepted', 'rejected', 'needs_revision']:
             manuscript.status = decision
+            if decision == 'needs_revision':
+                manuscript.current_round += 1
+            manuscript.status_changed = True
             manuscript.save()
             
             if decision == 'needs_revision':
                 # Push all completed reviews to author visibility
                 manuscript.reviews.filter(date_completed__isnull=False).update(is_visible_to_author=True)
             
-            # Notify Author (Decision notification is mostly handled by signals now, 
-            # but let's keep the existing logic or adapt it)
-            # Actually, signals handle needs_revision. accepted/rejected still here?
-            # Let's keep accepted/rejected here for now since they are not in signals yet.
-            if decision in ['accepted', 'rejected']:
-                _send_notification_email(
-                    f"Decision on Manuscript: {manuscript.title}",
-                    f"Dear {manuscript.author.get_full_name()},\n\nA decision has been reached regarding your manuscript '{manuscript.title}': {decision.upper()}.\nPlease log in to your dashboard to view details and reviews.\n\nIMPORTANT: If your manuscript has been accepted, please proceed to pay the publication fee. Instructions can be found here: {request.build_absolute_uri('/about/publication-fees/')}\n\nBest regards,\nJHST Editorial Team",
-                    [manuscript.author.email]
-                )
-
-                # In-app notification for Author
-                Notification.objects.create(
-                    recipient=manuscript.author,
-                    message=f"Decision Reached: Your manuscript '{manuscript.title}' has been {decision.upper()}.",
-                    link='/dashboard/my-submissions/'
-                )
+            messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
             
             messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
         return redirect('dashboard')
     
-    reviews = manuscript.reviews.filter(date_completed__isnull=False).order_by('-round')
-    return render(request, 'dashboard/make_decision.html', {'manuscript': manuscript, 'reviews': reviews})
+    reviews = manuscript.reviews.filter(date_completed__isnull=False).order_by('-round', '-id')
+    author_responses = manuscript.author_responses.all().order_by('-round', '-id')
+    return render(request, 'dashboard/make_decision.html', {'manuscript': manuscript, 'reviews': reviews, 'author_responses': author_responses})
 
 @login_required
 def submit_revision(request, manuscript_id):
@@ -411,15 +551,37 @@ def submit_revision(request, manuscript_id):
         return redirect('my_submission_detail', manuscript_id=manuscript.id)
         
     if request.method == 'POST':
-        form = ManuscriptForm(request.POST, request.FILES, instance=manuscript)
+        form = RevisionForm(request.POST, request.FILES, instance=manuscript)
         if form.is_valid():
             manuscript = form.save(commit=False)
             manuscript.status = 'revision_submitted'
+            manuscript.status_changed = True
             manuscript.save()
+
+            # Save historical author response
+            from .models import AuthorResponse
+            AuthorResponse.objects.create(
+                manuscript=manuscript,
+                round=manuscript.current_round,
+                content=form.cleaned_data.get('response_to_reviewers')
+            )
+
+            # AUTOMATION: Create new review records for the NEXT round for all existing reviewers
+            # This ensures the new round appears as a fresh activity on their dashboards
+            previous_reviewers = Review.objects.filter(manuscript=manuscript).values_list('reviewer_id', flat=True).distinct()
+            for rev_id in previous_reviewers:
+                # Only create if doesn't exist for this exact round
+                Review.objects.get_or_create(
+                    manuscript=manuscript,
+                    reviewer_id=rev_id,
+                    round=manuscript.current_round,
+                    defaults={'invitation_status': 'accepted'}
+                )
+
             messages.success(request, "Your revision has been submitted successfully.")
             return redirect('my_submission_detail', manuscript_id=manuscript.id)
     else:
-        form = ManuscriptForm(instance=manuscript)
+        form = RevisionForm(instance=manuscript)
         
     return render(request, 'dashboard/submit_revision.html', {
         'form': form, 
@@ -479,21 +641,10 @@ def publish_article(request, manuscript_id):
 
         # Update manuscript status
         manuscript.status = 'published'
+        manuscript.status_changed = True
         manuscript.save()
 
-        # Notify Author
-        _send_notification_email(
-            f"Manuscript Published: {manuscript.title}",
-            f"Dear {manuscript.author.get_full_name()},\n\nWe are pleased to inform you that your manuscript '{manuscript.title}' has been published in {issue}.\nYou can view it here: {request.build_absolute_uri(f'/article/{Article.objects.get(manuscript=manuscript).id}/')}\n\nCongratulations!\nJHST Editorial Team",
-            [manuscript.author.email]
-        )
-
-        # In-app notification for Author
-        Notification.objects.create(
-            recipient=manuscript.author,
-            message=f"Published: Your manuscript '{manuscript.title}' is now published in {issue}.",
-            link=f"/article/{Article.objects.get(manuscript=manuscript).id}/"
-        )
+        messages.success(request, f"Article published to {issue} successfully.")
         messages.success(request, f"Article published to {issue} successfully.")
         return redirect('dashboard')
     
@@ -506,11 +657,13 @@ def dashboard_manuscript_detail(request, manuscript_id):
         return redirect('dashboard')
     
     manuscript = get_object_or_404(Manuscript, id=manuscript_id)
-    reviews = manuscript.reviews.all().order_by('-round')
+    reviews = manuscript.reviews.all().order_by('-round', '-id')
+    author_responses = manuscript.author_responses.all().order_by('-round', '-id')
     
     return render(request, 'dashboard/manuscript_detail.html', {
         'manuscript': manuscript,
         'reviews': reviews,
+        'author_responses': author_responses,
     })
 
 @login_required
