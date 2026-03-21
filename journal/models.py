@@ -34,6 +34,8 @@ class Manuscript(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='submitted')
     keywords = models.CharField(max_length=255, help_text="Comma-separated keywords")
     is_paid = models.BooleanField(default=False, help_text="Has the publication fee been paid?")
+    response_to_reviewers = models.TextField(blank=True, help_text="Author's response to reviewer concerns")
+    current_round = models.PositiveIntegerField(default=1, help_text="The current version/cycle identifier")
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,7 +43,7 @@ class Manuscript(models.Model):
 
     @property
     def visible_reviews(self):
-        return self.reviews.filter(is_visible_to_author=True).order_by('-round')
+        return self.reviews.filter(is_visible_to_author=True).order_by('-round', '-id')
 
     def save(self, *args, **kwargs):
         self.status_changed = self.status != self._initial_status
@@ -65,6 +67,7 @@ class Manuscript(models.Model):
             return 'w-full'
         return 'w-0'
 
+
     @property
     def progress_color_class(self):
         if self.status == 'rejected':
@@ -87,6 +90,15 @@ class Review(models.Model):
     recommendation = models.CharField(max_length=20, choices=RECOMMENDATION_CHOICES, blank=True)
     is_visible_to_author = models.BooleanField(default=False)
     round = models.PositiveIntegerField(default=1)
+    
+    INVITATION_STATUS_CHOICES = [
+        ('assigned', 'Assigned'),
+        ('invited', 'Invited'),
+        ('accepted', 'Accepted'),
+        ('declined', 'Declined'),
+    ]
+    invitation_status = models.CharField(max_length=20, choices=INVITATION_STATUS_CHOICES, default='assigned')
+    declined_reason = models.TextField(blank=True, null=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -98,14 +110,49 @@ class Review(models.Model):
         self._initial_date_completed = self.date_completed
 
     @property
+    def has_next_round(self):
+        return Review.objects.filter(
+            manuscript=self.manuscript,
+            reviewer=self.reviewer,
+            round=self.round + 1
+        ).exists()
+
+    @property
+    def has_unreviewed_revision(self):
+        """Returns True if there is a revision submitted after this review was completed.
+           Excludes history if a subsequent review record already exists."""
+        if not self.date_completed or self.has_next_round:
+            return False
+            
+        latest_response = self.manuscript.author_responses.order_by('-date_submitted').first()
+        if not latest_response:
+            return False
+            
+        # If response is for a NEWER round, it's definitely unreviewed
+        if latest_response.round > self.round:
+            return True
+            
+        # If same round, compare timestamps
+        return latest_response.date_submitted > self.date_completed
+
+    @property
     def is_latest_round(self):
         # Use _id fields to avoid triggering full object instantiation or recursive property lookups
+        # With multiple follow-ups per round, the "latest" is the one with the highest ID
         from django.db.models import Max
         res = self.__class__.objects.filter(
             manuscript_id=self.manuscript_id, 
             reviewer_id=self.reviewer_id
-        ).aggregate(max=Max('round'))
-        return self.round == res['max']
+        ).aggregate(max_id=Max('id'))
+        return self.id == res['max_id']
+
+    @property
+    def is_awaiting_author(self):
+        """Returns True if this is a pending round assignment where the author hasn't submitted yet."""
+        if self.date_completed:
+            return False
+        # Check if an author response exists for this specific round yet
+        return not self.manuscript.author_responses.filter(round=self.round).exists()
 
     def __str__(self):
         return f"Review of {self.manuscript.title} by {self.reviewer.username}"
@@ -134,6 +181,18 @@ class Article(models.Model):
 
     def __str__(self):
         return self.manuscript.title
+
+class AuthorResponse(models.Model):
+    manuscript = models.ForeignKey(Manuscript, on_delete=models.CASCADE, related_name='author_responses')
+    round = models.PositiveIntegerField()
+    content = models.TextField()
+    date_submitted = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-round']
+
+    def __str__(self):
+        return f"Response for {self.manuscript.title} - Round {self.round}"
 
 class Notification(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')

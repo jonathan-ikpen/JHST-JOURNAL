@@ -1,0 +1,17 @@
+Checking Manuscripts for Response to Reviewers:
+--------------------------------------------------
+ID: 9 | Status: revision_submitted
+Response (len=33): I've implemented the corrections.
+--------------------------------------------------
+ID: 7 | Status: submitted
+Response (len=0): 
+--------------------------------------------------
+ID: 5 | Status: published
+Response (len=0): 
+--------------------------------------------------
+ID: 4 | Status: submitted
+Response (len=0): 
+--------------------------------------------------
+ID: 3 | Status: published
+Response (len=0): 
+--------------------------------------------------
