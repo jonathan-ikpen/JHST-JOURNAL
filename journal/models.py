@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 class User(AbstractUser):
     is_researcher = models.BooleanField(default=False)
@@ -12,6 +13,8 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+# ... (Manuscript, Review, Volume, Issue, Article, Notification, Announcement unchanged) ...
 
 class Manuscript(models.Model):
     STATUS_CHOICES = [
@@ -296,15 +299,38 @@ class PageSection(models.Model):
         ('main', 'Main Content'),
         ('sidebar', 'Sidebar'),
     ]
+    SECTION_TYPE_CHOICES = [
+        ('STANDARD', 'Standard (Rich Text)'),
+        ('VIDEO', 'Vimeo Video'),
+        ('ORGANOGRAM', 'Organogram (Leadership List)'),
+        ('GRID', '2-Column Grid'),
+    ]
+
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='sections')
     section_title = models.CharField(max_length=255, blank=True, null=True)
-    content = models.TextField(help_text="HTML content for this section")
+    section_type = models.CharField(max_length=20, choices=SECTION_TYPE_CHOICES, default='STANDARD')
+    
+    # Standard content
+    content = RichTextField(blank=True, null=True, help_text="Text content for standard or grid sections")
     image = models.ImageField(upload_to='page_sections/', blank=True, null=True)
+    
+    # Video content
+    vimeo_url = models.URLField(blank=True, null=True, help_text="Paste the Vimeo video URL here (e.g., https://vimeo.com/12345)")
+    
+    @property
+    def vimeo_id(self):
+        if not self.vimeo_url:
+            return None
+        # Extract ID from various formats like https://vimeo.com/12345 or just 12345
+        import re
+        match = re.search(r'(\d+)', self.vimeo_url)
+        return match.group(1) if match else None
+
     location = models.CharField(max_length=10, choices=LOCATION_CHOICES, default='main')
     order = models.IntegerField(default=0, help_text="Order within chosen location. Leave as 0 to append.")
 
     def __str__(self):
-        return f"{self.get_location_display()}: {self.section_title or f'Section {self.id}'}"
+        return f"{self.get_location_display()} ({self.get_section_type_display()}): {self.section_title or f'Section {self.id}'}"
 
     class Meta:
         ordering = ['location', 'order', 'id']
@@ -317,3 +343,17 @@ class PageSection(models.Model):
             else:
                 self.order = 1
         super().save(*args, **kwargs)
+
+class OrganogramItem(models.Model):
+    section = models.ForeignKey(PageSection, on_delete=models.CASCADE, related_name='organogram_items')
+    number = models.CharField(max_length=10, help_text="e.g., 01, 02")
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    color_code = models.CharField(max_length=7, default='#00529B', help_text="Hex color code (e.g., #00529B)")
+    order = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.number}: {self.title}"
+
+    class Meta:
+        ordering = ['order', 'number']
