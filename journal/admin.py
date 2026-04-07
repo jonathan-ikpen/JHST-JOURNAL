@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
+from django.db import models
 from ckeditor.widgets import CKEditorWidget
 from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement, Page, PageSection
 
@@ -22,24 +23,14 @@ admin.site.register(Issue)
 admin.site.register(Article)
 admin.site.register(Announcement)
 
-class PageSectionForm(forms.ModelForm):
-    class Meta:
-        model = PageSection
-        fields = '__all__'
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # We can selectively apply CKEditor widget here if we want, 
-        # but since we have a single text_content field, 
-        # we'll provide CKEditor by default for better UX, or use formfield_overrides.
-        if self.instance and self.instance.content_type == 'html':
-             self.fields['text_content'].widget = CKEditorWidget()
-
-class PageSectionInline(admin.TabularInline):
+class PageSectionInline(admin.StackedInline):
     model = PageSection
-    extra = 1
-    form = PageSectionForm
-    fields = ('section_key', 'content_type', 'text_content', 'image_content', 'order')
+    extra = 0
+    fields = ('section_key', 'content_type', 'order', 'text_content', 'image_content', 'video_url', 'external_link')
+    classes = ('collapse',)
+    formfield_overrides = {
+        models.TextField: {'widget': CKEditorWidget()},
+    }
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
@@ -53,7 +44,11 @@ class PageAdmin(admin.ModelAdmin):
 class PageSectionAdmin(admin.ModelAdmin):
     list_display = ('page', 'section_key', 'content_type', 'order')
     search_fields = ('section_key', 'text_content')
-    form = PageSectionForm
+    list_filter = ('page', 'content_type')
+    fields = ('page', 'section_key', 'content_type', 'text_content', 'image_content', 'video_url', 'external_link', 'order')
+    formfield_overrides = {
+        models.TextField: {'widget': CKEditorWidget()},
+    }
 
 # Admin Site Customization
 admin.site.site_header = "JHST Administration"

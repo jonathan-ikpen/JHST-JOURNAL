@@ -194,15 +194,18 @@ class PageSection(models.Model):
         ('text', 'Plain Text'),
         ('html', 'Rich HTML Content'),
         ('image', 'Image Upload'),
+        ('video', 'Video Embed'),
     ]
 
     page = models.ForeignKey(Page, related_name="sections", on_delete=models.CASCADE)
     section_key = models.CharField(max_length=100, help_text="Unique key identifier for the section (e.g. 'hero_title')")
     content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES, default='text')
     
-    # We'll use a single text field but in Admin we'll use CKEditor for 'html' type
+    # CMS Fields
     text_content = models.TextField(blank=True, null=True, help_text="Used for text and HTML content")
     image_content = models.ImageField(upload_to='page_images/', blank=True, null=True, help_text="Upload images here")
+    video_url = models.URLField(blank=True, null=True, help_text="Link to Vimeo or YouTube video")
+    external_link = models.URLField(blank=True, null=True, help_text="External link for images/banners")
     
     order = models.PositiveIntegerField(default=0, help_text="Order in which sections appear in Admin")
 
