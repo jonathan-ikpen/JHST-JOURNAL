@@ -1,18 +1,21 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.db import models
+from ckeditor.widgets import CKEditorWidget
 from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement, Page, PageSection
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        ('Journal Roles', {'fields': ('is_researcher', 'is_reviewer', 'is_editor')}),
-        ('Professional Info', {'fields': ('affiliation', 'degree', 'bio')}),
+        ('Role & Affiliation', {'fields': ('is_researcher', 'is_reviewer', 'is_editor', 'affiliation')}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Role & Affiliation', {'fields': ('is_researcher', 'is_reviewer', 'is_editor', 'affiliation')}),
     )
     list_display = UserAdmin.list_display + ('is_researcher', 'is_reviewer', 'is_editor', 'affiliation')
     list_filter = UserAdmin.list_filter + ('is_researcher', 'is_reviewer', 'is_editor')
 
+
 class PageSectionInline(admin.StackedInline):
-    from ckeditor.widgets import CKEditorWidget
-    from django.db import models
     model = PageSection
     extra = 0
     fields = ('section_key', 'content_type', 'order', 'text_content', 'image_content', 'video_url', 'external_link')
@@ -31,8 +34,6 @@ class PageAdmin(admin.ModelAdmin):
 
 @admin.register(PageSection)
 class PageSectionAdmin(admin.ModelAdmin):
-    from ckeditor.widgets import CKEditorWidget
-    from django.db import models
     list_display = ('page', 'section_key', 'content_type', 'order')
     search_fields = ('section_key', 'text_content')
     list_filter = ('page', 'content_type')
@@ -40,6 +41,7 @@ class PageSectionAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': CKEditorWidget()},
     }
+
 
 class ReviewInline(admin.TabularInline):
     model = Review
@@ -57,6 +59,7 @@ class ManuscriptAdmin(admin.ModelAdmin):
     list_filter = ('status', 'submitted_date')
     search_fields = ('title', 'author__username')
 
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Manuscript, ManuscriptAdmin)
 admin.site.register(Review)
@@ -64,6 +67,11 @@ admin.site.register(Volume)
 admin.site.register(Issue)
 admin.site.register(Article)
 admin.site.register(Announcement)
+
+# Admin Site Customization
+admin.site.site_header = "JHST Administration"
+admin.site.site_title = "JHST Admin Portal"
+admin.site.index_title = "Welcome to Journal of Hydrocarbon Science and Technology Admin Portal"
 
 # Admin Site Customization
 admin.site.site_header = "JHST Administration"

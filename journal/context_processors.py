@@ -12,8 +12,6 @@ def notifications(request):
         return {'notifications': unread_notifications}
     return {'notifications': []}
 
-from .models import Page
-
 def sidebar_context(request):
     """
     Makes the CMS sidebar page and its sections available sitewide.

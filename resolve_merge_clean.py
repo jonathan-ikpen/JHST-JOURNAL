@@ -28,12 +28,16 @@ theirs_admin = get_git_file('origin/dev', 'journal/admin.py')
 
 ours_cms_admin = ours_admin[ours_admin.find('class PageSectionInline'):ours_admin.find('# Admin Site Customization')]
 theirs_main_admin = theirs_admin[:theirs_admin.find('class OrganogramItemInline')]
+
+# We must keep their ReviewInline and ManuscriptAdmin, as well as Manuscript registration
+theirs_workflow_admin = theirs_admin[theirs_admin.find('class ReviewInline'):theirs_admin.find('admin.site.register(User, CustomUserAdmin)')]
+
 # their admin registers User, Manuscript, etc at the bottom
 theirs_registers = theirs_admin[theirs_admin.find('admin.site.register(User, CustomUserAdmin)'):]
 theirs_registers = theirs_registers.replace('admin.site.register(Page, PageAdmin)\n', '')
 theirs_registers = theirs_registers.replace('admin.site.register(PageSection, PageSectionAdmin)\n', '')
 
-final_admin = theirs_main_admin + "\n\n" + ours_cms_admin + "\n\n" + theirs_registers + """
+final_admin = theirs_main_admin + "\n" + ours_cms_admin + "\n" + theirs_workflow_admin + "\n" + theirs_registers + """
 # Admin Site Customization
 admin.site.site_header = "JHST Administration"
 admin.site.site_title = "JHST Admin Portal"
@@ -49,8 +53,6 @@ print("admin.py resolved!")
 ours_settings = get_git_file('b94ec3d', 'journal_system/settings.py')
 theirs_settings = get_git_file('origin/dev', 'journal_system/settings.py')
 
-# we just want their email/ckeditor settings but we need our context processor
-# Actually, let's keep theirs but inject the context processor
 final_settings = theirs_settings.replace(
     '"journal.context_processors.notifications",',
     '"journal.context_processors.notifications",\n                "journal.context_processors.sidebar_context",'
@@ -63,7 +65,6 @@ print("settings.py resolved!")
 
 # ----------------- VIEWS & URLS -----------------
 # For views and urls, our CMS dynamically renders everything via slug. 
-# They did not have anything different in urls/views except maybe notifications?
 ours_views = get_git_file('b94ec3d', 'journal/views.py')
 ours_urls = get_git_file('b94ec3d', 'journal/urls.py')
 with open('journal/views.py', 'w', encoding='utf-8') as f:
@@ -73,5 +74,6 @@ with open('journal/urls.py', 'w', encoding='utf-8') as f:
 
 # Context Processors
 with open('journal/context_processors.py', 'w', encoding='utf-8') as f:
-    f.write(get_git_file('origin/dev', 'journal/context_processors.py') + "\n" + get_git_file('b94ec3d', 'journal/context_processors.py'))
+    f.write(get_git_file('origin/dev', 'journal/context_processors.py') + "\n" + get_git_file('b94ec3d', 'journal/context_processors.py').replace('from .models import Page\n\n', ''))
 
+print("All unmerged python files resolved!")
