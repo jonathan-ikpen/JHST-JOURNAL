@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-lg)p^ufn-*838-2b=ic3il#$4t&!lyq3zkb_##3up$g263m#eg"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['jhst.org', 'www.jhst.org', 'localhost', '127.0.0.1', '[::1]']
 
@@ -27,8 +27,19 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'journal',
+    "journal",
+    'ckeditor',
 ]
+
+# CKEditor Configuration
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'height': 'auto',
+        'width': 'full',
+        'extraAllowedContent': '*(*);*', # Prevent stripping classes
+    },
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
