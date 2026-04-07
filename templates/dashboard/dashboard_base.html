@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Dashboard - JHST{% endblock %}</title>
-    <link rel="icon" href="{% static 'assets/images/jhst-logo.png' %}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -102,26 +101,6 @@
       }
       .dark .sidebar-link.active::before {
         background-color: #4ade80;
-      }
-
-      /* Notification Blink */
-      @keyframes blink {
-        0% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.6; transform: scale(1.1); }
-        100% { opacity: 1; transform: scale(1); }
-      }
-      .animate-blink {
-        animation: blink 1.5s ease-in-out infinite;
-      }
-
-      /* Notification Pulse Background */
-      @keyframes pulse-red {
-        0% { background-color: rgba(239, 68, 68, 0.05); }
-        50% { background-color: rgba(239, 68, 68, 0.15); }
-        100% { background-color: rgba(239, 68, 68, 0.05); }
-      }
-      .animate-pulse-red {
-        animation: pulse-red 2s ease-in-out infinite;
       }
 
       /* Collapsed State Utilities */
@@ -460,7 +439,7 @@
           </a>
 
           <div
-            class="relative notification-bell cursor-pointer p-2 rounded-full transition-all duration-300 {% if notifications %}bg-red-50 dark:bg-red-900/20 animate-pulse-red hover:bg-red-100 dark:hover:bg-red-900/30{% else %}hover:bg-slate-100 dark:hover:bg-slate-800{% endif %}"
+            class="relative notification-bell cursor-pointer"
             id="notification-bell"
           >
             <span
@@ -469,7 +448,7 @@
             >
             {% if notifications %}
             <span
-              class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900 animate-blink"
+              class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"
             ></span>
             {% endif %}
 

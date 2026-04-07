@@ -1,62 +1,32 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+﻿{% extends 'base.html' %} {% load static %} {% block content %}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
   <main class="lg:col-span-2 space-y-8">
-    {% if page %}
-      {% for section in page.main_sections %}
-        <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
-          {% if section.section_title %}
-            <h2 class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary">
-              {{ section.section_title }}
-            </h2>
-          {% endif %}
-          
-          <div class="cms-section-content {% if "Chief Editor" in section.section_title %}clearfix{% endif %}">
-            {% if section.image %}
-              <img src="{{ section.image.url }}" alt="{{ section.section_title }}" 
-                   class="{% if "Chief Editor" in section.section_title %}fblock mx-auto mb-4 float-left mr-6 mb-2 w-48 sm:w-60 h-48 sm:h-60 rounded-full object-cover{% else %}mb-4 rounded shadow-sm max-w-full h-auto{% endif %}">
-            {% endif %}
-
-            {% if section.section_type == 'VIDEO' %}
-              <div class="aspect-w-16 aspect-h-9">
-                <div style="padding: 56.25% 0 0 0; position: relative">
-                  <iframe
-                    src="https://player.vimeo.com/video/{{ section.vimeo_id|default:'1129153382' }}?byline=0&title=0&portrait=0&badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0"
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-                    title="{{ section.section_title }}"
-                  ></iframe>
-                </div>
-              </div>
-              <script src="https://player.vimeo.com/api/player.js"></script>
-              {{ section.content|safe }}
-            {% elif section.section_type == 'ORGANOGRAM' %}
-              {{ section.content|safe }}
-              <div class="space-y-4 relative pl-8 mt-4">
-                {% for item in section.organogram_items.all %}
-                  <div class="organogram-item">
-                    <div class="organogram-number" style="background-color: {{ item.color_code|default:'#00529B' }}">{{ item.number }}</div>
-                    <div class="organogram-content flex-1">
-                      <div class="organogram-title bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark">{{ item.title }}</div>
-                      <div class="organogram-description border border-border-light dark:border-border-dark">{{ item.description }}</div>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-            {% elif section.section_type == 'GRID' %}
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {{ section.content|safe }}
-              </div>
-            {% else %}
-              {{ section.content|safe }}
-            {% endif %}
-            
-            {% if "Chief Editor" in section.section_title %}<div class="clear-both"></div>{% endif %}
-          </div>
-        </section>
-      {% endfor %}
-    {% else %}
+    <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+      <h2
+        class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+      >
+        An Introduction to the Journal
+      </h2>
+      <div class="aspect-w-16 aspect-h-9">
+        <div style="padding: 56.25% 0 0 0; position: relative">
+          <iframe
+            src="https://player.vimeo.com/video/1129153382?byline=0&title=0&portrait=0&badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            "
+            title="JHST, PTI"
+          ></iframe>
+        </div>
+        <script src="https://player.vimeo.com/api/player.js"></script>
+      </div>
+    </section>
     <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
       <h2
         class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
@@ -184,7 +154,46 @@
             unprecedented transformation, the Journal of Hydrocarbon Science and
             Technology (JHST) emerges as a timely response to a critical need —
             the need to rethink, redefine, and renew our approach to energy
-            development, sustainability, and innovation...
+            development, sustainability, and innovation. The Petroleum Training
+            Institute (PTI), for over five decades, has served as Nigeria’s
+            premier institution for technical excellence in the petroleum and
+            allied sectors. Through education, applied research, and industry
+            collaboration, PTI has equipped generations of professionals with
+            the competence and creativity to advance the oil and gas industry.
+            The JHST is a natural evolution of this legacy — a bridge between
+            research and real-world application, between academia and industry,
+            between innovation and impact.
+          </p>
+          <p class="mb-4 leading-relaxed">
+            Our mission at JHST is to provide a global platform for original,
+            peer-reviewed research that deepens understanding and drives
+            innovation across the hydrocarbon value chain — from exploration and
+            production to refining, environmental management, renewable
+            integration, and digital transformation. We welcome contributions
+            that address both the opportunities and the challenges of the energy
+            transition — where hydrocarbons, renewables, and new technologies
+            converge to shape a sustainable future.
+          </p>
+          <p class="mb-4 leading-relaxed">
+            In line with PTI’s commitment to excellence, JHST upholds rigorous
+            standards of scholarly integrity, transparency, and quality. Our
+            distinguished editorial and review boards bring together leading
+            experts, scientists, and professionals from around the world —
+            ensuring that each publication meets the highest levels of technical
+            and ethical credibility. We envision this Journal not merely as a
+            collection of articles, but as a platform for dialogue, a catalyst
+            for innovation, and a repository of insight — where ideas transform
+            into technologies, and research drives resilience in an evolving
+            energy economy.
+          </p>
+          <p class="mb-4 leading-relaxed">
+            As we embark on this exciting journey, I invite researchers,
+            industry professionals, policymakers, and students alike to
+            contribute, collaborate, and engage with JHST. Together, we can
+            advance the science and technology that sustain our energy future —
+            responsibly, intelligently, and inclusively. Welcome to the Journal
+            of Hydrocarbon Science and Technology — where energy meets
+            innovation.
           </p>
           <p class="font-semibold text-primary">Dr. Fredrick B. Owoyemi</p>
           <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -194,7 +203,6 @@
         <div class="clear-both"></div>
       </div>
     </section>
-    {% endif %}
     <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
       <h2
         class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"

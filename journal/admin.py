@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement, Page, PageSection, OrganogramItem
+from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -12,45 +12,8 @@ class CustomUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ('is_researcher', 'is_reviewer', 'is_editor', 'affiliation')
     list_filter = UserAdmin.list_filter + ('is_researcher', 'is_reviewer', 'is_editor')
 
-class OrganogramItemInline(admin.TabularInline):
-    model = OrganogramItem
-    extra = 1
-
-class PageSectionInline(admin.StackedInline):
-    model = PageSection
-    fields = ('location', 'section_type', 'section_title', 'content', 'image', 'vimeo_url', 'order')
-    extra = 1
-
-@admin.register(Page)
-class PageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'updated_at')
-    prepopulated_fields = {'slug': ('title',)}
-    inlines = [PageSectionInline]
-
-@admin.register(PageSection)
-class PageSectionAdmin(admin.ModelAdmin):
-    list_display = ('page', 'section_title', 'section_type', 'location', 'order')
-    list_filter = ('page', 'section_type', 'location')
-    inlines = [OrganogramItemInline]
-
-class ReviewInline(admin.TabularInline):
-    model = Review
-    extra = 1
-    fields = ('reviewer', 'due_date', 'comments', 'recommendation')
-    
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "reviewer":
-            kwargs["queryset"] = User.objects.filter(is_reviewer=True)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-class ManuscriptAdmin(admin.ModelAdmin):
-    inlines = [ReviewInline]
-    list_display = ('title', 'author', 'status', 'submitted_date')
-    list_filter = ('status', 'submitted_date')
-    search_fields = ('title', 'author__username')
-
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Manuscript, ManuscriptAdmin)
+admin.site.register(Manuscript)
 admin.site.register(Review)
 admin.site.register(Volume)
 admin.site.register(Issue)

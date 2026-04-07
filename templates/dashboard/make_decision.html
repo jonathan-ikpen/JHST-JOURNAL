@@ -1,4 +1,4 @@
-{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Make
+﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Make
 Decision{% endblock %} {% block content %}
 <div class="max-w-5xl mx-auto">
   <div
@@ -40,9 +40,8 @@ Decision{% endblock %} {% block content %}
                   {{ review.reviewer.username|slice:":2" }}
                 </div>
                 <div>
-                  <p class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  <p class="text-sm font-bold text-gray-900 dark:text-white">
                     {{ review.reviewer.username }}
-                    <span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-500 uppercase tracking-widest font-bold">Round {{ review.round }}</span>
                   </p>
                   <p class="text-xs text-gray-500">
                     {{ review.reviewer.affiliation }}
@@ -72,36 +71,6 @@ Decision{% endblock %} {% block content %}
           </p>
         </div>
         {% endif %}
-
-        <!-- Author's Responses -->
-        <div class="mt-10 pt-6 border-t border-gray-100 dark:border-gray-800">
-          <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center mb-6">
-            <span class="material-icons text-primary mr-2 text-base">reply</span>
-            Author's Responses
-          </h3>
-
-          {% if author_responses %}
-          <div class="space-y-4">
-            {% for resp in author_responses %}
-            <div class="bg-blue-50/50 dark:bg-blue-900/10 p-5 rounded border border-blue-100 dark:border-blue-900/20">
-              <div class="flex justify-between items-start mb-3">
-                <span class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                  Response Round {{ resp.round }}
-                </span>
-                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold italic">{{ resp.date_submitted|date:"M d, Y" }}</span>
-              </div>
-              <p class="text-gray-700 dark:text-gray-300 text-sm italic border-l-2 border-primary/30 pl-3 leading-relaxed">
-                "{{ resp.content|linebreaksbr }}"
-              </p>
-            </div>
-            {% endfor %}
-          </div>
-          {% else %}
-          <div class="text-center py-6 bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-600">
-            <p class="text-gray-500 italic text-sm">No author responses filed yet.</p>
-          </div>
-          {% endif %}
-        </div>
       </div>
 
       <!-- Decision Form Column -->
@@ -127,7 +96,6 @@ Decision{% endblock %} {% block content %}
                 class="w-full rounded-md border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2.5"
               >
                 <option value="accepted">Accept Manuscript</option>
-                <option value="needs_revision">Needs Revision / Resubmission</option>
                 <option value="rejected">Reject Manuscript</option>
               </select>
             </div>

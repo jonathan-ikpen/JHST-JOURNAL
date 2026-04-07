@@ -35,7 +35,7 @@
   <div class="flex gap-2">
     <!-- Primary Action Button based on Status (Optional convenience, detailed actions below) -->
     <!-- prettier-ignore -->
-    {% if manuscript.status == 'submitted' or manuscript.status == 'under_review' or manuscript.status == 'revision_submitted' %}
+    {% if manuscript.status == 'submitted' or manuscript.status == 'under_review' %}
     <a
       href="{% url 'make_decision' manuscript.id %}"
       class="inline-flex items-center justify-center bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition shadow-sm no-wrap whitespace-nowrap w-full"
@@ -165,7 +165,6 @@
       <p class="text-slate-400 italic">No file uploaded.</p>
       {% endif %}
     </div>
-
   </div>
 
   <!-- Right Column: Actions & Workflow -->
@@ -306,40 +305,23 @@
         Assigned Reviewers
       </h3>
       {% if reviews %}
-      <ul class="space-y-4">
+      <ul class="space-y-3">
         {% for review in reviews %}
-        <li class="flex flex-col gap-2 border-b border-slate-50 dark:border-slate-800/50 last:border-0 pb-4 last:pb-0">
-          <div class="flex items-center justify-between text-sm">
-            <div class="flex items-center gap-2">
-              <div
-                class="h-6 w-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-400"
-              >
-                {{ review.reviewer.username|slice:":1"|upper }}
-              </div>
-              <div class="flex flex-col">
-                <span class="text-slate-700 dark:text-slate-300 font-medium">{{ review.reviewer.get_full_name|default:review.reviewer.username }}</span>
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Round {{ review.round }}</span>
-              </div>
+        <li class="flex items-center justify-between text-sm">
+          <div class="flex items-center gap-2">
+            <div
+              class="h-6 w-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-400"
+            >
+              {{ review.reviewer.username|slice:":1"|upper }}
             </div>
-            {% if review.date_completed %}
-            <div class="flex flex-col items-end gap-1">
-              <span class="text-green-600 text-xs font-bold">Completed</span>
-              {% if manuscript.status == 'revision_submitted' %}
-              <!-- Check if this is the latest round for this reviewer to show "Request Re-review" -->
-              <!-- Simplification: Show it for any completed review; the view handles existing duplicates -->
-              {% if not review.has_next_round %}
-              <a href="{% url 'request_re_review' review.id %}" class="text-primary hover:underline text-[10px] font-bold uppercase tracking-tight">Request R{{ review.round|add:1 }}</a>
-              {% endif %}
-              {% endif %}
-            </div>
-            {% else %}
-            <span class="text-amber-500 text-xs font-bold">Pending</span>
-            {% endif %}
+            <!-- prettier-ignore -->
+            <span class="text-slate-700 dark:text-slate-300">{{ review.reviewer.get_full_name|default:review.reviewer.username }}</span
+            >
           </div>
-          {% if review.comments %}
-          <div class="bg-slate-50 dark:bg-slate-800/30 p-2 rounded text-[11px] text-slate-500 dark:text-slate-400 italic border-l-2 border-slate-200 dark:border-slate-700">
-            "{{ review.comments|truncatechars:100 }}"
-          </div>
+          {% if review.date_completed %}
+          <span class="text-green-600 text-xs font-bold">Completed</span>
+          {% else %}
+          <span class="text-amber-500 text-xs font-bold">Pending</span>
           {% endif %}
         </li>
         {% endfor %}
@@ -352,30 +334,6 @@
       >
         + Assign Reviewer
       </a>
-      {% endif %}
-    </div>
-
-    <!-- Author's Responses -->
-    <div class="bg-white dark:bg-card-dark rounded shadow-card p-6 border border-slate-200 dark:border-slate-800/50">
-      <h3 class="text-sm font-bold font-display text-slate-400 uppercase tracking-widest mb-4">
-        Author's Responses
-      </h3>
-      {% if author_responses %}
-      <ul class="space-y-4">
-        {% for resp in author_responses %}
-        <li class="flex flex-col gap-2 border-b border-slate-50 dark:border-slate-800/50 last:border-0 pb-4 last:pb-0">
-          <div class="flex items-center justify-between text-sm">
-            <span class="text-slate-700 dark:text-slate-300 font-bold">Round {{ resp.round }}</span>
-            <span class="text-[10px] text-slate-400 italic uppercase">{{ resp.date_submitted|date:"M d, Y" }}</span>
-          </div>
-          <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded text-slate-600 dark:text-slate-400 text-xs italic border border-blue-100 dark:border-blue-900/30 leading-relaxed">
-            "{{ resp.content|truncatechars:100 }}"
-          </div>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p class="text-slate-400 italic text-xs">No responses received yet.</p>
       {% endif %}
     </div>
   </div>

@@ -9,26 +9,18 @@
     </div>
   </div>
 
-  {% if page and page.sidebar_sections %}
-    {% for section in page.sidebar_sections %}
-      <div class="bg-card-light dark:bg-card-dark p-4 rounded shadow-sm">
-        {% if section.section_title %}
-          <h3 class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-3">
-            {{ section.section_title }}
-          </h3>
-        {% endif %}
-        
-        <div class="sidebar-item-content">
-          {% if section.image %}
-            <img src="{{ section.image.url }}" alt="{{ section.section_title }}" class="w-full rounded mb-3">
-          {% endif %}
-          {{ section.content|safe }}
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <!-- No sidebar sections for this page -->
-  {% endif %}
+  <div class="bg-card-light dark:bg-card-dark p-4 rounded shadow-sm">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-3"
+    >
+      New Release
+    </h3>
+    <img
+      src="{% static 'assets/images/Hydro_science_journal_2025.png' %}"
+      alt="Hydro Science Journal 2025 Release"
+      class="w-full rounded"
+    />
+  </div>
 
   <div class="text-center">
     <a
@@ -36,6 +28,48 @@
       href="{% url 'login' %}"
       >MAKE A SUBMISSION</a
     >
+  </div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+    >
+      Information
+    </h3>
+    <ul class="space-y-2">
+      <li>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'subscription_advertising' %}"
+          >For Readers</a
+        >
+      </li>
+      <li>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'author_guidelines' %}"
+          >For Authors</a
+        >
+      </li>
+      <li>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'subscription_advertising' %}"
+          >For Librarians</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+    >
+      Keywords
+    </h3>
+    <img
+      alt="Keyword cloud showing terms like aflatoxin-b1, antioxidant, antibacterial activity, etc."
+      class="w-full"
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5EJmNcrMokICbf18WhpAWV1LPVCVZNabSXwWT62i35I9vEqXVaeZTNfCjpIYS0chgeLZQK-2YwQmOYLTxfWUtvCxHBgEDoesSPUohe8bpFkKAvIwgs81nJEgNwOvorT8qE74ZE1oHdV2vVW5yUPhohtF0vOeJ3InN-2vonPTD3hC8HaBMI17cM6WrFnckaOVIsZPFQaWJ1l8Em7zC4A_0QdYLkmj2elGbmUkdnvCRRSqBvdBt2773vVPEo-J8bBGam9U6_E9v76Lf"
+    />
   </div>
   <div class="bg-card-light dark:bg-card-dark p-6 rounded">
     <h3
