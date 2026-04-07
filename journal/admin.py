@@ -32,15 +32,15 @@ class PageAdmin(admin.ModelAdmin):
     inlines = [PageSectionInline]
     list_per_page = 20
 
-@admin.register(PageSection)
-class PageSectionAdmin(admin.ModelAdmin):
-    list_display = ('page', 'section_key', 'content_type', 'order')
-    search_fields = ('section_key', 'text_content')
-    list_filter = ('page', 'content_type')
-    fields = ('page', 'section_key', 'content_type', 'text_content', 'image_content', 'video_url', 'external_link', 'order')
-    formfield_overrides = {
-        models.TextField: {'widget': CKEditorWidget()},
-    }
+# @admin.register(PageSection)
+# class PageSectionAdmin(admin.ModelAdmin):
+#     list_display = ('page', 'section_key', 'content_type', 'order')
+#     search_fields = ('section_key', 'text_content')
+#     list_filter = ('page', 'content_type')
+#     fields = ('page', 'section_key', 'content_type', 'text_content', 'image_content', 'video_url', 'external_link', 'order')
+#     formfield_overrides = {
+#         models.TextField: {'widget': CKEditorWidget()},
+#     }
 
 
 class ReviewInline(admin.TabularInline):

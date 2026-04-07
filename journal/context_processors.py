@@ -1,4 +1,5 @@
 from .models import Notification
+from .models import Page
 
 def notifications(request):
     """
