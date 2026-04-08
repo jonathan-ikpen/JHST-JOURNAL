@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm
-from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement, Page
+from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement
 
 def _send_notification_email(subject, message, recipient_list):
     """
@@ -496,8 +496,7 @@ def manage_issue(request, issue_id):
 
 def index(request):
     latest_issues = Issue.objects.all().order_by('-publication_date')[:5]
-    page = Page.objects.get_or_create(slug='index', defaults={'name': 'Home'})[0]
-    return render(request, 'journal/index.html', {'latest_issues': latest_issues, 'page': page})
+    return render(request, 'journal/index.html', {'latest_issues': latest_issues})
 
 def issue_detail(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)
@@ -578,15 +577,4 @@ def announcements(request):
 def announcement_detail(request, announcement_id):
     announcement = get_object_or_404(Announcement, id=announcement_id)
     return render(request, 'journal/announcement_detail.html', {'announcement': announcement})
-
-def dynamic_page(request, slug):
-    """
-    Standard view for any CMS-driven page.
-    """
-    page = get_object_or_404(Page, slug=slug)
-    # The template name should ideally match the slug or be a generic one.
-    # Since we are migrating existing templates, we'll try to find the template 
-    # matching the slug first, otherwise use a generic one.
-    template_name = f'journal/{slug.replace("-", "_")}.html'
-    return render(request, template_name, {'page': page})
 

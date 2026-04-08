@@ -1,57 +1,107 @@
 {% load static %}
 <aside class="space-y-8">
-  {% if sidebar_sections %}
-    {% for section in sidebar_sections %}
-        {% if section.section_key == 'sidebar_announcement' %}
-            <!-- IMPORTANT ANNOUNCEMENT -->
-            <div class="bg-amber-400 p-4 rounded text-center text-black">
-                <p class="font-bold text-lg uppercase">Announcement</p>
-                <div class="bg-black text-white p-4 my-2 rounded">
-                    <div class="prose prose-invert max-w-none">
-                        {{ section.text_content|safe }}
-                    </div>
-                </div>
-            </div>
-        {% elif section.content_type == 'image' %}
-            <!-- Generic Image/Banner with Link -->
-            <div class="bg-card-light dark:bg-card-dark p-4 rounded shadow-sm">
-                {% if section.text_content %}
-                <h3 class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-3">
-                    {{ section.text_content|striptags }}
-                </h3>
-                {% endif %}
-                
-                {% if section.external_link %}
-                <a href="{{ section.external_link }}" target="_blank">
-                {% endif %}
-                
-                {% if section.image_content %}
-                    <img src="{{ section.image_content.url }}" class="w-full rounded hover:opacity-90 transition" />
-                {% endif %}
-                
-                {% if section.external_link %}
-                </a>
-                {% endif %}
-            </div>
-        {% elif section.content_type == 'html' %}
-            <!-- Generic HTML block (e.g. Information links, Keywords) -->
-            <div class="bg-card-light dark:bg-card-dark p-6 rounded">
-                {{ section.text_content|safe }}
-            </div>
-        {% elif section.content_type == 'video' %}
-            <!-- Sidebar Video -->
-            <div class="bg-card-light dark:bg-card-dark p-4 rounded">
-                <div class="video-wrapper relative pb-[56.25%] h-0 overflow-hidden bg-black rounded">
-                    <iframe src="{{ section.video_url }}" class="absolute top-0 left-0 w-full h-full" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-  {% else %}
-    <!-- Fallback/Legacy Static Sidebar (Optional) -->
-    <div class="text-center">
-        <a class="block w-full bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark font-bold py-2 px-4 rounded border-b-4 border-gray-400 dark:border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-600"
-           href="{% url 'login' %}">MAKE A SUBMISSION</a>
+  <div class="bg-amber-400 p-4 rounded text-center text-black">
+    <p class="font-bold text-lg">IMPORTANT ANNOUNCEMENT</p>
+    <div class="bg-black text-white p-4 my-2 rounded">
+      <h3 class="text-2xl font-bold">
+        CHANGES TO AUTHOR GUIDELINES AND POLICIES
+      </h3>
     </div>
-  {% endif %}
+  </div>
+
+  <div class="bg-card-light dark:bg-card-dark p-4 rounded shadow-sm">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-3"
+    >
+      New Release
+    </h3>
+    <img
+      src="{% static 'assets/images/Hydro_science_journal_2025.png' %}"
+      alt="Hydro Science Journal 2025 Release"
+      class="w-full rounded"
+    />
+  </div>
+
+  <div class="text-center">
+    <a
+      class="block w-full bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark font-bold py-2 px-4 rounded border-b-4 border-gray-400 dark:border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-600"
+      href="{% url 'login' %}"
+      >MAKE A SUBMISSION</a
+    >
+  </div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+    >
+      Information
+    </h3>
+    <ul class="space-y-2">
+      <li>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'subscription_advertising' %}"
+          >For Readers</a
+        >
+      </li>
+      <li>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'author_guidelines' %}"
+          >For Authors</a
+        >
+      </li>
+      <li>
+        <a
+          class="text-primary hover:underline"
+          href="{% url 'subscription_advertising' %}"
+          >For Librarians</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+    >
+      Keywords
+    </h3>
+    <img
+      alt="Keyword cloud showing terms like aflatoxin-b1, antioxidant, antibacterial activity, etc."
+      class="w-full"
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5EJmNcrMokICbf18WhpAWV1LPVCVZNabSXwWT62i35I9vEqXVaeZTNfCjpIYS0chgeLZQK-2YwQmOYLTxfWUtvCxHBgEDoesSPUohe8bpFkKAvIwgs81nJEgNwOvorT8qE74ZE1oHdV2vVW5yUPhohtF0vOeJ3InN-2vonPTD3hC8HaBMI17cM6WrFnckaOVIsZPFQaWJ1l8Em7zC4A_0QdYLkmj2elGbmUkdnvCRRSqBvdBt2773vVPEo-J8bBGam9U6_E9v76Lf"
+    />
+  </div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+    >
+      Announcements
+    </h3>
+    <div class="space-y-2">
+      <div class="flex items-center space-x-2">
+        <span class="text-gray-400">Atom</span>
+        <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+        <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span class="text-gray-400">RSS</span>
+        <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+        <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h3
+      class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+    >
+      Browse
+    </h3>
+    <ul class="space-y-2">
+      <li>
+        <a class="text-primary hover:underline" href="{% url 'aim_scope' %}"
+          >Categories</a
+        >
+      </li>
+    </ul>
+  </div>
 </aside>
