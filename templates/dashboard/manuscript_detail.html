@@ -35,7 +35,7 @@
   <div class="flex gap-2">
     <!-- Primary Action Button based on Status (Optional convenience, detailed actions below) -->
     <!-- prettier-ignore -->
-    {% if manuscript.status == 'submitted' or manuscript.status == 'under_review' or manuscript.status == 'revision_submitted' %}
+    {% if manuscript.status != 'published' %}
     <a
       href="{% url 'make_decision' manuscript.id %}"
       class="inline-flex items-center justify-center bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition shadow-sm no-wrap whitespace-nowrap w-full"
@@ -332,13 +332,21 @@
               {% endif %}
               {% endif %}
             </div>
+            {% elif review.invitation_status == 'declined' %}
+            <span class="text-red-500 text-xs font-bold">Declined</span>
+            {% elif review.invitation_status == 'invited' %}
+            <span class="text-amber-500 text-xs font-bold">Invited</span>
             {% else %}
-            <span class="text-amber-500 text-xs font-bold">Pending</span>
+            <span class="text-primary text-xs font-bold">Assigned</span>
             {% endif %}
           </div>
-          {% if review.comments %}
-          <div class="bg-slate-50 dark:bg-slate-800/30 p-2 rounded text-[11px] text-slate-500 dark:text-slate-400 italic border-l-2 border-slate-200 dark:border-slate-700">
+          {% if review.comments and review.date_completed %}
+          <div class="bg-slate-50 dark:bg-slate-800/30 p-2 rounded text-[11px] text-slate-500 dark:text-slate-400 italic border-l-2 border-slate-200 dark:border-slate-700 mt-2">
             "{{ review.comments|truncatechars:100 }}"
+          </div>
+          {% elif review.invitation_status == 'declined' and review.decline_reason %}
+          <div class="bg-red-50 dark:bg-red-900/10 p-2 rounded text-[11px] text-red-600 dark:text-red-400 italic border-l-2 border-red-200 dark:border-red-800/50 mt-2">
+            "{{ review.decline_reason }}"
           </div>
           {% endif %}
         </li>
@@ -346,13 +354,13 @@
       </ul>
       {% else %}
       <p class="text-sm text-slate-500 italic">No reviewers assigned yet.</p>
+      {% endif %}
       <a
         href="{% url 'assign_reviewer' manuscript.id %}"
-        class="block mt-3 text-center text-xs border border-dashed border-slate-300 text-slate-500 py-2 rounded hover:bg-slate-50 transition"
+        class="block mt-4 text-center text-xs border border-dashed border-slate-300 text-slate-500 py-2.5 font-medium rounded hover:bg-slate-50 transition"
       >
-        + Assign Reviewer
+        + Assign {% if reviews %}Another {% endif %}Reviewer
       </a>
-      {% endif %}
     </div>
 
     <!-- Author's Responses -->

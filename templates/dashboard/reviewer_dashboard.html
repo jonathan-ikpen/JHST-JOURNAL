@@ -152,11 +152,20 @@
                   <span class="material-icons text-[10px]">hourglass_empty</span> AWAITING AUTHOR
                 </span>
                 {% endif %}
-                <span
-                  class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200"
-                >
+                {% if review.invitation_status == 'invited' %}
+                <div class="flex gap-2">
+                  <a href="{% url 'accept_invitation' review.id %}" class="px-3 py-1 rounded bg-primary text-white font-bold text-[10px] tracking-wide uppercase hover:bg-primary-dark transition shadow-sm">Accept</a>
+                  <button type="button" data-review-id="{{ review.id }}" data-title="{{ review.manuscript.title|escapejs }}" class="decline-button px-3 py-1 rounded bg-white text-red-600 border border-red-200 font-bold text-[10px] tracking-wide uppercase hover:bg-red-50 transition shadow-sm">Decline</button>
+                </div>
+                {% elif review.invitation_status == 'declined' %}
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-red-50 text-red-700 border-red-200">
+                  Declined
+                </span>
+                {% else %}
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200">
                   Pending
                 </span>
+                {% endif %}
                 {% endif %}
               </div>
             </div>

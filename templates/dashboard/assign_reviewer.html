@@ -76,8 +76,9 @@ Reviewer{% endblock %} {% block content %}
       <ul class="space-y-3">
         {% for review in existing_reviews %}
         <li
-          class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded border border-gray-100 dark:border-gray-700"
+          class="flex flex-col p-3 bg-gray-50 dark:bg-gray-750 rounded border border-gray-100 dark:border-gray-700"
         >
+          <div class="flex items-center justify-between w-full">
           <div class="flex items-center space-x-3">
             <div
               class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs uppercase"
@@ -98,6 +99,13 @@ Reviewer{% endblock %} {% block content %}
           >
             {% if review.invitation_status == 'declined' %}Declined{% elif review.date_completed %}Completed{% elif review.invitation_status == 'invited' %}Invited{% else %}Pending{% endif %}
           </span>
+          </div>
+          {% if review.invitation_status == 'declined' and review.declined_reason %}
+          <div class="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded text-sm text-red-700 dark:text-red-400">
+            <span class="font-bold block mb-1 text-xs tracking-wider uppercase opacity-80">Decline Reason:</span>
+            {{ review.declined_reason }}
+          </div>
+          {% endif %}
         </li>
         {% endfor %}
       </ul>
@@ -134,10 +142,7 @@ Reviewer{% endblock %} {% block content %}
           >
             <option value="" disabled selected>-- Choose Reviewer --</option>
             {% for reviewer in reviewers %}
-            <option value="{{ reviewer.id }}">
-              {{ reviewer.username }} {% if reviewer.affiliation %}({{
-              reviewer.affiliation }}){% endif %}
-            </option>
+            <option value="{{ reviewer.id }}">{{ reviewer.username }}{% if reviewer.affiliation %} ({{ reviewer.affiliation }}){% endif %}</option>
             {% endfor %}
           </select>
 
@@ -171,7 +176,7 @@ Reviewer{% endblock %} {% block content %}
           </div>
             <button
               type="submit"
-              class="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition text-sm"
+              class="mt-4 bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition text-sm"
             >
               Send Invitation
             </button>

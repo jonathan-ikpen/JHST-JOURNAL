@@ -148,10 +148,13 @@ class Review(models.Model):
 
     @property
     def is_awaiting_author(self):
-        """Returns True if this is a pending round assignment where the author hasn't submitted yet."""
+        """Returns True if this is a pending round (2+) where the author hasn't submitted their revision yet."""
         if self.date_completed:
             return False
-        # Check if an author response exists for this specific round yet
+        # Round 1 is the initial assignment — nothing to await from the author
+        if self.round <= 1:
+            return False
+        # For Round 2+, check if an author response exists for this round yet
         return not self.manuscript.author_responses.filter(round=self.round).exists()
 
     def __str__(self):

@@ -395,17 +395,17 @@ def assign_reviewer(request, manuscript_id):
     
     manuscript = get_object_or_404(Manuscript, id=manuscript_id)
     
-    # Get all reviews for this manuscript to see who is already assigned
+    # Get all reviews for this manuscript
     existing_reviews = Review.objects.filter(manuscript=manuscript)
-    assigned_reviewer_ids = existing_reviews.values_list('reviewer_id', flat=True)
+    active_reviewer_ids = existing_reviews.exclude(invitation_status='declined').values_list('reviewer_id', flat=True)
     
     if request.method == 'POST':
         reviewer_id = request.POST.get('reviewer')
         if reviewer_id:
             reviewer = get_object_or_404(User, id=reviewer_id)
             
-            # Check if already assigned
-            if not Review.objects.filter(manuscript=manuscript, reviewer=reviewer).exists():
+            # Check if active assignment already exists
+            if not Review.objects.filter(manuscript=manuscript, reviewer=reviewer).exclude(invitation_status='declined').exists():
                 # Get due date from form or default to 14 days
                 due_date_str = request.POST.get('due_date')
                 if due_date_str:
@@ -417,20 +417,29 @@ def assign_reviewer(request, manuscript_id):
                 invite_only = request.POST.get('invite_only') == 'on'
                 status = 'invited' if invite_only else 'assigned'
                 
-                Review.objects.create(
-                    manuscript=manuscript, 
-                    reviewer=reviewer, 
-                    due_date=due_date,
-                    round=manuscript.current_round,
-                    invitation_status=status
-                )
+                # Check if we are reactivating a declined review or creating a new one
+                declined_review = Review.objects.filter(manuscript=manuscript, reviewer=reviewer, invitation_status='declined').first()
+                if declined_review:
+                    declined_review.invitation_status = status
+                    declined_review.due_date = due_date
+                    declined_review.round = manuscript.current_round
+                    declined_review.declined_reason = ''  # clear old reason
+                    declined_review.save()
+                else:
+                    Review.objects.create(
+                        manuscript=manuscript, 
+                        reviewer=reviewer, 
+                        due_date=due_date,
+                        round=manuscript.current_round,
+                        invitation_status=status
+                    )
                 
                 msg = f"Reviewer {reviewer.username} invited successfully." if invite_only else f"Reviewer {reviewer.username} assigned successfully."
                 messages.success(request, msg)
                 return redirect('dashboard')
     
-    # Filter out reviewers who are already assigned
-    reviewers = User.objects.filter(is_reviewer=True).exclude(id__in=assigned_reviewer_ids)
+    # Filter out reviewers who are already ACTIVELY assigned
+    reviewers = User.objects.filter(is_reviewer=True).exclude(id__in=active_reviewer_ids)
     
     return render(request, 'dashboard/assign_reviewer.html', {
         'manuscript': manuscript, 
@@ -515,6 +524,61 @@ def request_re_review(request, review_id):
     return redirect('dashboard_manuscript_detail', manuscript_id=manuscript.id)
 
 @login_required
+def accept_review_invitation(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+    referer = request.META.get('HTTP_REFERER') or 'assigned_reviews'
+    
+    if review.invitation_status != 'invited':
+        messages.error(request, "This invitation has already been responded to.")
+        return redirect(referer)
+    
+    review.invitation_status = 'accepted'
+    review.save()
+    
+    # Notify editors
+    for editor in User.objects.filter(is_editor=True):
+        Notification.objects.create(
+            recipient=editor,
+            message=f"Invitation Accepted: {request.user.username} has accepted the review invitation for '{review.manuscript.title}'.",
+            link=f'/dashboard/manuscript/{review.manuscript.id}/'
+        )
+    
+    messages.success(request, f"You have accepted the review invitation for '{review.manuscript.title}'.")
+    return redirect(referer)
+
+@login_required
+def decline_review_invitation(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+    referer = request.META.get('HTTP_REFERER') or 'assigned_reviews'
+    
+    if review.invitation_status != 'invited':
+        messages.error(request, "This invitation has already been responded to.")
+        return redirect(referer)
+    
+    if request.method == 'POST':
+        review.invitation_status = 'declined'
+        review.declined_reason = request.POST.get('reason', '')
+        review.save()
+        
+        # Notify editors
+        for editor in User.objects.filter(is_editor=True):
+            Notification.objects.create(
+                recipient=editor,
+                message=f"Invitation Declined: {request.user.username} has declined the review invitation for '{review.manuscript.title}'.",
+                link=f'/dashboard/manuscript/{review.manuscript.id}/'
+            )
+        
+        messages.success(request, f"You have declined the review invitation for '{review.manuscript.title}'.")
+        return redirect(referer)
+    
+    return redirect(referer)
+
+@login_required
+def reviewer_check_revision(request, review_id):
+    review = get_object_or_404(Review, id=review_id, reviewer=request.user)
+    return redirect('reviewer_manuscript_detail', review_id=review.id)
+
+@login_required
 def make_decision(request, manuscript_id):
     if not request.user.is_editor:
         return redirect('dashboard')
@@ -532,8 +596,6 @@ def make_decision(request, manuscript_id):
             if decision == 'needs_revision':
                 # Push all completed reviews to author visibility
                 manuscript.reviews.filter(date_completed__isnull=False).update(is_visible_to_author=True)
-            
-            messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
             
             messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
         return redirect('dashboard')

@@ -266,7 +266,7 @@ Assignment{% endblock %} {% block content %}
       >
         <span class="material-icons text-slate-400 text-3xl mb-2">{% if review.is_awaiting_author %}hourglass_empty{% else %}pending{% endif %}</span>
         <p class="font-bold text-slate-700 dark:text-slate-200">
-          {% if review.is_awaiting_author %}Author Revision Pending{% else %}Pending Review{% endif %}
+          {% if review.is_awaiting_author %}Author Revision Pending{% elif review.invitation_status == 'invited' %}Invitation Pending{% elif review.invitation_status == 'declined' %}Invitation Declined{% else %}Pending Review{% endif %}
         </p>
       </div>
 
@@ -276,6 +276,15 @@ Assignment{% endblock %} {% block content %}
         class="block w-full text-center py-3 px-4 bg-slate-100 text-slate-400 font-bold rounded cursor-not-allowed border border-slate-200"
       >
         Waiting for Author...
+      </button>
+      {% elif review.invitation_status == 'invited' %}
+      <div class="flex gap-2">
+        <a href="{% url 'accept_invitation' review.id %}" class="flex-1 text-center py-3 px-4 bg-primary text-white font-bold rounded hover:bg-primary-dark shadow-md transition transform hover:-translate-y-0.5">Accept</a>
+        <button type="button" data-review-id="{{ review.id }}" data-title="{{ review.manuscript.title|escapejs }}" class="decline-button flex-1 text-center py-3 px-4 bg-white text-red-600 border border-red-200 font-bold rounded hover:bg-red-50 shadow-sm transition">Decline</button>
+      </div>
+      {% elif review.invitation_status == 'declined' %}
+      <button disabled class="block w-full text-center py-3 px-4 bg-red-50 text-red-500 font-bold rounded cursor-not-allowed border border-red-200">
+        Review Declined
       </button>
       {% else %}
       <a
