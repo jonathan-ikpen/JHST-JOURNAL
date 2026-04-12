@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
@@ -6,15 +6,53 @@
         <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
             About the Journal
         </h1>
-        {% if page %}
-            {% for section in page.sections.all %}
-                {% if not section.section_key|slice:":8" == "sidebar_" %}
-                <div class="cms-section prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 mb-6">
-                    {{ section.text_content|safe }}
-                </div>
-                {% endif %}
-            {% endfor %}
+
+        {% with s=page.sections_dict %}
+
+        {% if s.intro %}
+        <div class="mb-8 prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+            {{ s.intro.text_content|safe }}
+        </div>
         {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
+            {% if s.mission %}
+            <div class="mb-4">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block">Our Mission</h2>
+                <div class="bg-primary/5 p-6 rounded border border-primary/10 h-full prose dark:prose-invert max-w-none">
+                    {{ s.mission.text_content|safe }}
+                </div>
+            </div>
+            {% endif %}
+            {% if s.vision %}
+            <div class="mb-4">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block">Our Vision</h2>
+                <div class="bg-primary/5 p-6 rounded border border-primary/10 h-full prose dark:prose-invert max-w-none">
+                    {{ s.vision.text_content|safe }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if s.objectives %}
+        <div class="mb-10">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Objectives</h2>
+            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+                {{ s.objectives.text_content|safe }}
+            </div>
+        </div>
+        {% endif %}
+
+        <p class="mb-4">For more specific information, please explore the following sections:</p>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none pl-0">
+            <li><a class="flex items-center text-primary font-semibold hover:underline" href="{% url 'aim_scope' %}"><span class="material-icons mr-2 text-sm">arrow_forward</span> Aim &amp; Scope</a></li>
+            <li><a class="flex items-center text-primary font-semibold hover:underline" href="{% url 'editorial_team' %}"><span class="material-icons mr-2 text-sm">arrow_forward</span> Editorial Team</a></li>
+            <li><a class="flex items-center text-primary font-semibold hover:underline" href="{% url 'publication_schedule' %}"><span class="material-icons mr-2 text-sm">arrow_forward</span> Publication Schedule</a></li>
+            <li><a class="flex items-center text-primary font-semibold hover:underline" href="{% url 'publication_fees' %}"><span class="material-icons mr-2 text-sm">arrow_forward</span> Publication Fees</a></li>
+            <li><a class="flex items-center text-primary font-semibold hover:underline" href="{% url 'contact' %}"><span class="material-icons mr-2 text-sm">arrow_forward</span> Contact Us</a></li>
+        </ul>
+
+        {% endwith %}
     </div>
 </section>
 {% endblock %}

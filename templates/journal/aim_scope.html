@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
@@ -6,13 +6,34 @@
         <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
             Aim &amp; Scope
         </h1>
-        {% if page %}
-            {% for section in page.sections.all %}
-            <div class="cms-section prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 mb-6">
-                {{ section.text_content|safe }}
-            </div>
-            {% endfor %}
+
+        {% with s=page.sections_dict %}
+
+        {% if s.intro %}
+        <div class="mb-8 prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+            {{ s.intro.text_content|safe }}
+        </div>
         {% endif %}
+
+        {% if s.aim %}
+        <div class="mb-10">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Aim</h2>
+            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+                {{ s.aim.text_content|safe }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if s.scope %}
+        <div class="mb-10">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Scope</h2>
+            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+                {{ s.scope.text_content|safe }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% endwith %}
     </div>
 </section>
 {% endblock %}
