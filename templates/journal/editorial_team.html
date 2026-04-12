@@ -6,9 +6,13 @@
         <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
             Editorial Team
         </h1>
-        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-            {{ page.sections_dict.main_content.text_content|safe }}
-        </div>
+        {% if page %}
+            {% for section in page.sections.all %}
+            <div class="cms-section prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 mb-8">
+                {{ section.text_content|safe }}
+            </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </section>
 {% endblock %}

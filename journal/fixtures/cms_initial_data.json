@@ -177,34 +177,6 @@
 },
 {
     "model": "journal.pagesection",
-    "pk": 1,
-    "fields": {
-        "page": 1,
-        "section_key": "main_content",
-        "content_type": "html",
-        "text_content": "<p class=\"mb-6 text-lg\">\n<strong>Journal of Hydrocarbon Science and Technology (JHST)</strong> is\n        the official journal of the Petroleum Training Institute (PTI), Effurun,\n        Nigeria. It is a premier open-access, peer-reviewed journal dedicated to\n        disseminating high-quality research, technical innovations, and policy\n        analyses in the energy sector.\n      </p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8 my-10\">\n<div class=\"mb-4\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block\">\n            Our Mission\n          </h2>\n<div class=\"bg-primary/5 p-6 rounded border border-primary/10 h-full\">\n<p>\n              To provide a global platform for the exchange of knowledge between\n              academia and the hydrocarbon industry, fostering innovation and\n              sustainable development in energy technologies.\n            </p>\n</div>\n</div>\n<div class=\"mb-4\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block\">\n            Our Vision\n          </h2>\n<div class=\"bg-primary/5 p-6 rounded border border-primary/10 h-full\">\n<p>\n              To be a leading authoritative source of scientific and technical\n              information for the global oil, gas, and energy community.\n            </p>\n</div>\n</div>\n</div>\n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Objectives\n        </h2>\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>\n            To publish cutting-edge hypothesis-driven original research, review\n            articles, and technical notes.\n          </li>\n<li>\n            To bridge the gap between theoretical research and practical\n            industrial application.\n          </li>\n<li>\n            To inform policy and decision-making in the energy sector through\n            rigorous scientific analysis.\n          </li>\n<li>\n            To support the professional development of scientists, engineers,\n            and researchers in the hydrocarbon field.\n          </li>\n</ul>\n</div>\n<p class=\"mb-4\">\n        For more specific information, please explore the following sections:\n      </p>\n<ul class=\"grid grid-cols-1 sm:grid-cols-2 gap-4 list-none pl-0\">\n<li>\n<a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"{% url 'aim_scope' %}\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span> Aim\n            &amp; Scope</a>\n</li>\n<li>\n<a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"{% url 'editorial_team' %}\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span>\n            Editorial Team</a>\n</li>\n<li>\n<a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"{% url 'publication_schedule' %}\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span>\n            Publication Schedule</a>\n</li>\n<li>\n<a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"{% url 'publication_fees' %}\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span>\n            Publication Fees</a>\n</li>\n<li>\n<a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"{% url 'contact' %}\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span>\n            Contact Us</a>\n</li>\n</ul>",
-        "image_content": "",
-        "video_url": null,
-        "external_link": null,
-        "order": 0
-    }
-},
-{
-    "model": "journal.pagesection",
-    "pk": 2,
-    "fields": {
-        "page": 2,
-        "section_key": "main_content",
-        "content_type": "html",
-        "text_content": "Intro \n<div class=\"mb-8\">\n<p>\n          The\n          <strong>Journal of Hydrocarbon Science and Technology (JHST)</strong>\n          is a peer-reviewed, open-access journal dedicated to the dissemination\n          of high-quality research in the field of hydrocarbon science, energy\n          technology, and related disciplines.\n        </p>\n</div>\n Aim \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Aim\n        </h2>\n<p>\n          Our primary aim is to provide a global platform for scientists,\n          engineers, academicians, and industry professionals to share their\n          innovative research findings, technical advancements, and reviews. We\n          strive to bridge the gap between theoretical research and industrial\n          application in the oil and gas sector.\n        </p>\n</div>\n Scope \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Scope\n        </h2>\n<p class=\"mb-4\">\n          JHST welcomes original research articles, technical notes, and review\n          papers in the following areas, though not limited to:\n        </p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>Petroleum Geology and Geophysics</li>\n<li>Reservoir Engineering and Simulation</li>\n<li>Drilling and Completion Technology</li>\n<li>Production Engineering and Optimization</li>\n<li>Natural Gas Engineering and Processing</li>\n<li>Petrochemicals and Refining Technology</li>\n</ul>\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>Health, Safety, and Environment (HSE) in Energy</li>\n<li>Energy Economics and Policy</li>\n<li>Renewable Energy Integration with Hydrocarbons</li>\n<li>Carbon Capture, Utilization, and Storage (CCUS)</li>\n<li>Digital Transformation in Oil &amp; Gas (AI, IoT)</li>\n<li>Pipeline Engineering and Flow Assurance</li>\n</ul>\n</div>\n</div>",
-        "image_content": "",
-        "video_url": null,
-        "external_link": null,
-        "order": 0
-    }
-},
-{
-    "model": "journal.pagesection",
     "pk": 3,
     "fields": {
         "page": 4,
@@ -239,34 +211,6 @@
         "section_key": "main_content",
         "content_type": "html",
         "text_content": "<p class=\"mb-6\">\n        Browse our database of published issues and articles. JHST publishes\n        biannually, with occasional special issues.\n      </p>\n Publication Schedule \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Publication Schedule\n        </h2>\n<p class=\"mb-4\">\n<strong>Frequency:</strong> Two issues per year (June and\n          December).<br/>\n          Articles are published online immediately upon acceptance and final\n          processing (Online First), before being assigned to an issue.\n        </p>\n</div>\n Current Issue \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Current Issue\n        </h2>\n<div class=\"bg-gray-50 dark:bg-gray-800 p-6 rounded border border-gray-200 dark:border-gray-700\">\n<h3 class=\"text-xl font-bold mb-2\">\n            Volume 5, Issue 2 (December 2025)\n          </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-4\">\n            Focus: Emerging Technologies in Carbon Capture\n          </p>\n<a class=\"text-white bg-primary px-4 py-2 rounded hover:bg-opacity-90 transition inline-block\" href=\"#\">View Current Issue</a>\n</div>\n</div>\n Archives \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Archives\n        </h2>\n<div class=\"space-y-4\">\n<!-- Example Archive Items -->\n<div class=\"flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2\">\n<div>\n<a class=\"font-bold text-lg hover:text-primary\" href=\"#\">Volume 5, Issue 1</a>\n<span class=\"text-sm text-gray-500 ml-2\">(June 2025)</span>\n</div>\n<a class=\"text-sm text-primary hover:underline\" href=\"#\">View</a>\n</div>\n<div class=\"flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2\">\n<div>\n<a class=\"font-bold text-lg hover:text-primary\" href=\"#\">Volume 4, Issue 2</a>\n<span class=\"text-sm text-gray-500 ml-2\">(December 2024)</span>\n</div>\n<a class=\"text-sm text-primary hover:underline\" href=\"#\">View</a>\n</div>\n<div class=\"flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2\">\n<div>\n<a class=\"font-bold text-lg hover:text-primary\" href=\"#\">Volume 4, Issue 1</a>\n<span class=\"text-sm text-gray-500 ml-2\">(June 2024)</span>\n</div>\n<a class=\"text-sm text-primary hover:underline\" href=\"#\">View</a>\n</div>\n</div>\n</div>\n<div class=\"mt-8 pt-4\">\n<a class=\"text-primary hover:underline font-bold\" href=\"#\">View Complete Archives ?</a>\n</div>",
-        "image_content": "",
-        "video_url": null,
-        "external_link": null,
-        "order": 0
-    }
-},
-{
-    "model": "journal.pagesection",
-    "pk": 6,
-    "fields": {
-        "page": 10,
-        "section_key": "main_content",
-        "content_type": "html",
-        "text_content": "<p class=\"mb-6 text-lg\">\n        Please select the appropriate guidelines from the sections below:\n      </p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8 my-8\">\n<a class=\"block group bg-primary/5 p-8 rounded border border-primary/10 hover:bg-primary/10 transition\" href=\"{% url 'author_guidelines' %}\">\n<div class=\"flex items-center mb-4\">\n<span class=\"material-icons text-4xl text-primary mr-4\">description</span>\n<h2 class=\"text-2xl font-bold text-primary group-hover:underline\">\n              Author's Guidelines\n            </h2>\n</div>\n<p class=\"text-gray-700 dark:text-gray-300\">\n            Comprehensive instructions for manuscript preparation, formatting,\n            submission requirements, and information on publication fees.\n          </p>\n</a>\n<a class=\"block group bg-primary/5 p-8 rounded border border-primary/10 hover:bg-primary/10 transition\" href=\"{% url 'reviewer_guidelines' %}\">\n<div class=\"flex items-center mb-4\">\n<span class=\"material-icons text-4xl text-primary mr-4\">rate_review</span>\n<h2 class=\"text-2xl font-bold text-primary group-hover:underline\">\n              Reviewer's Guidelines\n            </h2>\n</div>\n<p class=\"text-gray-700 dark:text-gray-300\">\n            Information for peer reviewers regarding confidentiality, evaluation\n            criteria, report structure, and benefits.\n          </p>\n</a>\n</div>",
-        "image_content": "",
-        "video_url": null,
-        "external_link": null,
-        "order": 0
-    }
-},
-{
-    "model": "journal.pagesection",
-    "pk": 7,
-    "fields": {
-        "page": 11,
-        "section_key": "main_content",
-        "content_type": "html",
-        "text_content": "About the Journal \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          About the Journal\n        </h2>\n<p>\n          The Journal of Hydrocarbon Science and Technology (JHST), the official\n          journal of the Petroleum Training Institute (PTI), Effurun, Nigeria,\n          is dedicated to publishing high-quality, peer-reviewed, and\n          hypothesis-driven original research across all disciplines of\n          hydrocarbon science and technology. JHST provides an inclusive\n          platform for innovative research from diverse pure and applied\n          sciences fields.\n        </p>\n<p class=\"mt-4\">\n          Since its inception, JHST has been recognised for its commitment to\n          academic excellence. JHST is indexed and abstracted by Scopus,\n          Directory of Open Access Journals (DOAJ), Google Scholar, and is\n          actively pursuing inclusion in other major databases.\n        </p>\n</div>\n Open Access Policy \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Open Access Policy\n        </h2>\n<p>\n          This journal ensures immediate open access to its content, embracing\n          the principle that freely available research fosters a broader global\n          knowledge exchange. Authors retain full copyright over their work\n          while granting first publication rights to JHST. All articles in JHST\n          are published under the Creative Commons Attribution 4.0 International\n          License (CC BY 4.0), allowing for unrestricted use, distribution, and\n          reproduction, provided proper credit is given to the original authors\n          and source.\n        </p>\n</div>\n Publication Schedule \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Publication Schedule\n        </h2>\n<p>\n          JHST publishes two issues per year and ensures that manuscripts are\n          made available online as soon as they are accepted.\n        </p>\n</div>\n Editorial Policy \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Editorial Policy\n        </h2>\n<p>\n          Authors must prepare their manuscripts following the Instructions for\n          Authors of the journal. Manuscripts that do not follow the format and\n          style of the journal may be returned to the authors for revision or\n          rejected. The Journal reserves the right to make any further formal\n          changes and language corrections necessary in a manuscript accepted\n          for publication. Manuscripts are accepted with the understanding that\n          the authors have not violated the ethics of research and publishing\n          during the conduct of the experiment and writing of the manuscript.\n        </p>\n</div>\n General Requirements \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          General Requirements\n        </h2>\n<p>\n          All submitted manuscripts should contain original research written in\n          the English Language, not previously published and not under\n          consideration for publication elsewhere. Manuscripts may be submitted\n          for consideration as original papers (research articles describing\n          original experimental results) and short communications. The Journal\n          also publishes mini-reviews, which are by invitation. However, authors\n          willing to submit a review article may write a proposal for the\n          editor-in-chief.\n        </p>\n</div>\n Manuscript Preparation \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Manuscript Preparation\n        </h2>\n<p>\n          The manuscript (including references, tables, boxes, and legends) must\n          be typed in 12-point font, double-spaced on A4 paper with margins of 1\n          inch or 4.5 cm on all sides. All pages in the manuscript should be\n          page-numbered.\n        </p>\n</div>\n Cover Letter \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Cover letter\n        </h2>\n<p>\n          The cover letter must clearly show the full contact details with the\n          corresponding author's postal address (es), phone numbers and e-mail\n          address (es). The relevance of the study should also be indicated. The\n          cover letter must also disclose all possible conflicts of interest\n          (e.g. funding sources for consultancies or studies of products). A\n          minimum of three (3) potential reviewers with their email addresses\n          and institutions familiar with the subject matter should be suggested.\n          However, the use of the reviewers is at the discretion of the\n          Editor-in-Chief.\n        </p>\n</div>\n Title Page \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Title page\n        </h2>\n<p>\n          The title page should contain the title of the manuscript, the\n          authors’ names, affiliations and email addresses.\n          <strong>Additionally, all authors are required to provide their 16-digit\n            ORCID iD.</strong>\n          One of the authors should be designated as the corresponding author.\n        </p>\n</div>\n Abstract \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Abstract\n        </h2>\n<p>\n          Abstract should not be more than 250 words, containing a concise\n          summary of the objective and scope, general methods, results,\n          conclusion and significance of the research.\n        </p>\n</div>\n Keywords \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Keywords\n        </h2>\n<p>\n          The journal welcomes a maximum of six keywords, which should be words\n          that can be used to retrieve the paper, not general words. Words\n          appearing in the title should not be given as keywords. The keywords\n          must correspond with those in Medical Subject Headings (MESH) where\n          applicable.\n        </p>\n</div>\n Introduction \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Introduction\n        </h2>\n<p>\n          The Introduction should provide sufficient background on the study. It\n          should also give the statement of the problem and the rationale for\n          conducting the research. The aim should also be clearly defined. The\n          contribution to the area of study should be identified. All these must\n          be presented in logical manner.\n        </p>\n</div>\n Materials and Methods \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Materials and Methods\n        </h2>\n<p>\n          This section must provide sufficient detail to allow the work to be\n          reproduced. Methods already published should be indicated by\n          reference, and only relevant modifications should be described. Newly\n          developed methods should also be described in detail. The sources of\n          all major instruments, chemicals, reagents, assay kits and drugs must\n          be given. The type of statistical tool(s) used to analyse the data\n          should be mentioned and justified. All procedures involving\n          experimental animals or human subjects must be accompanied by a\n          statement on ethical approval from an appropriate ethics committee.\n        </p>\n</div>\n Result and Discussion \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Result and Discussion\n        </h2>\n<p>\n          Authors may wish to combine the two sections (Results and Discussion).\n        </p>\n</div>\n Results \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Results\n        </h2>\n<p>\n          A clear and concise Results Section should highlight the important\n          results obtained. Data should be organised into Figures and Tables.\n          The same results should not be repeated in Figures and Tables. All\n          Tables and Figures should be appropriately referred to within the\n          text. Values already contained in the Tables need not be repeated in\n          the Results Section. Qualitative as well as quantitative results\n          should be included if applicable.\n        </p>\n</div>\n Discussion \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Discussion\n        </h2>\n<p>\n          This section should relate the Results Section to the current\n          understanding of the scientific problems being investigated in the\n          field. This section, apart from adducing scientific reason(s) to the\n          results obtained, must also present the theoretical implications and\n          practical applications of the findings. The authors should also\n          identify where their findings agree and/or contrast with previously\n          published studies. Reasons for such differences must also be advanced.\n          This section must also be devoid of speculations that are not\n          supported by findings in their present study.\n        </p>\n</div>\n Conclusion \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Conclusion\n        </h2>\n<p>\n          The conclusion must reflect the judgment or decision reached by\n          reasoning after the discussion on the manuscript. This section sums up\n          the arguments about what you have been writing about.\n        </p>\n</div>\n Acknowledgements \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Acknowledgements\n        </h2>\n<p>\n          Major contributors who did not qualify as authors should be\n          acknowledged accordingly. Funding sources should also be acknowledged\n          appropriately.\n        </p>\n</div>\n Conflict of Interests \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Conflict(s) of Interests\n        </h2>\n<p>\n          Authors are required to disclose financial interests (e.g. employment,\n          significant share ownership, patent rights, consultancy, research\n          funding, etc.) in any company or institution that might benefit from\n          their publication. All authors must provide details of any other\n          potential competing interests of a personal nature that readers or\n          editors might consider relevant to their publication. To prevent\n          ambiguity, authors must state explicitly whether potential conflicts\n          exist or do not exist. The statement should be placed in the text of\n          the submitted manuscript directly following the Acknowledgements.\n        </p>\n</div>\n References \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          References\n        </h2>\n<p class=\"mb-4\">\n          All references must be listed at the end of the paper, and authors are\n          responsible for ensuring their accuracy. References should be complete\n          and formatted according to the Vancouver Reference Format. References\n          are numbered consecutively in order of appearance in the text – they\n          are identified by Arabic numerals in parentheses (1), square brackets\n          [1], superscript<sup>1</sup>\n</p>\n<div class=\"space-y-4 text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<p>\n<strong>Books:</strong> Author(s). <em>Title of book</em>. Edition.\n            Place: Publisher; Year.\n          </p>\n<p>\n<strong>Journal Articles:</strong> Author(s). Title of article.\n            <em>Abbreviated Journal Title</em>. Year; Volume(Issue): page\n            numbers.\n          </p>\n<p>\n<strong>Webpages:</strong> Author(s). Title. [Internet]. Place:\n            Publisher; Date [cited Date]. Available from: URL\n          </p>\n<p>\n<strong>Conference Proceedings:</strong> Editor(s).\n            <em>Title of conference</em>. Place: Publisher; Year.\n          </p>\n</div>\n</div>\n Submission \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Submission\n        </h2>\n<p>\n          This should be done <strong>ONLY</strong> online at the journal\n          website. Submission of the manuscript through any other means will not\n          be processed.\n        </p>\n</div>\n Assessment \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Assessment\n        </h2>\n<p>\n          Each manuscript will be subjected to both plagiarism check and\n          preliminary editorial review before it can be sent for double blind\n          peer review. Manuscripts will only be accepted after satisfactory\n          recommendations have been received from the independent reviewers.\n          Acceptance of manuscripts for publication will be based on originality\n          of the research and contribution to scientific knowledge, without\n          neglecting technical quality.\n        </p>\n</div>\n Publication Fees \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Publication Fees\n        </h2>\n<p>\n          An article publication fee of Thirty Thousand Naira only (₦30,000.00)\n          or One Hundred Dollars (100 USD) will be charged on any article\n          accepted for publication. Payment details will be provided upon\n          acceptance.\n        </p>\n</div>\n Checklist \n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Submission Preparation Checklist\n        </h2>\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>\n            The manuscript has not been previously published nor under\n            consideration by another journal.\n          </li>\n<li>\n            The manuscript file is in OpenOffice, Microsoft Word, RTF or\n            WordPerfect document file format.\n          </li>\n<li>\n            Where available, URLs and DOIs for the references have been\n            provided.\n          </li>\n<li>\n            The text is double-spaced; uses a 12-point font; employs italics,\n            rather than underlining (except with URL addresses).\n          </li>\n<li>\n            All illustrations, figures, and tables are placed within the text at\n            the appropriate points rather than at the end.\n          </li>\n<li>A declaration statement on conflict of interest.</li>\n<li>\n            A cover letter stating the novelty and significance of the work, and\n            a list of at least three suggested reviewers with their email.\n          </li>\n</ul>\n</div>",
         "image_content": "",
         "video_url": null,
         "external_link": null,
@@ -401,20 +345,6 @@
 },
 {
     "model": "journal.pagesection",
-    "pk": 17,
-    "fields": {
-        "page": 3,
-        "section_key": "main_content",
-        "content_type": "html",
-        "text_content": "<div class=\"space-y-8\">\n<!-- Editor in Chief -->\n<div class=\"text-center mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block\">\n          Editor-in-Chief\n        </h2>\n<div class=\"max-w-2xl bg-primary/5 p-8 rounded-lg border border-primary/20 mx-auto text-left\">\n<h3 class=\"text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2\">\n            Professor A. B. Johnson\n          </h3>\n<p class=\"text-lg text-gray-600 dark:text-gray-400\">\n            Department of Petroleum Engineering\n          </p>\n<p class=\"text-lg text-gray-600 dark:text-gray-400 mb-4\">\n            Petroleum Training Institute, Effurun, Nigeria\n          </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm italic mb-4\">\n            [Bio Placeholder] Professor Johnson has over 30 years of experience\n            in hydrocarbon research and academia, leading numerous\n            groundbreaking studies in petroleum engineering and sustainable\n            energy transition.\n          </p>\n<a class=\"text-primary font-bold hover:underline inline-block\" href=\"mailto:eic@jhst.org\">eic@jhst.org</a>\n</div>\n</div>\n<!-- Managing Director -->\n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Managing Director\n        </h2>\n<p class=\"text-sm text-gray-600 dark:text-gray-400 mb-4 italic\">\n          Oversees the journal's daily editorial operations, manages scholarly\n          correspondence, and provides informed recommendations to the\n          Editor-in-Chief regarding manuscript acceptance or rejection.\n        </p>\n<div class=\"flex items-start gap-4\">\n<div>\n<h3 class=\"font-bold text-lg text-gray-900 dark:text-gray-100\">\n              Dr. C. D. Okafor\n            </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">\n              Department of Chemical Engineering, PTI Effurun\n            </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm mb-2\">\n              [Bio Placeholder] Dr. Okafor specializes in chemical processes and\n              refining technologies, bringing extensive editorial expertise from\n              previous roles in major engineering journals.\n            </p>\n<a class=\"text-primary text-sm hover:underline block mt-1\" href=\"mailto:managing.director@jhst.org\">managing.director@jhst.org</a>\n</div>\n</div>\n</div>\n<!-- Editorial Assistant -->\n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Editorial Assistant\n        </h2>\n<p class=\"text-sm text-gray-600 dark:text-gray-400 mb-4 italic\">\n          Provides operational and editorial support to the Managing Director in\n          the administration of journal activities.\n        </p>\n<div class=\"flex items-start gap-4\">\n<div>\n<h3 class=\"font-bold text-lg text-gray-900 dark:text-gray-100\">\n              Ms. J. K. Bello\n            </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">\n              Journal of Hydrocarbon Science and Technology\n            </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm mb-2\">\n              [Bio Placeholder] Ms. Bello is a dedicated communications\n              professional responsible for managing author relations and\n              streamlining the peer-review timeline.\n            </p>\n<a class=\"text-primary text-sm hover:underline block mt-1\" href=\"mailto:admin@jhst.org\">admin@jhst.org</a>\n</div>\n</div>\n</div>\n<!-- Section Editors -->\n<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Section Editors\n        </h2>\n<p class=\"text-sm text-gray-600 dark:text-gray-400 mb-4 italic\">\n          Assesses the suitability of submitted manuscripts, manages the\n          peer-review process, and submits informed recommendations to the\n          Managing Director.\n        </p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8\">\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">\n              Prof. E. F. Mensah\n            </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">\n              Kwame Nkrumah University of Science and Technology, Ghana\n            </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm\">\n              [Bio Placeholder] Prof. Mensah's research focuses on renewable\n              energy integration and biofuels processing technologies.\n            </p>\n</div>\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">\n              Dr. G. H. Smith\n            </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">\n              University of Aberdeen, United Kingdom\n            </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm\">\n              [Bio Placeholder] Dr. Smith leads research in structural geology\n              and deep-water exploration techniques.\n            </p>\n</div>\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">\n              Prof. I. J. Ahmed\n            </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">\n              University of Lagos, Nigeria\n            </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm\">\n              [Bio Placeholder] Prof. Ahmed specializes in environmental impact\n              assessments and pollution control in hydrocarbon extraction.\n            </p>\n</div>\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">\n              Dr. K. L. Wong\n            </h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">\n              Universiti Teknologi PETRONAS, Malaysia\n            </p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm\">\n              [Bio Placeholder] Dr. Wong brings expertise in digital oilfields,\n              IoT applications, and machine learning models for reservoir\n              prediction.\n            </p>\n</div>\n</div>\n</div>\n<!-- Editorial Board -->\n<div>\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">\n          Editorial Board\n        </h2>\n<p class=\"text-sm text-gray-600 dark:text-gray-400 mb-4 italic\">\n          Provides comprehensive strategic guidance to the Editor-in-Chief and\n          Managing Director aimed at enhancing journal quality, visibility, and\n          indexing performance.\n        </p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6\">\n<div class=\"bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<span class=\"font-bold block text-gray-900 dark:text-gray-100\">Prof. M. N. Opara</span>\n<span class=\"text-gray-600 dark:text-gray-400 block mb-2 text-sm\">Texas A&amp;M University, USA</span>\n<p class=\"text-gray-700 dark:text-gray-300 text-xs mt-2 border-t pt-2 border-gray-200 dark:border-gray-600\">\n              [Bio Placeholder] Recognized globally for contributions to\n              enhanced oil recovery and thermodynamics.\n            </p>\n</div>\n<div class=\"bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<span class=\"font-bold block text-gray-900 dark:text-gray-100\">Prof. P. Q. Roy</span>\n<span class=\"text-gray-600 dark:text-gray-400 block mb-2 text-sm\">Indian Institute of Technology, India</span>\n<p class=\"text-gray-700 dark:text-gray-300 text-xs mt-2 border-t pt-2 border-gray-200 dark:border-gray-600\">\n              [Bio Placeholder] Pioneer in green chemistry applications for\n              hydrocarbon processing.\n            </p>\n</div>\n<div class=\"bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<span class=\"font-bold block text-gray-900 dark:text-gray-100\">Dr. S. T. Utomi</span>\n<span class=\"text-gray-600 dark:text-gray-400 block mb-2 text-sm\">Shell Research Centre, Netherlands</span>\n<p class=\"text-gray-700 dark:text-gray-300 text-xs mt-2 border-t pt-2 border-gray-200 dark:border-gray-600\">\n              [Bio Placeholder] Industry representative bridging the gap between\n              theoretical research and commercial deployment.\n            </p>\n</div>\n</div>\n</div>\n</div>",
-        "image_content": "",
-        "video_url": null,
-        "external_link": null,
-        "order": 0
-    }
-},
-{
-    "model": "journal.pagesection",
     "pk": 18,
     "fields": {
         "page": 6,
@@ -499,12 +429,152 @@
 },
 {
     "model": "journal.pagesection",
+    "pk": 68,
+    "fields": {
+        "page": 1,
+        "section_key": "intro",
+        "content_type": "html",
+        "text_content": "<p class=\"mb-6 text-lg\">\n<strong>Journal of Hydrocarbon Science and Technology (JHST)</strong> is\nthe official journal of the Petroleum Training Institute (PTI), Effurun,\nNigeria. It is a premier open-access, peer-reviewed journal dedicated to\ndisseminating high-quality research, technical innovations, and policy\nanalyses in the energy sector.\n</p>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 1
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 72,
+    "fields": {
+        "page": 2,
+        "section_key": "intro",
+        "content_type": "html",
+        "text_content": "<p>The <strong>Journal of Hydrocarbon Science and Technology (JHST)</strong>\nis a peer-reviewed, open-access journal dedicated to the dissemination of high-quality\nresearch in the field of hydrocarbon science, energy technology, and related disciplines.</p>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 1
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 75,
+    "fields": {
+        "page": 3,
+        "section_key": "editor_in_chief",
+        "content_type": "html",
+        "text_content": "<div class=\"text-center mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block\">Editor-in-Chief</h2>\n<div class=\"max-w-2xl bg-primary/5 p-8 rounded-lg border border-primary/20 mx-auto text-left\">\n<h3 class=\"text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2\">Professor A. B. Johnson</h3>\n<p class=\"text-lg text-gray-600 dark:text-gray-400\">Department of Petroleum Engineering</p>\n<p class=\"text-lg text-gray-600 dark:text-gray-400 mb-4\">Petroleum Training Institute, Effurun, Nigeria</p>\n<p class=\"text-gray-700 dark:text-gray-300 text-sm italic mb-4\">Professor Johnson has over 30 years of experience in hydrocarbon research and academia.</p>\n<a class=\"text-primary font-bold hover:underline inline-block\" href=\"mailto:eic@jhst.org\">eic@jhst.org</a>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 1
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 80,
+    "fields": {
+        "page": 10,
+        "section_key": "intro",
+        "content_type": "html",
+        "text_content": "<p class=\"mb-6 text-lg\">Please select the appropriate guidelines from the sections below:</p>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 1
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 82,
+    "fields": {
+        "page": 11,
+        "section_key": "about_journal",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">About the Journal</h2><p>The Journal of Hydrocarbon Science and Technology (JHST), the official journal of the Petroleum Training Institute (PTI), Effurun, Nigeria, is dedicated to publishing high-quality, peer-reviewed, and hypothesis-driven original research across all disciplines of hydrocarbon science and technology.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 1
+    }
+},
+{
+    "model": "journal.pagesection",
     "pk": 59,
     "fields": {
         "page": 22,
         "section_key": "about_mission",
         "content_type": "html",
         "text_content": "<div class=\"mission-statement\">\r\n<h3 class=\"font-bold mb-4 text-primary text-xl\">MISSION STATEMENT</h3>\r\n\r\n<p class=\"leading-relaxed mb-4 text-gray-700\">Journal of Hydrocarbon Science and Technology (JHST) is the official publication of the Petroleum Training Institute, PTI, Effurun, Nigeria. The journal seeks to:</p>\r\n\r\n<ol class=\"list-decimal pl-6 space-y-3 text-gray-700\">\r\n\t<li>Provide a global platform for original, peer-reviewed research that deepens understanding and drives innovation across the hydrocarbon value chain &mdash; from exploration and production to refining, environmental management, renewable integration, and digital transformation</li>\r\n\t<li>Provide the general public with dynamic and required information to the world for the purpose of innovation, knowledge/education, lifestyle, culture and career development.</li>\r\n</ol>\r\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 2
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 69,
+    "fields": {
+        "page": 1,
+        "section_key": "mission_vision",
+        "content_type": "html",
+        "text_content": "<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8 my-10\">\n<div class=\"mb-4\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block\">Our Mission</h2>\n<div class=\"bg-primary/5 p-6 rounded border border-primary/10 h-full\">\n<p>To provide a global platform for the exchange of knowledge between academia and the hydrocarbon industry, fostering innovation and sustainable development in energy technologies.</p>\n</div>\n</div>\n<div class=\"mb-4\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block\">Our Vision</h2>\n<div class=\"bg-primary/5 p-6 rounded border border-primary/10 h-full\">\n<p>To be a leading authoritative source of scientific and technical information for the global oil, gas, and energy community.</p>\n</div>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 2
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 73,
+    "fields": {
+        "page": 2,
+        "section_key": "aim",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Aim</h2>\n<p>Our primary aim is to provide a global platform for scientists, engineers, academicians, and industry\nprofessionals to share their innovative research findings, technical advancements, and reviews. We strive to\nbridge the gap between theoretical research and industrial application in the oil and gas sector.</p>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 2
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 76,
+    "fields": {
+        "page": 3,
+        "section_key": "managing_editor",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Managing Editor</h2>\n<p class=\"text-sm text-gray-600 dark:text-gray-400 mb-4 italic\">Oversees the journal's daily editorial operations and coordinates editorial workflow.</p>\n<div>\n<h3 class=\"font-bold text-lg text-gray-900 dark:text-gray-100\">Dr. C. D. Okafor</h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">Department of Chemical Engineering, PTI Effurun</p>\n<a class=\"text-primary text-sm hover:underline block mt-1\" href=\"mailto:managing.editor@jhst.org\">managing.editor@jhst.org</a>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 2
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 81,
+    "fields": {
+        "page": 10,
+        "section_key": "guideline_cards",
+        "content_type": "html",
+        "text_content": "<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8 my-8\">\n<a class=\"block group bg-primary/5 p-8 rounded border border-primary/10 hover:bg-primary/10 transition\" href=\"/author-guidelines/\">\n<div class=\"flex items-center mb-4\">\n<span class=\"material-icons text-4xl text-primary mr-4\">description</span>\n<h2 class=\"text-2xl font-bold text-primary group-hover:underline\">Author's Guidelines</h2>\n</div>\n<p class=\"text-gray-700 dark:text-gray-300\">Comprehensive instructions for manuscript preparation, formatting, submission requirements, and information on publication fees.</p>\n</a>\n<a class=\"block group bg-primary/5 p-8 rounded border border-primary/10 hover:bg-primary/10 transition\" href=\"/reviewer-guidelines/\">\n<div class=\"flex items-center mb-4\">\n<span class=\"material-icons text-4xl text-primary mr-4\">rate_review</span>\n<h2 class=\"text-2xl font-bold text-primary group-hover:underline\">Reviewer's Guidelines</h2>\n</div>\n<p class=\"text-gray-700 dark:text-gray-300\">Information for peer reviewers regarding confidentiality, evaluation criteria, report structure, and benefits.</p>\n</a>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 2
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 83,
+    "fields": {
+        "page": 11,
+        "section_key": "open_access",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Open Access Policy</h2><p>This journal ensures immediate open access to its content. Authors retain full copyright over their work while granting first publication rights to JHST. All articles are published under the <strong>CC BY 4.0</strong> license.</p></div>",
         "image_content": "",
         "video_url": null,
         "external_link": null,
@@ -527,12 +597,208 @@
 },
 {
     "model": "journal.pagesection",
+    "pk": 70,
+    "fields": {
+        "page": 1,
+        "section_key": "objectives",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Objectives</h2>\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>To publish cutting-edge hypothesis-driven original research, review articles, and technical notes.</li>\n<li>To bridge the gap between theoretical research and practical industrial application.</li>\n<li>To inform policy and decision-making in the energy sector through rigorous scientific analysis.</li>\n<li>To support the professional development of scientists, engineers, and researchers in the hydrocarbon field.</li>\n</ul>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 3
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 74,
+    "fields": {
+        "page": 2,
+        "section_key": "scope",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Scope</h2>\n<p class=\"mb-4\">JHST welcomes original research articles, technical notes, and review papers in the following areas, though not limited to:</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>Petroleum Geology and Geophysics</li>\n<li>Reservoir Engineering and Simulation</li>\n<li>Drilling and Completion Technology</li>\n<li>Production Engineering and Optimization</li>\n<li>Natural Gas Engineering and Processing</li>\n<li>Petrochemicals and Refining Technology</li>\n</ul>\n<ul class=\"list-disc pl-5 space-y-2\">\n<li>Health, Safety, and Environment (HSE) in Energy</li>\n<li>Energy Economics and Policy</li>\n<li>Renewable Energy Integration with Hydrocarbons</li>\n<li>Carbon Capture, Utilization, and Storage (CCUS)</li>\n<li>Digital Transformation in Oil &amp; Gas (AI, IoT)</li>\n<li>Pipeline Engineering and Flow Assurance</li>\n</ul>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 3
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 77,
+    "fields": {
+        "page": 3,
+        "section_key": "editorial_assistant",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Editorial Assistant</h2>\n<p class=\"text-sm text-gray-600 dark:text-gray-400 mb-4 italic\">Provides operational and editorial support to the Managing Editor.</p>\n<div>\n<h3 class=\"font-bold text-lg text-gray-900 dark:text-gray-100\">Ms. J. K. Bello</h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">Journal of Hydrocarbon Science and Technology</p>\n<a class=\"text-primary text-sm hover:underline block mt-1\" href=\"mailto:admin@jhst.org\">admin@jhst.org</a>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 3
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 84,
+    "fields": {
+        "page": 11,
+        "section_key": "publication_schedule",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Publication Schedule</h2><p>JHST publishes two issues per year and ensures that manuscripts are made available online as soon as they are accepted.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 3
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 71,
+    "fields": {
+        "page": 1,
+        "section_key": "explore_links",
+        "content_type": "html",
+        "text_content": "<p class=\"mb-4\">For more specific information, please explore the following sections:</p>\n<ul class=\"grid grid-cols-1 sm:grid-cols-2 gap-4 list-none pl-0\">\n<li><a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"/aim-scope/\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span> Aim &amp; Scope</a></li>\n<li><a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"/editorial-team/\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span> Editorial Team</a></li>\n<li><a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"/publication-schedule/\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span> Publication Schedule</a></li>\n<li><a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"/publication-fees/\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span> Publication Fees</a></li>\n<li><a class=\"flex items-center text-primary font-semibold hover:underline\" href=\"/contact/\"><span class=\"material-icons mr-2 text-sm\">arrow_forward</span> Contact Us</a></li>\n</ul>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 4
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 78,
+    "fields": {
+        "page": 3,
+        "section_key": "section_editors",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\">\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Section Editors</h2>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8\">\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">Prof. E. F. Mensah</h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">Kwame Nkrumah University of Science and Technology, Ghana</p>\n</div>\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">Dr. G. H. Smith</h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">University of Aberdeen, United Kingdom</p>\n</div>\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">Prof. I. J. Ahmed</h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">University of Lagos, Nigeria</p>\n</div>\n<div>\n<h3 class=\"font-bold text-gray-900 dark:text-gray-100\">Dr. K. L. Wong</h3>\n<p class=\"text-gray-600 dark:text-gray-400 mb-2\">Universiti Teknologi PETRONAS, Malaysia</p>\n</div>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 4
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 85,
+    "fields": {
+        "page": 11,
+        "section_key": "editorial_policy",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Editorial Policy</h2><p>Authors must prepare their manuscripts following the Instructions for Authors. The Journal reserves the right to make formal changes and language corrections necessary in a manuscript accepted for publication.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 4
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 79,
+    "fields": {
+        "page": 3,
+        "section_key": "editorial_board",
+        "content_type": "html",
+        "text_content": "<div>\n<h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Editorial Board</h2>\n<div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6\">\n<div class=\"bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<span class=\"font-bold block text-gray-900 dark:text-gray-100\">Prof. M. N. Opara</span>\n<span class=\"text-gray-600 dark:text-gray-400 block mb-2 text-sm\">Texas A&amp;M University, USA</span>\n</div>\n<div class=\"bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<span class=\"font-bold block text-gray-900 dark:text-gray-100\">Prof. P. Q. Roy</span>\n<span class=\"text-gray-600 dark:text-gray-400 block mb-2 text-sm\">Indian Institute of Technology, India</span>\n</div>\n<div class=\"bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<span class=\"font-bold block text-gray-900 dark:text-gray-100\">Dr. S. T. Utomi</span>\n<span class=\"text-gray-600 dark:text-gray-400 block mb-2 text-sm\">Shell Research Centre, Netherlands</span>\n</div>\n</div>\n</div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 5
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 86,
+    "fields": {
+        "page": 11,
+        "section_key": "general_requirements",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">General Requirements</h2><p>All submitted manuscripts should contain original research written in English, not previously published and not under consideration elsewhere. Manuscripts may be submitted as original papers or short communications.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 5
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 87,
+    "fields": {
+        "page": 11,
+        "section_key": "manuscript_preparation",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Manuscript Preparation</h2><p>The manuscript must be typed in 12-point font, double-spaced on A4 paper with margins of 1 inch on all sides. All pages should be page-numbered.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 6
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 88,
+    "fields": {
+        "page": 11,
+        "section_key": "cover_letter",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Cover Letter</h2><p>The cover letter must clearly show full contact details of the corresponding author with postal address, phone numbers and e-mail address. The relevance of the study should also be indicated. A minimum of three (3) potential reviewers with email addresses should be suggested.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 7
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 89,
+    "fields": {
+        "page": 11,
+        "section_key": "title_page",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Title Page</h2><p>The title page should contain the title of the manuscript, the authors' names, affiliations and email addresses. <strong>All authors are required to provide their 16-digit ORCID iD.</strong> One of the authors should be designated as the corresponding author.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 8
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 90,
+    "fields": {
+        "page": 11,
+        "section_key": "abstract",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Abstract</h2><p>Abstract should not be more than 250 words, containing a concise summary of the objective and scope, general methods, results, conclusion and significance of the research.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 9
+    }
+},
+{
+    "model": "journal.pagesection",
     "pk": 62,
     "fields": {
         "page": 22,
         "section_key": "sidebar_announcement",
         "content_type": "html",
         "text_content": "<h3 class=\"font-bold text-xl\">CHANGES TO AUTHOR GUIDELINES AND POLICIES</h3>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 10
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 91,
+    "fields": {
+        "page": 11,
+        "section_key": "keywords",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Keywords</h2><p>A maximum of six keywords. Words appearing in the title should not be given as keywords. Keywords must correspond with Medical Subject Headings (MESH) where applicable.</p></div>",
         "image_content": "",
         "video_url": null,
         "external_link": null,
@@ -555,12 +821,40 @@
 },
 {
     "model": "journal.pagesection",
+    "pk": 92,
+    "fields": {
+        "page": 11,
+        "section_key": "introduction",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Introduction</h2><p>The Introduction should provide sufficient background on the study, the statement of the problem, and the rationale for conducting the research. The aim should also be clearly defined.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 11
+    }
+},
+{
+    "model": "journal.pagesection",
     "pk": 64,
     "fields": {
         "page": 22,
         "section_key": "sidebar_submission_btn",
         "content_type": "html",
         "text_content": "<p><a class=\"block w-full bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark font-bold py-2 px-4 rounded border-b-4 border-gray-400 hover:bg-gray-300 text-center\" href=\"/submit/\">MAKE A SUBMISSION</a></p>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 12
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 93,
+    "fields": {
+        "page": 11,
+        "section_key": "materials_methods",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Materials and Methods</h2><p>This section must provide sufficient detail to allow the work to be reproduced. Methods already published should be indicated by reference. The type of statistical tool(s) used must be mentioned and justified.</p></div>",
         "image_content": "",
         "video_url": null,
         "external_link": null,
@@ -583,6 +877,20 @@
 },
 {
     "model": "journal.pagesection",
+    "pk": 94,
+    "fields": {
+        "page": 11,
+        "section_key": "results_discussion",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Results and Discussion</h2><p>Authors may wish to combine the two sections (Results and Discussion).</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 13
+    }
+},
+{
+    "model": "journal.pagesection",
     "pk": 66,
     "fields": {
         "page": 22,
@@ -590,6 +898,20 @@
         "content_type": "image",
         "text_content": "<p>Keyword Cloud (Upload Image Below)</p>",
         "image_content": "page_images/web-image.png",
+        "video_url": null,
+        "external_link": null,
+        "order": 14
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 95,
+    "fields": {
+        "page": 11,
+        "section_key": "conclusion",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Conclusion</h2><p>The conclusion must reflect the judgment or decision reached by reasoning after the discussion. This section sums up the arguments about what you have been writing about.</p></div>",
+        "image_content": "",
         "video_url": null,
         "external_link": null,
         "order": 14
@@ -607,6 +929,104 @@
         "video_url": null,
         "external_link": null,
         "order": 15
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 96,
+    "fields": {
+        "page": 11,
+        "section_key": "acknowledgements",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Acknowledgements</h2><p>Major contributors who did not qualify as authors should be acknowledged accordingly. Funding sources should also be acknowledged appropriately.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 15
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 97,
+    "fields": {
+        "page": 11,
+        "section_key": "conflict_of_interest",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Conflict(s) of Interests</h2><p>Authors are required to disclose financial interests in any company or institution that might benefit from their publication. The statement should be placed directly following the Acknowledgements.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 16
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 98,
+    "fields": {
+        "page": 11,
+        "section_key": "references",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">References</h2><p class=\"mb-4\">All references must be listed at the end of the paper in Vancouver Reference Format, numbered consecutively in order of appearance. Authors are responsible for ensuring accuracy.</p>\n<div class=\"space-y-4 text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700\">\n<p><strong>Books:</strong> Author(s). <em>Title of book</em>. Edition. Place: Publisher; Year.</p>\n<p><strong>Journal Articles:</strong> Author(s). Title of article. <em>Abbreviated Journal Title</em>. Year; Volume(Issue): page numbers.</p>\n<p><strong>Webpages:</strong> Author(s). Title. [Internet]. Place: Publisher; Date [cited Date]. Available from: URL</p>\n</div></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 17
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 99,
+    "fields": {
+        "page": 11,
+        "section_key": "submission",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Submission</h2><p>This should be done <strong>ONLY</strong> online at the journal website. Submission through any other means will not be processed.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 18
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 100,
+    "fields": {
+        "page": 11,
+        "section_key": "assessment",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Assessment</h2><p>Each manuscript will be subjected to both plagiarism check and preliminary editorial review before it can be sent for double-blind peer review. Acceptance will be based on originality of the research and contribution to scientific knowledge.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 19
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 101,
+    "fields": {
+        "page": 11,
+        "section_key": "publication_fees",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Publication Fees</h2><p>An article publication fee of Thirty Thousand Naira only (₦30,000.00) or One Hundred Dollars (100 USD) will be charged on any article accepted for publication. Payment details will be provided upon acceptance.</p></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 20
+    }
+},
+{
+    "model": "journal.pagesection",
+    "pk": 102,
+    "fields": {
+        "page": 11,
+        "section_key": "checklist",
+        "content_type": "html",
+        "text_content": "<div class=\"mb-10\"><h2 class=\"text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80\">Submission Preparation Checklist</h2><ul class=\"list-disc pl-5 space-y-2\">\n<li>The manuscript has not been previously published nor under consideration by another journal.</li>\n<li>The manuscript file is in OpenOffice, Microsoft Word, RTF or WordPerfect document format.</li>\n<li>The text is double-spaced; uses a 12-point font; employs italics, rather than underlining.</li>\n<li>All illustrations, figures, and tables are placed within the text at the appropriate points.</li>\n<li>A declaration statement on conflict of interest.</li>\n<li>A cover letter stating the novelty and significance of the work, and a list of at least three suggested reviewers.</li>\n</ul></div>",
+        "image_content": "",
+        "video_url": null,
+        "external_link": null,
+        "order": 21
     }
 }
 ]
