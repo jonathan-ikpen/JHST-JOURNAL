@@ -5,7 +5,7 @@ class Command(BaseCommand):
     help = 'Fixes manuscript statuses for published articles'
 
     def handle(self, *args, **options):
-        # Find all manuscripts that have an associated article but are not marked as published there
+        # Find all manuscripts that have an associated article but are not marked as published
         manuscripts = Manuscript.objects.filter(article__isnull=False).exclude(status='published')
         
         updated_count = 0

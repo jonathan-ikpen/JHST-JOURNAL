@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-from ckeditor.fields import RichTextField
 
 class User(AbstractUser):
     is_researcher = models.BooleanField(default=False)
@@ -13,8 +12,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
-# ... (Manuscript, Review, Volume, Issue, Article, Notification, Announcement unchanged) ...
 
 class Manuscript(models.Model):
     STATUS_CHOICES = [
@@ -249,14 +246,19 @@ class Announcement(models.Model):
     def color_class(self):
         colors = {
             'news': 'blue',
-            'call_for_papers': 'primary', 
+            'call_for_papers': 'primary', # Using primary for consistency with design
             'maintenance': 'amber',
             'general': 'gray',
         }
+        # This returns the base color name, templates will need to construct the full class
+        # e.g. bg-{color}-100 text-{color}-600
+        # Wait, primary is a custom color in tailwind config probably, but 'bg-primary/10' is used in template.
+        # Let's return a dictionary or object with specific classes to match the design exactly.
         return colors.get(self.category, 'gray')
 
     @property
     def icon_bg_class(self):
+        # Precise mapping to match the template's aesthetics
         if self.category == 'call_for_papers':
             return 'bg-primary/10 text-primary'
         elif self.category == 'news':
@@ -274,42 +276,3 @@ class Announcement(models.Model):
         elif self.category == 'maintenance':
             return 'bg-amber-600 text-white'
         return 'bg-gray-600 text-white'
-
-class Page(models.Model):
-    name = models.CharField(max_length=100, unique=True, help_text="Human-readable name for the page")
-    slug = models.SlugField(unique=True, help_text="URL handle for the page")
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def sections_dict(self):
-        """Returns a dict of sections indexed by section_key for easier template access."""
-        return {section.section_key: section for section in self.sections.all()}
-
-class PageSection(models.Model):
-    CONTENT_TYPE_CHOICES = [
-        ('text', 'Plain Text'),
-        ('html', 'Rich HTML Content'),
-        ('image', 'Image Upload'),
-        ('video', 'Video Embed'),
-    ]
-
-    page = models.ForeignKey(Page, related_name="sections", on_delete=models.CASCADE)
-    section_key = models.CharField(max_length=100, help_text="Unique key identifier for the section (e.g. 'hero_title')")
-    content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES, default='text')
-    
-    # CMS Fields
-    text_content = models.TextField(blank=True, null=True, help_text="Used for text and HTML content")
-    image_content = models.ImageField(upload_to='page_images/', blank=True, null=True, help_text="Upload images here")
-    video_url = models.URLField(blank=True, null=True, help_text="Link to Vimeo or YouTube video")
-    external_link = models.URLField(blank=True, null=True, help_text="External link for images/banners")
-    
-    order = models.PositiveIntegerField(default=0, help_text="Order in which sections appear in Admin")
-
-    class Meta:
-        unique_together = ('page', 'section_key')
-        ordering = ['order']
-
-    def __str__(self):
-        return f"{self.page.name} - {self.section_key} ({self.content_type})"

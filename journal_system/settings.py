@@ -27,8 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ckeditor",
-    "journal",
+    'journal',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +55,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "journal.context_processors.notifications",
-                "journal.context_processors.sidebar_context",
             ],
         },
     },
@@ -112,21 +110,4 @@ EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Journal of Hydrocarbon Science and Technology <noreply@jhst.org>')
-
-# CKEditor Configuration
-SILENCED_SYSTEM_CHECKS = ["ckeditor.W001"]
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ],
-        'width': '100%',
-        'height': 300,
-    },
-}
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
