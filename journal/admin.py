@@ -31,18 +31,6 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     inlines = [PageSectionInline]
     list_per_page = 20
-
-# @admin.register(PageSection)
-# class PageSectionAdmin(admin.ModelAdmin):
-#     list_display = ('page', 'section_key', 'content_type', 'order')
-#     search_fields = ('section_key', 'text_content')
-#     list_filter = ('page', 'content_type')
-#     fields = ('page', 'section_key', 'content_type', 'text_content', 'image_content', 'video_url', 'external_link', 'order')
-#     formfield_overrides = {
-#         models.TextField: {'widget': CKEditorWidget()},
-#     }
-
-
 class ReviewInline(admin.TabularInline):
     model = Review
     extra = 1
@@ -59,7 +47,6 @@ class ManuscriptAdmin(admin.ModelAdmin):
     list_filter = ('status', 'submitted_date')
     search_fields = ('title', 'author__username')
 
-
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Manuscript, ManuscriptAdmin)
 admin.site.register(Review)
@@ -68,10 +55,6 @@ admin.site.register(Issue)
 admin.site.register(Article)
 admin.site.register(Announcement)
 
-# Admin Site Customization
-admin.site.site_header = "JHST Administration"
-admin.site.site_title = "JHST Admin Portal"
-admin.site.index_title = "Welcome to Journal of Hydrocarbon Science and Technology Admin Portal"
 
 # Admin Site Customization
 admin.site.site_header = "JHST Administration"

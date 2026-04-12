@@ -1,4 +1,4 @@
-﻿{% extends 'dashboard/dashboard_base.html' %}
+{% extends 'dashboard/dashboard_base.html' %}
 <!-- prettier-ignore -->
 {% block dashboard_title %}Reviewer Dashboard{% endblock %} {% block content %}
 <div class="">
@@ -114,12 +114,14 @@
               <div>
                 <h4 class="font-bold text-slate-800 dark:text-white mb-1">
                   <a
-                    href="{% url 'reviewer_manuscript_detail' review.manuscript.id %}"
+                    href="{% url 'reviewer_manuscript_detail' review.id %}"
                     class="hover:text-primary"
                     >{{ review.manuscript.title }}</a
                   >
                 </h4>
                 <div class="flex items-center text-xs text-slate-500 gap-3">
+                  <span class="font-bold text-primary">Round {{ review.round }}</span>
+                  <span>•</span>
                   <span>ID: #{{ review.manuscript.id }}</span>
                   <span>•</span>
                   <span
@@ -128,19 +130,44 @@
                 </div>
               </div>
 
-              {% if review.date_completed %}
-              <span
-                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-green-50 text-green-700 border-green-200"
-              >
-                Submitted
-              </span>
-              {% else %}
-              <span
-                class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200"
-              >
-                Pending
-              </span>
-              {% endif %}
+              <div class="flex flex-col items-end gap-2">
+                {% if review.date_completed %}
+                <span
+                  class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-green-50 text-green-700 border-green-200"
+                >
+                  Submitted
+                </span>
+                {% if review.manuscript.status == 'revision_submitted' and review.has_unreviewed_revision %}
+                <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold border border-blue-100 flex items-center gap-1">
+                  <span class="material-icons text-[10px]">update</span> REVISION FILED
+                </span>
+                {% endif %}
+                {% else %}
+                {% if review.manuscript.status == 'revision_submitted' and review.is_latest_round %}
+                <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full font-bold border border-emerald-100 flex items-center gap-1 animate-pulse">
+                  <span class="material-icons text-[10px]">new_releases</span> NEW REVISION
+                </span>
+                {% elif review.is_awaiting_author %}
+                <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full font-bold border border-slate-200 flex items-center gap-1">
+                  <span class="material-icons text-[10px]">hourglass_empty</span> AWAITING AUTHOR
+                </span>
+                {% endif %}
+                {% if review.invitation_status == 'invited' %}
+                <div class="flex gap-2">
+                  <a href="{% url 'accept_invitation' review.id %}" class="px-3 py-1 rounded bg-primary text-white font-bold text-[10px] tracking-wide uppercase hover:bg-primary-dark transition shadow-sm">Accept</a>
+                  <button type="button" data-review-id="{{ review.id }}" data-title="{{ review.manuscript.title|escapejs }}" class="decline-button px-3 py-1 rounded bg-white text-red-600 border border-red-200 font-bold text-[10px] tracking-wide uppercase hover:bg-red-50 transition shadow-sm">Decline</button>
+                </div>
+                {% elif review.invitation_status == 'declined' %}
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-red-50 text-red-700 border-red-200">
+                  Declined
+                </span>
+                {% else %}
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border bg-amber-50 text-amber-700 border-amber-200">
+                  Pending
+                </span>
+                {% endif %}
+                {% endif %}
+              </div>
             </div>
           </div>
           {% endfor %}

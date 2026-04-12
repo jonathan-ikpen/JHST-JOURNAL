@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Dashboard - JHST{% endblock %}</title>
+    <link rel="icon" href="{% static 'assets/images/jhst-logo.png' %}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -101,6 +102,26 @@
       }
       .dark .sidebar-link.active::before {
         background-color: #4ade80;
+      }
+
+      /* Notification Blink */
+      @keyframes blink {
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.1); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      .animate-blink {
+        animation: blink 1.5s ease-in-out infinite;
+      }
+
+      /* Notification Pulse Background */
+      @keyframes pulse-red {
+        0% { background-color: rgba(239, 68, 68, 0.05); }
+        50% { background-color: rgba(239, 68, 68, 0.15); }
+        100% { background-color: rgba(239, 68, 68, 0.05); }
+      }
+      .animate-pulse-red {
+        animation: pulse-red 2s ease-in-out infinite;
       }
 
       /* Collapsed State Utilities */
@@ -439,7 +460,7 @@
           </a>
 
           <div
-            class="relative notification-bell cursor-pointer"
+            class="relative notification-bell cursor-pointer p-2 rounded-full transition-all duration-300 {% if notifications %}bg-red-50 dark:bg-red-900/20 animate-pulse-red hover:bg-red-100 dark:hover:bg-red-900/30{% else %}hover:bg-slate-100 dark:hover:bg-slate-800{% endif %}"
             id="notification-bell"
           >
             <span
@@ -448,7 +469,7 @@
             >
             {% if notifications %}
             <span
-              class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"
+              class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900 animate-blink"
             ></span>
             {% endif %}
 
@@ -652,6 +673,65 @@
           }
         }
       });
+    </script>
+
+    <!-- Global Decline Modal -->
+    <div id="decline-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 transition-opacity"></div>
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-card-dark rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up border border-slate-200 dark:border-slate-700">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold font-display text-slate-800 dark:text-white mb-2">Decline Review Invitation</h3>
+                    <p id="decline-manuscript-title" class="text-sm text-slate-500 mb-6 font-medium line-clamp-2"></p>
+                    
+                    <form id="decline-form" method="POST" action="">
+                        {% csrf_token %}
+                        <div class="mb-6">
+                            <label for="reason" class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Reason (Optional)</label>
+                            <textarea name="reason" id="reason" rows="4" class="w-full border border-slate-300 p-3 rounded-lg dark:border-slate-600 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary text-sm transition-shadow outline-none" placeholder="Please provide a brief reason for declining..."></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end gap-3 font-bold">
+                            <button type="button" onclick="closeDeclineModal()" class="px-5 py-2 text-sm text-slate-500 hover:text-slate-800 dark:hover:text-white transition">Cancel</button>
+                            <button type="submit" class="px-6 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-sm">Decline Invitation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openDeclineModal(reviewId, title) {
+        const modal = document.getElementById('decline-modal');
+        const titleEl = document.getElementById('decline-manuscript-title');
+        const form = document.getElementById('decline-form');
+        
+        titleEl.textContent = title;
+        form.action = `/decline_invitation/${reviewId}/`;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeclineModal() {
+        const modal = document.getElementById('decline-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.decline-button')) {
+            const btn = e.target.closest('.decline-button');
+            const reviewId = btn.dataset.reviewId;
+            const title = btn.dataset.title;
+            openDeclineModal(reviewId, title);
+        }
+        
+        // Close modal if clicking on backdrop
+        if (e.target.classList.contains('bg-slate-900/60')) {
+            closeDeclineModal();
+        }
+    });
     </script>
 
     <style>
