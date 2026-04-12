@@ -1,14 +1,14 @@
-{% extends 'base.html' %} 
-{% load static %}
+{% extends 'base.html' %}{% load static %}
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
-    <div class="bg-card-light dark:bg-card-dark p-8 rounded">
-        <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
-            Publication Schedule
-        </h1>
-        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-            {{ page.sections_dict.main_content.text_content|safe }}
-        </div>
-    </div>
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
+    <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">Publication Schedule</h1>
+    {% with s=page.sections_dict %}
+    {% if s.intro %}<div class="mb-8 prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.intro.text_content|safe }}</div>{% endif %}
+    {% if s.biannual_publication %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Biannual Publication</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.biannual_publication.text_content|safe }}</div></div>{% endif %}
+    {% if s.online_first %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Online First</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.online_first.text_content|safe }}</div></div>{% endif %}
+    {% if s.special_issues %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Special Issues</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.special_issues.text_content|safe }}</div></div>{% endif %}
+    {% endwith %}
+  </div>
 </section>
 {% endblock %}

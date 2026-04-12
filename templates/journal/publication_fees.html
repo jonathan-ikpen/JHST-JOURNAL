@@ -1,14 +1,14 @@
-{% extends 'base.html' %} 
-{% load static %}
+{% extends 'base.html' %}{% load static %}
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
-    <div class="bg-card-light dark:bg-card-dark p-8 rounded">
-        <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
-            Publication Fees
-        </h1>
-        <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-            {{ page.sections_dict.main_content.text_content|safe }}
-        </div>
-    </div>
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
+    <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">Publication Fees</h1>
+    {% with s=page.sections_dict %}
+    {% if s.intro %}<div class="mb-8 prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.intro.text_content|safe }}</div>{% endif %}
+    {% if s.apc %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block">Article Processing Charge (APC)</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.apc.text_content|safe }}</div></div>{% endif %}
+    {% if s.submission_fees %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Submission Fees</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.submission_fees.text_content|safe }}</div></div>{% endif %}
+    {% if s.waiver_policy %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Waiver Policy</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.waiver_policy.text_content|safe }}</div></div>{% endif %}
+    {% endwith %}
+  </div>
 </section>
 {% endblock %}

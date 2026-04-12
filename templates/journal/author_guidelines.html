@@ -1,176 +1,30 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %}{% load static %}
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
-    <div class="bg-card-light dark:bg-card-dark p-8 rounded">
-        <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
-            Author's Guidelines
-        </h1>
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
+    <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">Author's Guidelines</h1>
+    {% with s=page.sections_dict %}
 
-        {% with s=page.sections_dict %}
+    {% for key, heading in section_map %}{% endfor %}
 
-        {% if s.about_journal %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">About the Journal</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.about_journal.text_content|safe }}</div>
-        </div>
-        {% endif %}
+    {% if s.about_journal %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">About the Journal</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.about_journal.text_content|safe }}</div></div>{% endif %}
+    {% if s.open_access %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Open Access and Copyright</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.open_access.text_content|safe }}</div></div>{% endif %}
+    {% if s.editorial_policy %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Policy</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.editorial_policy.text_content|safe }}</div></div>{% endif %}
+    {% if s.general_requirements %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">General Requirements</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.general_requirements.text_content|safe }}</div></div>{% endif %}
+    {% if s.manuscript_preparation %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Manuscript Preparation</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.manuscript_preparation.text_content|safe }}</div></div>{% endif %}
+    {% if s.abstract %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Abstract</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.abstract.text_content|safe }}</div></div>{% endif %}
+    {% if s.keywords %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Keywords</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.keywords.text_content|safe }}</div></div>{% endif %}
+    {% if s.introduction %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Introduction</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.introduction.text_content|safe }}</div></div>{% endif %}
+    {% if s.materials_methods %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Materials and Methods</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.materials_methods.text_content|safe }}</div></div>{% endif %}
+    {% if s.discussion %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Discussion</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.discussion.text_content|safe }}</div></div>{% endif %}
+    {% if s.conclusion %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Conclusion</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.conclusion.text_content|safe }}</div></div>{% endif %}
+    {% if s.acknowledgements %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Acknowledgements</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.acknowledgements.text_content|safe }}</div></div>{% endif %}
+    {% if s.submission %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Submission</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.submission.text_content|safe }}</div></div>{% endif %}
+    {% if s.assessment %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Assessment</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.assessment.text_content|safe }}</div></div>{% endif %}
+    {% if s.publication_fees %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Publication Fees</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.publication_fees.text_content|safe }}</div></div>{% endif %}
+    {% if s.checklist %}<div class="mb-10"><h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Submission Preparation Checklist</h2><div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.checklist.text_content|safe }}</div></div>{% endif %}
 
-        {% if s.open_access %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Open Access Policy</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.open_access.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.publication_schedule %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Publication Schedule</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.publication_schedule.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.editorial_policy %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Policy</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.editorial_policy.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.general_requirements %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">General Requirements</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.general_requirements.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.manuscript_preparation %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Manuscript Preparation</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.manuscript_preparation.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.cover_letter %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Cover Letter</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.cover_letter.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.title_page %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Title Page</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.title_page.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.abstract %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Abstract</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.abstract.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.keywords %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Keywords</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.keywords.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.introduction %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Introduction</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.introduction.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.materials_methods %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Materials and Methods</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.materials_methods.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.results_discussion %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Result and Discussion</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.results_discussion.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.results %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Results</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.results.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.discussion %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Discussion</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.discussion.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.conclusion %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Conclusion</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.conclusion.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.acknowledgements %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Acknowledgements</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.acknowledgements.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.conflict_of_interest %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Conflict(s) of Interests</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.conflict_of_interest.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.references %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">References</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.references.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.submission %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Submission</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.submission.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.assessment %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Assessment</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.assessment.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.publication_fees %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Publication Fees</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.publication_fees.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% if s.checklist %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Submission Preparation Checklist</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.checklist.text_content|safe }}</div>
-        </div>
-        {% endif %}
-
-        {% endwith %}
-    </div>
+    {% endwith %}
+  </div>
 </section>
 {% endblock %}

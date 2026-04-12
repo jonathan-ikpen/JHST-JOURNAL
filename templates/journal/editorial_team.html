@@ -1,60 +1,40 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %}{% load static %}
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
-    <div class="bg-card-light dark:bg-card-dark p-8 rounded">
-        <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
-            Editorial Team
-        </h1>
-
-        {% with s=page.sections_dict %}
-
-        {% if s.editor_in_chief %}
-        <div class="text-center mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block">Editor-in-Chief</h2>
-            <div class="prose dark:prose-invert max-w-none">
-                {{ s.editor_in_chief.text_content|safe }}
-            </div>
-        </div>
-        {% endif %}
-
-        {% if s.managing_editor %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Managing Editor</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-                {{ s.managing_editor.text_content|safe }}
-            </div>
-        </div>
-        {% endif %}
-
-        {% if s.editorial_assistant %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Assistant</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-                {{ s.editorial_assistant.text_content|safe }}
-            </div>
-        </div>
-        {% endif %}
-
-        {% if s.section_editors %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Section Editors</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-                {{ s.section_editors.text_content|safe }}
-            </div>
-        </div>
-        {% endif %}
-
-        {% if s.editorial_board %}
-        <div class="mb-10">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Board</h2>
-            <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
-                {{ s.editorial_board.text_content|safe }}
-            </div>
-        </div>
-        {% endif %}
-
-        {% endwith %}
+  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
+    <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">Editorial Team</h1>
+    {% with s=page.sections_dict %}
+    {% if s.editor_in_chief %}
+    <div class="text-center mb-10">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block">Editor-in-Chief</h2>
+      <div class="prose dark:prose-invert max-w-none">{{ s.editor_in_chief.text_content|safe }}</div>
     </div>
+    {% endif %}
+    {% if s.managing_director %}
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Managing Director</h2>
+      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.managing_director.text_content|safe }}</div>
+    </div>
+    {% endif %}
+    {% if s.editorial_assistant %}
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Assistant</h2>
+      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.editorial_assistant.text_content|safe }}</div>
+    </div>
+    {% endif %}
+    {% if s.section_editors %}
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Section Editors</h2>
+      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.section_editors.text_content|safe }}</div>
+    </div>
+    {% endif %}
+    {% if s.editorial_board %}
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Board</h2>
+      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.editorial_board.text_content|safe }}</div>
+    </div>
+    {% endif %}
+    {% endwith %}
+  </div>
 </section>
 {% endblock %}
