@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.db import models
-from ckeditor.widgets import CKEditorWidget
-from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement, Page, PageSection
+from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -14,23 +12,6 @@ class CustomUserAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ('is_researcher', 'is_reviewer', 'is_editor', 'affiliation')
     list_filter = UserAdmin.list_filter + ('is_researcher', 'is_reviewer', 'is_editor')
 
-
-class PageSectionInline(admin.StackedInline):
-    model = PageSection
-    extra = 0
-    fields = ('section_key', 'content_type', 'order', 'text_content', 'image_content', 'video_url', 'external_link')
-    classes = ('collapse',)
-    formfield_overrides = {
-        models.TextField: {'widget': CKEditorWidget()},
-    }
-
-@admin.register(Page)
-class PageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    search_fields = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',)}
-    inlines = [PageSectionInline]
-    list_per_page = 20
 class ReviewInline(admin.TabularInline):
     model = Review
     extra = 1
@@ -54,7 +35,6 @@ admin.site.register(Volume)
 admin.site.register(Issue)
 admin.site.register(Article)
 admin.site.register(Announcement)
-
 
 # Admin Site Customization
 admin.site.site_header = "JHST Administration"

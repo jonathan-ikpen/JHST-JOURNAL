@@ -1,40 +1,242 @@
-{% extends 'base.html' %}{% load static %}
-{% block content %}
+﻿{% extends 'base.html' %} {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
-  <div class="bg-card-light dark:bg-card-dark p-8 rounded">
-    <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">Editorial Team</h1>
-    {% with s=page.sections_dict %}
-    {% if s.editor_in_chief %}
-    <div class="text-center mb-10">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block">Editor-in-Chief</h2>
-      <div class="prose dark:prose-invert max-w-none">{{ s.editor_in_chief.text_content|safe }}</div>
+  <div class="bg-card-light dark:bg-card-dark p-6 rounded">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
+      Editorial Team
+    </h1>
+
+    <div class="space-y-8">
+      <!-- Editor in Chief -->
+      <div class="text-center mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80 inline-block"
+        >
+          Editor-in-Chief
+        </h2>
+        <div
+          class="max-w-2xl bg-primary/5 p-8 rounded-lg border border-primary/20 mx-auto text-left"
+        >
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Professor A. B. Johnson
+          </h3>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Department of Petroleum Engineering
+          </p>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">
+            Petroleum Training Institute, Effurun, Nigeria
+          </p>
+          <p class="text-gray-700 dark:text-gray-300 text-sm italic mb-4">
+            [Bio Placeholder] Professor Johnson has over 30 years of experience
+            in hydrocarbon research and academia, leading numerous
+            groundbreaking studies in petroleum engineering and sustainable
+            energy transition.
+          </p>
+          <a
+            href="mailto:eic@jhst.org"
+            class="text-primary font-bold hover:underline inline-block"
+            >eic@jhst.org</a
+          >
+        </div>
+      </div>
+
+      <!-- Managing Director -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Managing Director
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
+          Oversees the journal's daily editorial operations, manages scholarly
+          correspondence, and provides informed recommendations to the
+          Editor-in-Chief regarding manuscript acceptance or rejection.
+        </p>
+        <div class="flex items-start gap-4">
+          <div>
+            <h3 class="font-bold text-lg text-gray-900 dark:text-gray-100">
+              Dr. C. D. Okafor
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-2">
+              Department of Chemical Engineering, PTI Effurun
+            </p>
+            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
+              [Bio Placeholder] Dr. Okafor specializes in chemical processes and
+              refining technologies, bringing extensive editorial expertise from
+              previous roles in major engineering journals.
+            </p>
+            <a
+              href="mailto:managing.director@jhst.org"
+              class="text-primary text-sm hover:underline block mt-1"
+              >managing.director@jhst.org</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Editorial Assistant -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Editorial Assistant
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
+          Provides operational and editorial support to the Managing Director in
+          the administration of journal activities.
+        </p>
+        <div class="flex items-start gap-4">
+          <div>
+            <h3 class="font-bold text-lg text-gray-900 dark:text-gray-100">
+              Ms. J. K. Bello
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-2">
+              Journal of Hydrocarbon Science and Technology
+            </p>
+            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
+              [Bio Placeholder] Ms. Bello is a dedicated communications
+              professional responsible for managing author relations and
+              streamlining the peer-review timeline.
+            </p>
+            <a
+              href="mailto:admin@jhst.org"
+              class="text-primary text-sm hover:underline block mt-1"
+              >admin@jhst.org</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Editors -->
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Section Editors
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
+          Assesses the suitability of submitted manuscripts, manages the
+          peer-review process, and submits informed recommendations to the
+          Managing Director.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-100">
+              Prof. E. F. Mensah
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-2">
+              Kwame Nkrumah University of Science and Technology, Ghana
+            </p>
+            <p class="text-gray-700 dark:text-gray-300 text-sm">
+              [Bio Placeholder] Prof. Mensah's research focuses on renewable
+              energy integration and biofuels processing technologies.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-100">
+              Dr. G. H. Smith
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-2">
+              University of Aberdeen, United Kingdom
+            </p>
+            <p class="text-gray-700 dark:text-gray-300 text-sm">
+              [Bio Placeholder] Dr. Smith leads research in structural geology
+              and deep-water exploration techniques.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-100">
+              Prof. I. J. Ahmed
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-2">
+              University of Lagos, Nigeria
+            </p>
+            <p class="text-gray-700 dark:text-gray-300 text-sm">
+              [Bio Placeholder] Prof. Ahmed specializes in environmental impact
+              assessments and pollution control in hydrocarbon extraction.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-100">
+              Dr. K. L. Wong
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-2">
+              Universiti Teknologi PETRONAS, Malaysia
+            </p>
+            <p class="text-gray-700 dark:text-gray-300 text-sm">
+              [Bio Placeholder] Dr. Wong brings expertise in digital oilfields,
+              IoT applications, and machine learning models for reservoir
+              prediction.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editorial Board -->
+      <div>
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
+        >
+          Editorial Board
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 italic">
+          Provides comprehensive strategic guidance to the Editor-in-Chief and
+          Managing Director aimed at enhancing journal quality, visibility, and
+          indexing performance.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            class="bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
+          >
+            <span class="font-bold block text-gray-900 dark:text-gray-100"
+              >Prof. M. N. Opara</span
+            >
+            <span class="text-gray-600 dark:text-gray-400 block mb-2 text-sm"
+              >Texas A&M University, USA</span
+            >
+            <p
+              class="text-gray-700 dark:text-gray-300 text-xs mt-2 border-t pt-2 border-gray-200 dark:border-gray-600"
+            >
+              [Bio Placeholder] Recognized globally for contributions to
+              enhanced oil recovery and thermodynamics.
+            </p>
+          </div>
+          <div
+            class="bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
+          >
+            <span class="font-bold block text-gray-900 dark:text-gray-100"
+              >Prof. P. Q. Roy</span
+            >
+            <span class="text-gray-600 dark:text-gray-400 block mb-2 text-sm"
+              >Indian Institute of Technology, India</span
+            >
+            <p
+              class="text-gray-700 dark:text-gray-300 text-xs mt-2 border-t pt-2 border-gray-200 dark:border-gray-600"
+            >
+              [Bio Placeholder] Pioneer in green chemistry applications for
+              hydrocarbon processing.
+            </p>
+          </div>
+          <div
+            class="bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
+          >
+            <span class="font-bold block text-gray-900 dark:text-gray-100"
+              >Dr. S. T. Utomi</span
+            >
+            <span class="text-gray-600 dark:text-gray-400 block mb-2 text-sm"
+              >Shell Research Centre, Netherlands</span
+            >
+            <p
+              class="text-gray-700 dark:text-gray-300 text-xs mt-2 border-t pt-2 border-gray-200 dark:border-gray-600"
+            >
+              [Bio Placeholder] Industry representative bridging the gap between
+              theoretical research and commercial deployment.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    {% endif %}
-    {% if s.managing_director %}
-    <div class="mb-10">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Managing Director</h2>
-      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.managing_director.text_content|safe }}</div>
-    </div>
-    {% endif %}
-    {% if s.editorial_assistant %}
-    <div class="mb-10">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Assistant</h2>
-      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.editorial_assistant.text_content|safe }}</div>
-    </div>
-    {% endif %}
-    {% if s.section_editors %}
-    <div class="mb-10">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Section Editors</h2>
-      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.section_editors.text_content|safe }}</div>
-    </div>
-    {% endif %}
-    {% if s.editorial_board %}
-    <div class="mb-10">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80">Editorial Board</h2>
-      <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">{{ s.editorial_board.text_content|safe }}</div>
-    </div>
-    {% endif %}
-    {% endwith %}
   </div>
 </section>
 {% endblock %}
