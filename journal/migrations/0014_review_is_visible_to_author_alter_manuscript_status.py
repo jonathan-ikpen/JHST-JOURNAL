@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0010_remove_manuscript_reviewer'),
+        ('journal', '0013_merge_20260315_1300'),
     ]
 
     operations = [
