@@ -358,7 +358,6 @@ def make_decision(request, manuscript_id):
         return redirect('dashboard')
     
     reviews = manuscript.reviews.all()
-    reviews = manuscript.reviews.all()
     return render(request, 'dashboard/make_decision.html', {'manuscript': manuscript, 'reviews': reviews})
 
 @login_required
