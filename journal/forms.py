@@ -25,7 +25,7 @@ class ResearcherRegistrationForm(UserCreationForm):
 class ManuscriptForm(forms.ModelForm):
     class Meta:
         model = Manuscript
-        fields = ['title', 'abstract', 'file', 'keywords', 'co_authors', 'affiliations']
+        fields = ['title', 'abstract', 'file', 'keywords', 'co_authors', 'affiliations', 'response_to_reviewers']
         widgets = {
             'abstract': forms.Textarea(attrs={'rows': 12}),
             'affiliations': forms.Textarea(attrs={'rows': 2}),
@@ -89,6 +89,22 @@ class UserProfileForm(forms.ModelForm):
         model = User
         fields = ['email', 'first_name', 'last_name', 'affiliation', 'orcid', 'avatar']
         
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
+            })
+
+class RevisionForm(forms.ModelForm):
+    class Meta:
+        model = Manuscript
+        fields = ['title', 'abstract', 'keywords', 'file', 'response_to_reviewers']
+        widgets = {
+            'abstract': forms.Textarea(attrs={'rows': 8}),
+            'response_to_reviewers': forms.Textarea(attrs={'rows': 10, 'placeholder': 'Enter your detailed response to the reviewers here...'}),
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
