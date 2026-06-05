@@ -63,67 +63,53 @@ class Command(BaseCommand):
         ))
 
     def _populate_home_page(self):
+        # Template wraps mission_intro in <p>, mission_item_* in <li>, and
+        # chief_editor_para_* in <p>, so store plain text (no _p() wrapper).
         HomePage.objects.update_or_create(pk=1, defaults={
             'intro_title': 'An Introduction to the Journal',
-            'video_url': 'https://player.vimeo.com/video/1129153382?byline=0&title=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479',
+            'video_url': (
+                'https://player.vimeo.com/video/1129153382'
+                '?byline=0&title=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479'
+            ),
             'about_title': 'About the Journal',
             'mission_heading': 'MISSION STATEMENT',
-            'mission_intro': _p(
+            'mission_intro': (
                 'Journal of Hydrocarbon Science and Technology (JHST) is the official '
                 'publication of the Petroleum Training Institute, PTI, Effurun, Nigeria. '
                 'The journal seeks to:'
             ),
-            'mission_item_1': _p(
-                'Provide a global platform for original, peer-reviewed research that '
-                'deepens understanding and drives innovation across the hydrocarbon '
-                'value chain — from exploration and production to refining, '
-                'environmental management, renewable integration, and digital transformation'
+            'mission_item_1': (
+                'Provide a global platform for original, peer-reviewed research that deepens '
+                'understanding and drives innovation across the hydrocarbon value chain.'
             ),
-            'mission_item_2': _p(
-                'Provide the general public with dynamic and required information to '
-                'the world for the purpose of innovation, knowledge/education, '
-                'lifestyle, culture and career development.'
+            'mission_item_2': (
+                'Provide the general public with dynamic and required information to the world '
+                'for the purpose of innovation, knowledge/education, lifestyle, culture and career development.'
             ),
             'organogram_heading': 'JHST ORGANOGRAM',
             'chief_editor_title': "From the Chief Editor's Desk",
-            'chief_editor_para_1': _p(
+            'chief_editor_para_1': (
                 'In an era where the global energy landscape is undergoing unprecedented '
                 'transformation, the Journal of Hydrocarbon Science and Technology (JHST) '
-                'emerges as a timely response to a critical need — the need to rethink, '
-                'redefine, and renew our approach to energy development, sustainability, and '
-                'innovation. The Petroleum Training Institute (PTI), for over five decades, '
-                'has served as Nigeria’s premier institution for technical excellence in '
-                'the petroleum and allied sectors. Through education, applied research, and '
-                'industry collaboration, PTI has equipped generations of professionals with '
-                'the competence and creativity to advance the oil and gas industry. The JHST '
-                'is a natural evolution of this legacy — a bridge between research and '
-                'real-world application, between academia and industry, between innovation and impact.'
+                "emerges as a timely response to a critical need. PTI has served as Nigeria's "
+                'premier institution for technical excellence in the petroleum and allied sectors. '
+                'The JHST is a natural evolution of this legacy.'
             ),
-            'chief_editor_para_2': _p(
+            'chief_editor_para_2': (
                 'Our mission at JHST is to provide a global platform for original, peer-reviewed '
                 'research that deepens understanding and drives innovation across the hydrocarbon '
-                'value chain — from exploration and production to refining, environmental '
-                'management, renewable integration, and digital transformation. We welcome '
-                'contributions that address both the opportunities and the challenges of the '
-                'energy transition — where hydrocarbons, renewables, and new technologies '
-                'converge to shape a sustainable future.'
+                'value chain. We welcome contributions that address both the opportunities and '
+                'the challenges of the energy transition.'
             ),
-            'chief_editor_para_3': _p(
-                'In line with PTI’s commitment to excellence, JHST upholds rigorous standards '
-                'of scholarly integrity, transparency, and quality. Our distinguished editorial and '
-                'review boards bring together leading experts, scientists, and professionals from '
-                'around the world — ensuring that each publication meets the highest levels '
-                'of technical and ethical credibility. We envision this Journal not merely as a '
-                'collection of articles, but as a platform for dialogue, a catalyst for innovation, '
-                'and a repository of insight — where ideas transform into technologies, and '
-                'research drives resilience in an evolving energy economy.'
+            'chief_editor_para_3': (
+                "In line with PTI's commitment to excellence, JHST upholds rigorous standards "
+                'of scholarly integrity, transparency, and quality. Our distinguished editorial '
+                'and review boards bring together leading experts from around the world.'
             ),
-            'chief_editor_para_4': _p(
+            'chief_editor_para_4': (
                 'As we embark on this exciting journey, I invite researchers, industry professionals, '
                 'policymakers, and students alike to contribute, collaborate, and engage with JHST. '
-                'Together, we can advance the science and technology that sustain our energy future '
-                '— responsibly, intelligently, and inclusively. Welcome to the Journal of '
-                'Hydrocarbon Science and Technology — where energy meets innovation.'
+                'Welcome to the Journal of Hydrocarbon Science and Technology.'
             ),
             'chief_editor_name': 'Dr. Fredrick B. Owoyemi',
             'chief_editor_role': 'Chief Editor, JHST',
@@ -131,11 +117,12 @@ class Command(BaseCommand):
         self.stdout.write('  OK HomePage')
 
     def _populate_organogram(self):
+        # description rendered without |safe in template, store plain text
         items = [
             (1, '01', 'Editor-in-Chief', 'Oversees the whole activities of JHST', '#00529B'),
             (2, '02', 'Managing Editor',
              "Coordinates journal's day-to-day activities, takes correspondences and make "
-             "important suggestion on the acceptance or rejection of manuscripts to the editor-in-chief",
+             'important suggestion on the acceptance or rejection of manuscripts to the editor-in-chief',
              '#B33A3A'),
             (3, '03', 'Editorial Assistant', 'Supports the Managing Editor', '#34A853'),
             (4, '04', 'Section Editor',
@@ -149,7 +136,7 @@ class Command(BaseCommand):
         for order, number, title, description, color in items:
             OrganogramItem.objects.update_or_create(
                 order=order,
-                defaults={'number': number, 'title': title, 'description': _p(description), 'color': color},
+                defaults={'number': number, 'title': title, 'description': description, 'color': color},
             )
         self.stdout.write('  OK OrganogramItems (5)')
 
