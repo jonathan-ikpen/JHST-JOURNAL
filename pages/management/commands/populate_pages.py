@@ -907,6 +907,19 @@ class Command(BaseCommand):
                 'conference proceedings. Calls for papers for special issues are announced in the '
                 'Announcements section.'
             ),
+            'timeline_heading': 'Publishing Timeline',
+            'timeline_stat1_days': '7',
+            'timeline_stat1_label': 'Submission to first decision',
+            'timeline_stat1_tooltip': 'Median number of days from submission receipt to first editorial decision',
+            'timeline_stat2_days': '82',
+            'timeline_stat2_label': 'Submission to decision after review',
+            'timeline_stat2_tooltip': 'Median number of days from submission to decision following peer review',
+            'timeline_stat3_days': '201',
+            'timeline_stat3_label': 'Submission to acceptance',
+            'timeline_stat3_tooltip': 'Median number of days from submission to final acceptance',
+            'timeline_stat4_days': '2',
+            'timeline_stat4_label': 'Acceptance to online publication',
+            'timeline_stat4_tooltip': 'Median number of days from acceptance to online publication',
         })
         self.stdout.write('  OK PublicationSchedulePage')
 

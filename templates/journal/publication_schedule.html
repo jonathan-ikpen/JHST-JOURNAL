@@ -58,6 +58,74 @@
         </h2>
         {{ page.special_issues_text|safe }}
       </div>
+
+      {% if page.timeline_heading %}
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80"
+        >
+          {{ page.timeline_heading }}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 not-prose">
+          {% if page.timeline_stat1_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat1_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat1_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat1_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat1_label }}</p>
+          </div>
+          {% endif %}
+          {% if page.timeline_stat2_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat2_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat2_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat2_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat2_label }}</p>
+          </div>
+          {% endif %}
+          {% if page.timeline_stat3_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat3_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat3_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat3_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat3_label }}</p>
+          </div>
+          {% endif %}
+          {% if page.timeline_stat4_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat4_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat4_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat4_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat4_label }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>
