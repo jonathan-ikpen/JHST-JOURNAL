@@ -1,4 +1,4 @@
-﻿{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
   <div class="bg-card-light dark:bg-card-dark p-6 rounded">
     <h1
@@ -10,10 +10,7 @@
     <div
       class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
     >
-      <p class="mb-6">
-        Browse our database of published issues and articles. JHST publishes
-        biannually, with occasional special issues.
-      </p>
+      <p class="mb-6">{{ page.intro_text|safe }}</p>
 
       <!-- Publication Schedule -->
       <div class="mb-10">
@@ -23,10 +20,7 @@
           Publication Schedule
         </h2>
         <p class="mb-4">
-          <strong>Frequency:</strong> Two issues per year (June and
-          December).<br />
-          Articles are published online immediately upon acceptance and final
-          processing (Online First), before being assigned to an issue.
+          <strong>Frequency:</strong> {{ page.schedule_frequency_text|safe }}
         </p>
       </div>
 
@@ -47,7 +41,7 @@
             Focus: Emerging Technologies in Carbon Capture
           </p>
           <a
-            href="#"
+            href="{% url 'current_issue' %}"
             class="text-white bg-primary px-4 py-2 rounded hover:bg-opacity-90 transition inline-block"
             >View Current Issue</a
           >
@@ -62,47 +56,12 @@
           Archives
         </h2>
         <div class="space-y-4">
-          <!-- Example Archive Items -->
-          <div
-            class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2"
+          <a
+            href="{% url 'archives' %}"
+            class="text-primary hover:underline font-bold"
+            >View Complete Archives →</a
           >
-            <div>
-              <a href="#" class="font-bold text-lg hover:text-primary"
-                >Volume 5, Issue 1</a
-              >
-              <span class="text-sm text-gray-500 ml-2">(June 2025)</span>
-            </div>
-            <a href="#" class="text-sm text-primary hover:underline">View</a>
-          </div>
-          <div
-            class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2"
-          >
-            <div>
-              <a href="#" class="font-bold text-lg hover:text-primary"
-                >Volume 4, Issue 2</a
-              >
-              <span class="text-sm text-gray-500 ml-2">(December 2024)</span>
-            </div>
-            <a href="#" class="text-sm text-primary hover:underline">View</a>
-          </div>
-          <div
-            class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2"
-          >
-            <div>
-              <a href="#" class="font-bold text-lg hover:text-primary"
-                >Volume 4, Issue 1</a
-              >
-              <span class="text-sm text-gray-500 ml-2">(June 2024)</span>
-            </div>
-            <a href="#" class="text-sm text-primary hover:underline">View</a>
-          </div>
         </div>
-      </div>
-
-      <div class="mt-8 pt-4">
-        <a href="#" class="text-primary hover:underline font-bold"
-          >View Complete Archives ?</a
-        >
       </div>
     </div>
   </div>
