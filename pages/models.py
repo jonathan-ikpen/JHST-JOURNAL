@@ -411,6 +411,20 @@ class PublicationSchedulePage(SingletonMixin, models.Model):
     online_first_text    = RichTextField()
     special_issues_title = models.CharField(max_length=100, default='Special Issues')
     special_issues_text  = RichTextField()
+    # Publishing Timeline
+    timeline_heading      = models.CharField(max_length=100, default='Publishing Timeline', blank=True)
+    timeline_stat1_days   = models.CharField(max_length=20, default='7', blank=True)
+    timeline_stat1_label  = models.CharField(max_length=200, default='Submission to first decision', blank=True)
+    timeline_stat1_tooltip = models.CharField(max_length=300, blank=True, default='')
+    timeline_stat2_days   = models.CharField(max_length=20, default='82', blank=True)
+    timeline_stat2_label  = models.CharField(max_length=200, default='Submission to decision after review', blank=True)
+    timeline_stat2_tooltip = models.CharField(max_length=300, blank=True, default='')
+    timeline_stat3_days   = models.CharField(max_length=20, default='201', blank=True)
+    timeline_stat3_label  = models.CharField(max_length=200, default='Submission to acceptance', blank=True)
+    timeline_stat3_tooltip = models.CharField(max_length=300, blank=True, default='')
+    timeline_stat4_days   = models.CharField(max_length=20, default='2', blank=True)
+    timeline_stat4_label  = models.CharField(max_length=200, default='Acceptance to online publication', blank=True)
+    timeline_stat4_tooltip = models.CharField(max_length=300, blank=True, default='')
 
     class Meta:
         verbose_name = 'Publication Schedule Page'

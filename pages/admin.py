@@ -261,6 +261,13 @@ class PublicationSchedulePageAdmin(SingletonPageAdmin):
         )}),
         ('Online First', {'fields': ('online_first_title', 'online_first_text')}),
         ('Special Issues', {'fields': ('special_issues_title', 'special_issues_text')}),
+        ('Publishing Timeline', {'fields': (
+            'timeline_heading',
+            'timeline_stat1_days', 'timeline_stat1_label', 'timeline_stat1_tooltip',
+            'timeline_stat2_days', 'timeline_stat2_label', 'timeline_stat2_tooltip',
+            'timeline_stat3_days', 'timeline_stat3_label', 'timeline_stat3_tooltip',
+            'timeline_stat4_days', 'timeline_stat4_label', 'timeline_stat4_tooltip',
+        )}),
     )
 
 
