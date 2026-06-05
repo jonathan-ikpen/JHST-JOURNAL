@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowchart</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default', themeVariables: { fontSize: '24px', fontFamily: 'sans-serif' } });
+    </script>
+    <style>
+        body { background: transparent; margin: 0; padding: 40px; display: inline-block; }
+        .mermaid { background: white; padding: 40px; border-radius: 12px; font-size: 24px !important; }
+    </style>
+</head>
+<body>
+    <div class="mermaid" id="diagram">
+graph TD
+    A([1. Author Submits Manuscript]) --> B[2. Editor Reviews Submission]
+    B -->|Pays Fee & Assigns| C{3. Review Process}
+    
+    C -->|Reviewers Assigned| D[Reviewers Accept/Decline]
+    D --> E[Reviewers Submit Assessments]
+    E --> F{4. Editorial Decision}
+    
+    F -->|Reject| G([Manuscript Rejected])
+    F -->|Accept| H([Manuscript Accepted])
+    F -->|Needs Revision| I[5. Author Submits Revision]
+    
+    I --> J[Editor Requests Re-review]
+    J --> C
+    
+    H --> K[6. Admin Assigns to Issue]
+    K --> L([Published Online])
+    
+    style A fill:#4CAF50,stroke:#388E3C,stroke-width:3px,color:#fff
+    style G fill:#F44336,stroke:#D32F2F,stroke-width:3px,color:#fff
+    style H fill:#2196F3,stroke:#1976D2,stroke-width:3px,color:#fff
+    style L fill:#9C27B0,stroke:#7B1FA2,stroke-width:3px,color:#fff
+    </div>
+</body>
+</html>
