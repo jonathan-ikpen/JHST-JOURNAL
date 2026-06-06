@@ -577,12 +577,20 @@ class Command(BaseCommand):
                 'should be placed in the text of the submitted manuscript directly following the '
                 'Acknowledgements.'
             ),
-            'references_intro_text': _p(
-                'All references must be listed at the end of the paper, and authors are responsible '
-                'for ensuring their accuracy. References should be complete and formatted according '
-                'to the Vancouver Reference Format. References are numbered consecutively in order of '
-                'appearance in the text – they are identified by Arabic numerals in parentheses '
-                '(1), square brackets [1], superscript.'
+            'references_intro_text': (
+                _p(
+                    'All references must be listed at the end of the paper, and authors are responsible '
+                    'for ensuring their accuracy. References should be complete and formatted according '
+                    'to the Vancouver Reference Format. References are numbered consecutively in order of '
+                    'appearance in the text – they are identified by Arabic numerals in parentheses '
+                    '(1), square brackets [1], superscript.'
+                ) +
+                '<div class="space-y-4 text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700">'
+                '<p><strong>Books:</strong> Author(s). <em>Title of book</em>. Edition. Place: Publisher; Year.</p>'
+                '<p><strong>Journal Articles:</strong> Author(s). Title of article. <em>Abbreviated Journal Title</em>. Year; Volume(Issue): page numbers.</p>'
+                '<p><strong>Webpages:</strong> Author(s). Title. [Internet]. Place: Publisher; Date [cited Date]. Available from: URL</p>'
+                '<p><strong>Conference Proceedings:</strong> Editor(s). <em>Title of conference</em>. Place: Publisher; Year.</p>'
+                '</div>'
             ),
             'submission_text': _p(
                 'This should be done ONLY online at the journal website. Submission of the manuscript '
