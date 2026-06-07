@@ -1,5 +1,4 @@
-﻿{% extends 'base.html' %} {% block title %}Archiving and Repository Policies -
-JHST{% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %}Archiving and Repository Policies - JHST{% endblock %} {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
   <div class="bg-card-light dark:bg-card-dark p-6 rounded">
     <h1
@@ -14,30 +13,16 @@ JHST{% endblock %} {% block content %}
       <h2
         class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
       >
-        Archiving
+        {{ page.archiving_section_title }}
       </h2>
-      <p>
-        Journal of Hydrocarbon Science and Technology is archived in the Open
-        Journal System (OJS) Public Knowledge Project Preservation Network (PKP
-        PN).
-      </p>
+      {{ page.archiving_text|safe }}
 
       <h2
         class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block mt-8"
       >
-        Repository
+        {{ page.repository_section_title }}
       </h2>
-      <p>
-        Journal of Hydrocarbon Science and Technology permits the authors to
-        self-archive All Versions of their work (this includes, the original
-        version (Submitted manuscript), Accepted Version (Author accepted
-        manuscript) and the published Version (Version of record)) in their
-        personal website or in an institutional repository and any other
-        repositories of their choice for as long as the author wishes. However,
-        the published source must be acknowledged. For articles, a link to the
-        journal homepage or Digital Object Identifier (DOI) of the article must
-        be set.
-      </p>
+      {{ page.repository_text|safe }}
     </div>
   </div>
 </section>

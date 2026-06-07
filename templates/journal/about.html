@@ -1,4 +1,4 @@
-﻿{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}About - JHST{% endblock %} {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
   <div class="bg-card-light dark:bg-card-dark p-8 rounded">
     <h1
@@ -10,40 +10,29 @@
     <div
       class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
     >
-      <p class="mb-6 text-lg">
-        <strong>Journal of Hydrocarbon Science and Technology (JHST)</strong> is
-        the official journal of the Petroleum Training Institute (PTI), Effurun,
-        Nigeria. It is a premier open-access, peer-reviewed journal dedicated to
-        disseminating high-quality research, technical innovations, and policy
-        analyses in the energy sector.
-      </p>
+      <div class="mb-6 text-lg">
+        {{ page.intro_text|safe }}
+      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
         <div class="mb-4">
           <h2
             class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
           >
-            Our Mission
+            {{ page.mission_heading }}
           </h2>
           <div class="bg-primary/5 p-6 rounded border border-primary/10 h-full">
-            <p>
-              To provide a global platform for the exchange of knowledge between
-              academia and the hydrocarbon industry, fostering innovation and
-              sustainable development in energy technologies.
-            </p>
+            {{ page.mission_text|safe }}
           </div>
         </div>
         <div class="mb-4">
           <h2
             class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80 inline-block"
           >
-            Our Vision
+            {{ page.vision_heading }}
           </h2>
           <div class="bg-primary/5 p-6 rounded border border-primary/10 h-full">
-            <p>
-              To be a leading authoritative source of scientific and technical
-              information for the global oil, gas, and energy community.
-            </p>
+            {{ page.vision_text|safe }}
           </div>
         </div>
       </div>
@@ -52,71 +41,42 @@
         <h2
           class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
         >
-          Objectives
+          {{ page.objectives_heading }}
         </h2>
         <ul class="list-disc pl-5 space-y-2">
-          <li>
-            To publish cutting-edge hypothesis-driven original research, review
-            articles, and technical notes.
-          </li>
-          <li>
-            To bridge the gap between theoretical research and practical
-            industrial application.
-          </li>
-          <li>
-            To inform policy and decision-making in the energy sector through
-            rigorous scientific analysis.
-          </li>
-          <li>
-            To support the professional development of scientists, engineers,
-            and researchers in the hydrocarbon field.
-          </li>
+          <li>{{ page.objective_1|safe }}</li>
+          <li>{{ page.objective_2|safe }}</li>
+          <li>{{ page.objective_3|safe }}</li>
+          <li>{{ page.objective_4|safe }}</li>
         </ul>
       </div>
 
-      <p class="mb-4">
-        For more specific information, please explore the following sections:
-      </p>
+      <p class="mb-4">{{ page.explore_more_text }}</p>
       <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none pl-0">
         <li>
-          <a
-            href="{% url 'aim_scope' %}"
-            class="flex items-center text-primary font-semibold hover:underline"
-            ><span class="material-icons mr-2 text-sm">arrow_forward</span> Aim
-            & Scope</a
-          >
+          <a href="{% url 'aim_scope' %}" class="flex items-center text-primary font-semibold hover:underline">
+            <span class="material-icons mr-2 text-sm">arrow_forward</span> Aim &amp; Scope
+          </a>
         </li>
         <li>
-          <a
-            href="{% url 'editorial_team' %}"
-            class="flex items-center text-primary font-semibold hover:underline"
-            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
-            Editorial Team</a
-          >
+          <a href="{% url 'editorial_team' %}" class="flex items-center text-primary font-semibold hover:underline">
+            <span class="material-icons mr-2 text-sm">arrow_forward</span> Editorial Team
+          </a>
         </li>
         <li>
-          <a
-            href="{% url 'publication_schedule' %}"
-            class="flex items-center text-primary font-semibold hover:underline"
-            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
-            Publication Schedule</a
-          >
+          <a href="{% url 'publication_schedule' %}" class="flex items-center text-primary font-semibold hover:underline">
+            <span class="material-icons mr-2 text-sm">arrow_forward</span> Publication Schedule
+          </a>
         </li>
         <li>
-          <a
-            href="{% url 'publication_fees' %}"
-            class="flex items-center text-primary font-semibold hover:underline"
-            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
-            Publication Fees</a
-          >
+          <a href="{% url 'publication_fees' %}" class="flex items-center text-primary font-semibold hover:underline">
+            <span class="material-icons mr-2 text-sm">arrow_forward</span> Publication Fees
+          </a>
         </li>
         <li>
-          <a
-            href="{% url 'contact' %}"
-            class="flex items-center text-primary font-semibold hover:underline"
-            ><span class="material-icons mr-2 text-sm">arrow_forward</span>
-            Contact Us</a
-          >
+          <a href="{% url 'contact' %}" class="flex items-center text-primary font-semibold hover:underline">
+            <span class="material-icons mr-2 text-sm">arrow_forward</span> Contact Us
+          </a>
         </li>
       </ul>
     </div>

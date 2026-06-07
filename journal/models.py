@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 class User(AbstractUser):
     is_researcher = models.BooleanField(default=False)
@@ -220,7 +221,7 @@ class Announcement(models.Model):
 
     title = models.CharField(max_length=255)
     short_description = models.TextField(max_length=500)
-    content = models.TextField()
+    content = RichTextField()
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='general')
     image = models.ImageField(upload_to='announcements/', blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now)
