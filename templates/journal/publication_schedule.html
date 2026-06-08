@@ -1,4 +1,4 @@
-﻿{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block title %}Publication Schedule - JHST{% endblock %} {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
   <div class="bg-card-light dark:bg-card-dark p-6 rounded">
     <h1
@@ -10,84 +10,122 @@
     <div
       class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
     >
-      <p class="mb-6 text-lg">
-        The Journal of Hydrocarbon Science and Technology (JHST) adheres to a
-        regular publication schedule to ensure timely dissemination of research.
-      </p>
+      <div class="mb-6 text-lg">{{ page.intro_text|safe }}</div>
 
-      <!-- Biannual Publication -->
       <div class="mb-10">
         <h2
           class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
         >
-          Biannual Publication
+          {{ page.biannual_title }}
         </h2>
-        <p class="mb-4">JHST publishes two regular issues per calendar year:</p>
+        {{ page.biannual_intro|safe }}
         <ul class="space-y-4">
           <li
             class="flex items-center bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
           >
-            <span class="material-icons text-primary mr-4 text-3xl"
-              >calendar_today</span
-            >
+            <span class="material-icons text-primary mr-4 text-3xl">calendar_today</span>
             <div>
-              <span class="block font-bold text-lg text-primary">June</span>
-              <span class="text-sm text-gray-600 dark:text-gray-400"
-                >Issue 1</span
-              >
+              <span class="block font-bold text-lg text-primary">{{ page.issue1_month }}</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400">{{ page.issue1_description }}</span>
             </div>
           </li>
           <li
             class="flex items-center bg-gray-50 dark:bg-gray-800 p-4 rounded border border-gray-100 dark:border-gray-700"
           >
-            <span class="material-icons text-primary mr-4 text-3xl"
-              >calendar_today</span
-            >
+            <span class="material-icons text-primary mr-4 text-3xl">calendar_today</span>
             <div>
-              <span class="block font-bold text-lg text-primary">December</span>
-              <span class="text-sm text-gray-600 dark:text-gray-400"
-                >Issue 2</span
-              >
+              <span class="block font-bold text-lg text-primary">{{ page.issue2_month }}</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400">{{ page.issue2_description }}</span>
             </div>
           </li>
         </ul>
       </div>
 
-      <!-- Online First -->
       <div class="mb-10">
         <h2
           class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
         >
-          Online First
+          {{ page.online_first_title }}
         </h2>
-        <p>
-          To minimize publication lag, accepted articles are published
-          individually online as "Articles in Press" immediately after final
-          proofreading, before they are assigned to a specific issue. This
-          ensures your research is available to the community as quickly as
-          possible.
-        </p>
+        {{ page.online_first_text|safe }}
       </div>
 
-      <!-- Special Issues -->
       <div class="mb-10">
         <h2
           class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 pb-2 border-b-4 border-primary/80"
         >
-          Special Issues
+          {{ page.special_issues_title }}
         </h2>
-        <p>
-          The journal occasionally publishes Special Issues focused on emerging
-          topics or conference proceedings. Calls for papers for special issues
-          are announced in the
-          <a
-            href="{% url 'announcements' %}"
-            class="text-primary hover:underline font-bold"
-            >Announcements</a
-          >
-          section.
-        </p>
+        {{ page.special_issues_text|safe }}
       </div>
+
+      {% if page.timeline_heading %}
+      <div class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 pb-2 border-b-4 border-primary/80"
+        >
+          {{ page.timeline_heading }}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 not-prose">
+          {% if page.timeline_stat1_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat1_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat1_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat1_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat1_label }}</p>
+          </div>
+          {% endif %}
+          {% if page.timeline_stat2_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat2_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat2_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat2_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat2_label }}</p>
+          </div>
+          {% endif %}
+          {% if page.timeline_stat3_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat3_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat3_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat3_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat3_label }}</p>
+          </div>
+          {% endif %}
+          {% if page.timeline_stat4_days %}
+          <div class="border-l-4 border-primary bg-gray-50 dark:bg-gray-800 rounded-r p-5 flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl font-bold text-primary leading-none">{{ page.timeline_stat4_days }}</span>
+              <span class="text-base font-medium text-gray-600 dark:text-gray-400 self-end">days</span>
+              {% if page.timeline_stat4_tooltip %}
+              <span class="material-icons text-gray-400 text-base ml-auto cursor-help" title="{{ page.timeline_stat4_tooltip }}">info</span>
+              {% else %}
+              <span class="material-icons text-gray-400 text-base ml-auto">info</span>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">{{ page.timeline_stat4_label }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>

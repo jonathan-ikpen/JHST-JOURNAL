@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Journal of Hydrocarbon Science &amp; Technology</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&amp;family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#003366", // PTI's dark blue
+              secondary: "#007A33", // PTI's green
+              "background-light": "#F5F5F5",
+              "background-dark": "#1a1a1a",
+              "card-light": "#FFFFFF",
+              "card-dark": "#2a2a2a",
+              "text-light": "#333333",
+              "text-dark": "#e0e0e0",
+              "border-light": "#e5e7eb",
+              "border-dark": "#4a4a4a",
+            },
+            fontFamily: {
+              display: ["Lora", "serif"],
+              body: ["Roboto", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.375rem",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .organogram-line {
+        position: relative;
+      }
+      .organogram-line::before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 2px;
+        background-color: #4a90e2;
+      }
+      .organogram-line::after {
+        content: "";
+        position: absolute;
+        left: -2px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 4px solid transparent;
+        border-left-color: #4a90e2;
+      }
+      .organogram-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .organogram-number {
+        background-color: #4a90e2;
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+      }
+      .organogram-content {
+        flex-grow: 1;
+      }
+      .organogram-title {
+        background-color: #f0f0f0;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+      }
+      .organogram-description {
+        padding: 0.5rem 1rem;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-body text-text-light dark:text-text-dark"
+  >
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+      <header class="border-b-4 border-primary pb-4 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex items-center space-x-4">
+            <img
+              alt="PTI logo"
+              class="h-24"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3iZtGjeNZ6SdytnxrWAlYlaPfqvr67ezgrFKvbBEBbbNklqQyxVWE3kGGOu6XQtFHmYw_0QFZFdRzFk2gOTiyz2evwmw0KsTlaPlBIBXspdpH7zVAlWUmBRTV5qScXJ0bl6r3JNiMvqpjyumDyVHx1yOE5rhogwap5YNBquTGA8O86SrNOd1D-OhDQxHDFfrLjciZyT4MSgjYVTzctJwhngEnJpgIK5oG94cZPqYBwK1lMxN467odxcB11Q7IUmAAZuARYCmIL1Jv"
+            />
+            <div>
+              <h1 class="text-3xl font-display font-bold text-primary">
+                Journal of Hydrocarbon Science &amp; Technology
+              </h1>
+              <p class="text-lg text-gray-700 dark:text-gray-300">
+                A Publication of the Petroleum Training Institute
+              </p>
+            </div>
+          </div>
+          <div class="text-sm">
+            <a
+              class="text-gray-600 dark:text-gray-400 hover:text-primary"
+              href="#"
+              >Register</a
+            >
+            <span class="mx-2 text-gray-400">|</span>
+            <a
+              class="text-gray-600 dark:text-gray-400 hover:text-primary"
+              href="#"
+              >Login</a
+            >
+          </div>
+        </div>
+        <nav class="bg-primary text-white rounded">
+          <div class="flex justify-between items-center">
+            <div class="flex">
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >ABOUT JOURNAL</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >PUBLICATIONS</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >INDEXING</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >METRICS</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >GUIDELINES</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >POLICIES</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >ANNOUNCEMENTS</a
+              >
+              <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="#"
+                >PTI JOURNALS</a
+              >
+            </div>
+            <div class="flex items-center px-4">
+              <span class="material-icons">search</span>
+              <a class="ml-2" href="#">SEARCH</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <main class="lg:col-span-2 space-y-8">
+          <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h2
+              class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+            >
+              An Introduction to the Journal
+            </h2>
+            <div class="aspect-w-16 aspect-h-9">
+              <iframe
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen=""
+                frameborder="0"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              ></iframe>
+            </div>
+          </section>
+          <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h2
+              class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+            >
+              From the Chief Editor’s Desk
+            </h2>
+            <div class="flex items-start space-x-4">
+              <img
+                alt="Chief Editor"
+                class="w-24 h-24 rounded-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX4_bKFrfhOVd5ywDU2GEbBE4_G4y-L5EHlxXMLV2QCs5th4C2elHcKZWjhawnBUee3Uq3hUaTKsfr5s0sih66WY6JlwQX_7pt38ke-074Teo8hExeUrHd0_k7FdsKIChkuGBNIP4QgB__NfqCGsQ91GjnWYygt6xOeNfOmJcIRMFFsuc5Wz1Ckg3rMozS1-6OSfBxeq7R5QskoH-PvoBKhYdNhauwOeSEwOSqr9GAGNv7EG1_H-J255iqP8WCtdQWRa591DMfYDvm"
+              />
+              <div>
+                <p class="mb-4 leading-relaxed">
+                  Welcome to the official page of the Journal of Hydrocarbon
+                  Science &amp; Technology (JHST), a flagship publication of the
+                  Petroleum Training Institute (PTI), Effurun. As the Chief
+                  Editor, it is my distinct pleasure to introduce you to our
+                  journal, a platform dedicated to the advancement of knowledge
+                  and innovation in the dynamic fields of hydrocarbon science
+                  and technology.
+                </p>
+                <p class="mb-4 leading-relaxed">
+                  JHST is committed to disseminating high-quality, peer-reviewed
+                  research that addresses the evolving challenges and
+                  opportunities within the petroleum and energy sectors. Our
+                  scope encompasses a wide range of topics, including
+                  exploration, drilling, production, refining, petrochemicals,
+                  renewable energy integration, and environmental management. We
+                  aim to foster a vibrant academic community by providing a
+                  forum for researchers, engineers, policymakers, and industry
+                  professionals to share their findings, insights, and
+                  perspectives.
+                </p>
+                <p class="font-semibold text-primary">Dr. Michael Ardis</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  Chief Editor, JHST
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h2
+              class="text-2xl font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4 text-primary"
+            >
+              Current Issue
+            </h2>
+            <div class="mb-6">
+              <p class="font-bold">
+                Vol. 1 No. 1 (2024): Journal of Hydrocarbon Science &amp;
+                Technology
+              </p>
+              <p class="font-bold">Volume 1, Issue 1, 2024</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Published: 2024-07-25
+              </p>
+            </div>
+            <h3 class="font-bold text-lg mb-4">Articles</h3>
+            <div class="space-y-4">
+              <div
+                class="border-b border-border-light dark:border-border-dark pb-4"
+              >
+                <p class="font-semibold">
+                  Advanced Reservoir Characterization Techniques for Enhanced
+                  Oil Recovery in Mature Fields
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  John A. Doe, Jane B. Smith, Robert C. Williams
+                </p>
+                <a
+                  class="inline-flex items-center bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                  href="#"
+                >
+                  <span class="material-icons text-base mr-1"
+                    >picture_as_pdf</span
+                  >
+                  PDF
+                </a>
+              </div>
+              <div
+                class="border-b border-border-light dark:border-border-dark pb-4"
+              >
+                <p class="font-semibold">
+                  The Role of Nanotechnology in Mitigating Pipeline Corrosion in
+                  the Oil and Gas Industry
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  Amina Yusuf, Chinedu Okoro, Fatima Bello
+                </p>
+                <a
+                  class="inline-flex items-center bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                  href="#"
+                >
+                  <span class="material-icons text-base mr-1"
+                    >picture_as_pdf</span
+                  >
+                  PDF
+                </a>
+              </div>
+              <div
+                class="border-b border-border-light dark:border-border-dark pb-4"
+              >
+                <p class="font-semibold">
+                  Process Optimization of Catalytic Cracking Units Using Machine
+                  Learning Algorithms
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  David L. Chen, Susan P. Jones, Mark T. Davis
+                </p>
+                <a
+                  class="inline-flex items-center bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                  href="#"
+                >
+                  <span class="material-icons text-base mr-1"
+                    >picture_as_pdf</span
+                  >
+                  PDF
+                </a>
+              </div>
+            </div>
+            <div class="mt-6">
+              <a class="text-primary hover:underline font-semibold" href="#"
+                >View All Issues →</a
+              >
+            </div>
+          </section>
+        </main>
+        <aside class="space-y-8">
+          <div class="bg-secondary p-4 rounded text-center text-white">
+            <p class="font-bold text-lg">IMPORTANT ANNOUNCEMENT</p>
+            <div class="bg-white text-primary p-4 my-2 rounded">
+              <h3 class="text-2xl font-bold">
+                CALL FOR PAPERS: SPECIAL ISSUE ON RENEWABLE ENERGY
+              </h3>
+            </div>
+          </div>
+          <div class="text-center">
+            <a
+              class="block w-full bg-primary text-white font-bold py-3 px-4 rounded hover:bg-opacity-90 border-b-4 border-blue-900"
+              href="#"
+              >MAKE A SUBMISSION</a
+            >
+          </div>
+          <div class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h3
+              class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+            >
+              Information
+            </h3>
+            <ul class="space-y-2">
+              <li>
+                <a class="text-primary hover:underline" href="#">For Readers</a>
+              </li>
+              <li>
+                <a class="text-primary hover:underline" href="#">For Authors</a>
+              </li>
+              <li>
+                <a class="text-primary hover:underline" href="#"
+                  >For Librarians</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h3
+              class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+            >
+              Keywords
+            </h3>
+            <img
+              alt="Keyword cloud showing terms like drilling, refining, petrochemicals, etc."
+              class="w-full"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5EJmNcrMokICbf18WhpAWV1LPVCVZNabSXwWT62i35I9vEqXVaeZTNfCjpIYS0chgeLZQK-2YwQmOYLTxfWUtvCxHBgEDoesSPUohe8bpFkKAvIwgs81nJEgNwOvorT8qE74ZE1oHdV2vVW5yUPhohtF0vOeJ3InN-2vonPTD3hC8HaBMI17cM6WrFnckaOVIsZPFQaWJ1l8Em7zC4A_0QdYLkmj2elGbmUkdnvCRRSqBvdBt2773vVPEo-J8bBGam9U6_E9v76Lf"
+            />
+          </div>
+          <div class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h3
+              class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+            >
+              Announcements
+            </h3>
+            <div class="space-y-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-gray-400">Atom</span>
+                <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+                <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="text-gray-400">RSS</span>
+                <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+                <div class="w-6 h-4 bg-orange-400 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
+            <h3
+              class="text-lg font-display font-bold border-b border-border-light dark:border-border-dark pb-2 mb-4"
+            >
+              Browse
+            </h3>
+            <ul class="space-y-2">
+              <li>
+                <a class="text-primary hover:underline" href="#">Categories</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+      <footer
+        class="mt-8 pt-4 border-t border-gray-300 dark:border-gray-700 text-center text-sm text-gray-600 dark:text-gray-400"
+      >
+        <p>ISSN: 2354-337X (Online), 2350-1863(Print)</p>
+        <p>
+          © 2024 Journal of Hydrocarbon Science &amp; Technology. Published by
+          Petroleum Training Institute.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

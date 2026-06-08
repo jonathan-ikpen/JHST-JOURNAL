@@ -1,16 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.template.loader import render_to_string
+from django.urls import reverse
+
 from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm, RevisionForm
 from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement
+from .decorators import verified_email_required
 
-def _send_notification_email(subject, message, recipient_list):
+def _send_notification_email(subject, message, recipient_list, html_message=None):
     """
     Helper function to send emails without blocking.
     Prints error to console if fails (development mode).
@@ -18,7 +25,7 @@ def _send_notification_email(subject, message, recipient_list):
     try:
         # If EMAIL_HOST_USER is not set, use a dummy sender
         sender = getattr(settings, 'EMAIL_HOST_USER', 'noreply@jhst.org')
-        send_mail(subject, message, sender, recipient_list, fail_silently=False)
+        send_mail(subject, message, sender, recipient_list, fail_silently=False, html_message=html_message)
     except Exception as e:
         print(f"Error sending email: {e}")
 
@@ -28,8 +35,37 @@ def register(request):
         form = ResearcherRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            verification_url = request.build_absolute_uri(
+                reverse('verify_email', kwargs={'uidb64': uid, 'token': token})
+            )
+            
+            html_message = render_to_string('emails/verify_email.html', {
+                'user': user,
+                'verification_url': verification_url
+            })
+            text_message = render_to_string('emails/verify_email.txt', {
+                'user': user,
+                'verification_url': verification_url
+            })
+            
+            try:
+                sender = getattr(settings, 'EMAIL_HOST_USER', 'noreply@jhst.org')
+                send_mail(
+                    subject="Verify your JHST account",
+                    message=text_message,
+                    from_email=sender,
+                    recipient_list=[user.email],
+                    html_message=html_message,
+                    fail_silently=False
+                )
+            except Exception as e:
+                print(f"Error sending email: {e}")
+                
             login(request, user)
-            messages.success(request, f"Welcome to JHST, {user.username}! Your account has been created.")
+            messages.success(request, f"Welcome to JHST, {user.username}! Your account has been created. Please check your email to verify your account.")
             return redirect('dashboard')
     else:
         form = ResearcherRegistrationForm()
@@ -370,6 +406,7 @@ def my_submission_detail(request, manuscript_id):
     })
 
 @login_required
+@verified_email_required
 def submit_manuscript(request):
     if request.method == 'POST':
         form = ManuscriptForm(request.POST, request.FILES)
@@ -378,7 +415,36 @@ def submit_manuscript(request):
             manuscript.author = request.user
             manuscript.save()
             
-            messages.success(request, "Your manuscript has been submitted successfully!")
+            # Send Email to Author
+            dashboard_url = request.build_absolute_uri(reverse('dashboard'))
+            author_context = {
+                'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+                'title': manuscript.title,
+                'dashboard_url': dashboard_url
+            }
+            author_html = render_to_string('emails/manuscript_submitted_author.html', author_context)
+            _send_notification_email(
+                f"Submission Received: {manuscript.title}",
+                f"Your manuscript '{manuscript.title}' has been successfully submitted.",
+                [manuscript.author.email],
+                html_message=author_html
+            )
+            
+            # Send Email to Editors
+            editor_emails = list(User.objects.filter(is_editor=True).values_list('email', flat=True))
+            if editor_emails:
+                editor_context = {
+                    'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+                    'title': manuscript.title,
+                    'dashboard_url': dashboard_url
+                }
+                editor_html = render_to_string('emails/manuscript_submitted_editor.html', editor_context)
+                _send_notification_email(
+                    f"New Submission: {manuscript.title}",
+                    f"A new manuscript '{manuscript.title}' has been submitted.",
+                    editor_emails,
+                    html_message=editor_html
+                )
             
             messages.success(request, "Your manuscript has been submitted successfully!")
             return redirect('dashboard')
@@ -433,6 +499,21 @@ def assign_reviewer(request, manuscript_id):
                         round=manuscript.current_round,
                         invitation_status=status
                     )
+                
+                # Send Email to Reviewer
+                dashboard_url = request.build_absolute_uri(reverse('dashboard'))
+                reviewer_context = {
+                    'reviewer_name': reviewer.get_full_name() or reviewer.username,
+                    'title': manuscript.title,
+                    'dashboard_url': dashboard_url
+                }
+                reviewer_html = render_to_string('emails/reviewer_assigned.html', reviewer_context)
+                _send_notification_email(
+                    f"New Review Assignment: {manuscript.title}",
+                    f"You have been assigned to review '{manuscript.title}'.",
+                    [reviewer.email],
+                    html_message=reviewer_html
+                )
                 
                 msg = f"Reviewer {reviewer.username} invited successfully." if invite_only else f"Reviewer {reviewer.username} assigned successfully."
                 messages.success(request, msg)
@@ -596,6 +677,21 @@ def make_decision(request, manuscript_id):
             if decision == 'needs_revision':
                 # Push all completed reviews to author visibility
                 manuscript.reviews.filter(date_completed__isnull=False).update(is_visible_to_author=True)
+                
+                # Send Email to Author
+                dashboard_url = request.build_absolute_uri(reverse('dashboard'))
+                author_context = {
+                    'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+                    'title': manuscript.title,
+                    'dashboard_url': dashboard_url
+                }
+                author_html = render_to_string('emails/revision_requested.html', author_context)
+                _send_notification_email(
+                    f"Revision Required: {manuscript.title}",
+                    f"A revision has been requested for your manuscript '{manuscript.title}'.",
+                    [manuscript.author.email],
+                    html_message=author_html
+                )
             
             messages.success(request, f"Decision '{decision}' recorded for {manuscript.title}.")
         return redirect('dashboard')
@@ -605,6 +701,7 @@ def make_decision(request, manuscript_id):
     return render(request, 'dashboard/make_decision.html', {'manuscript': manuscript, 'reviews': reviews, 'author_responses': author_responses})
 
 @login_required
+@verified_email_required
 def submit_revision(request, manuscript_id):
     manuscript = get_object_or_404(Manuscript, id=manuscript_id, author=request.user)
     
@@ -631,6 +728,7 @@ def submit_revision(request, manuscript_id):
             # AUTOMATION: Create new review records for the NEXT round for all existing reviewers
             # This ensures the new round appears as a fresh activity on their dashboards
             previous_reviewers = Review.objects.filter(manuscript=manuscript).values_list('reviewer_id', flat=True).distinct()
+            reviewer_emails = []
             for rev_id in previous_reviewers:
                 # Only create if doesn't exist for this exact round
                 Review.objects.get_or_create(
@@ -638,6 +736,44 @@ def submit_revision(request, manuscript_id):
                     reviewer_id=rev_id,
                     round=manuscript.current_round,
                     defaults={'invitation_status': 'accepted'}
+                )
+                try:
+                    reviewer = User.objects.get(id=rev_id)
+                    reviewer_emails.append(reviewer.email)
+                except User.DoesNotExist:
+                    pass
+            
+            dashboard_url = request.build_absolute_uri(reverse('dashboard'))
+            
+            # Send Email to Reviewers
+            if reviewer_emails:
+                rev_context = {
+                    'reviewer_name': 'Reviewer',
+                    'title': manuscript.title,
+                    'dashboard_url': dashboard_url
+                }
+                rev_html = render_to_string('emails/revision_submitted_reviewer.html', rev_context)
+                _send_notification_email(
+                    f"Manuscript Revision Submitted: {manuscript.title}",
+                    f"A revision has been submitted for '{manuscript.title}'.",
+                    reviewer_emails,
+                    html_message=rev_html
+                )
+            
+            # Send Email to Editors
+            editor_emails = list(User.objects.filter(is_editor=True).values_list('email', flat=True))
+            if editor_emails:
+                editor_context = {
+                    'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+                    'title': manuscript.title,
+                    'dashboard_url': dashboard_url
+                }
+                editor_html = render_to_string('emails/revision_submitted_editor.html', editor_context)
+                _send_notification_email(
+                    f"Manuscript Revision Submitted: {manuscript.title}",
+                    f"A revision has been submitted for '{manuscript.title}'.",
+                    editor_emails,
+                    html_message=editor_html
                 )
 
             messages.success(request, "Your revision has been submitted successfully.")
@@ -705,8 +841,22 @@ def publish_article(request, manuscript_id):
         manuscript.status = 'published'
         manuscript.status_changed = True
         manuscript.save()
+        
+        # Send Email to Author
+        article_url = request.build_absolute_uri(reverse('article_detail', args=[manuscript.article.id]))
+        author_context = {
+            'author_name': manuscript.author.get_full_name() or manuscript.author.username,
+            'title': manuscript.title,
+            'article_url': article_url
+        }
+        author_html = render_to_string('emails/article_published.html', author_context)
+        _send_notification_email(
+            f"Article Published: {manuscript.title}",
+            f"Your manuscript '{manuscript.title}' has been successfully published.",
+            [manuscript.author.email],
+            html_message=author_html
+        )
 
-        messages.success(request, f"Article published to {issue} successfully.")
         messages.success(request, f"Article published to {issue} successfully.")
         return redirect('dashboard')
     
@@ -858,3 +1008,59 @@ def announcement_detail(request, announcement_id):
     announcement = get_object_or_404(Announcement, id=announcement_id)
     return render(request, 'journal/announcement_detail.html', {'announcement': announcement})
 
+@login_required
+def resend_verification_email(request):
+    user = request.user
+    if user.is_email_verified:
+        messages.info(request, "Your email is already verified.")
+        return redirect('dashboard')
+        
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    verification_url = request.build_absolute_uri(
+        reverse('verify_email', kwargs={'uidb64': uid, 'token': token})
+    )
+    
+    html_message = render_to_string('emails/verify_email.html', {
+        'user': user,
+        'verification_url': verification_url
+    })
+    text_message = render_to_string('emails/verify_email.txt', {
+        'user': user,
+        'verification_url': verification_url
+    })
+    
+    try:
+        sender = getattr(settings, 'EMAIL_HOST_USER', 'noreply@jhst.org')
+        send_mail(
+            subject="Verify your JHST account",
+            message=text_message,
+            from_email=sender,
+            recipient_list=[user.email],
+            html_message=html_message,
+            fail_silently=False
+        )
+        messages.success(request, "Verification email has been resent. Please check your inbox.")
+    except Exception as e:
+        messages.error(request, "There was a problem sending the verification email. Please try again later.")
+        print(f"Error sending email: {e}")
+        
+    return redirect('dashboard')
+
+def verify_email(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_email_verified = True
+        user.save()
+        messages.success(request, "Your email address has been successfully verified! You now have full access to all features.")
+        if not request.user.is_authenticated:
+            login(request, user)
+        return redirect('dashboard')
+    else:
+        messages.error(request, "The verification link was invalid or has expired. Please request a new one.")
+        return redirect('dashboard')

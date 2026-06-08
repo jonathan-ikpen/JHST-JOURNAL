@@ -1,12 +1,18 @@
-from django.urls import path
+from django.urls import path, reverse_lazy
 from . import views, feeds
-from .forms import UserLoginForm
+from .forms import UserLoginForm, CustomPasswordChangeForm
 from django.contrib.auth import views as auth_views
-from django.views.generic import TemplateView
+from django.contrib.messages.views import SuccessMessageMixin
+from pages import views as pages_views
+
+class CustomPasswordChangeView(SuccessMessageMixin, auth_views.PasswordChangeView):
+    success_message = "Your password was successfully updated!"
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', pages_views.home, name='index'),
     path('register/', views.register, name='register'),
+    path('verify-email/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
+    path('resend-verification/', views.resend_verification_email, name='resend_verification'),
     path('login/', auth_views.LoginView.as_view(template_name='journal/login.html', authentication_form=UserLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -17,6 +23,11 @@ urlpatterns = [
     path('dashboard/review-assignment/<int:review_id>/', views.reviewer_manuscript_detail, name='reviewer_manuscript_detail'),
     path('dashboard/assigned-reviews/', views.assigned_reviews, name='assigned_reviews'),
     path('profile/', views.profile, name='profile'),
+    path('profile/change-password/', CustomPasswordChangeView.as_view(
+        template_name='journal/change_password.html', 
+        success_url=reverse_lazy('profile'),
+        form_class=CustomPasswordChangeForm
+    ), name='change_password'),
     path('submit/', views.submit_manuscript, name='submit_manuscript'),
     path('assign_reviewer/<int:manuscript_id>/', views.assign_reviewer, name='assign_reviewer'),
     path('request_re_review/<int:review_id>/', views.request_re_review, name='request_re_review'),
@@ -36,32 +47,31 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('notifications/read/<int:notification_id>/', views.mark_notification_read, name='mark_notification_read'),
 
-    # Static Pages
-    path('about/', TemplateView.as_view(template_name='journal/about.html'), name='about'),
-    path('about/aim-scope/', TemplateView.as_view(template_name='journal/aim_scope.html'), name='aim_scope'),
-    path('about/editorial-team/', TemplateView.as_view(template_name='journal/editorial_team.html'), name='editorial_team'),
-    path('about/publication-schedule/', TemplateView.as_view(template_name='journal/publication_schedule.html'), name='publication_schedule'),
-    path('about/publication-fees/', TemplateView.as_view(template_name='journal/publication_fees.html'), name='publication_fees'),
-    path('about/contact/', TemplateView.as_view(template_name='journal/contact.html'), name='contact'),
-    path('publications/', TemplateView.as_view(template_name='journal/publications.html'), name='publications'),
+    # Static Pages — backed by pages app models
+    path('about/', pages_views.about, name='about'),
+    path('about/aim-scope/', pages_views.aim_scope, name='aim_scope'),
+    path('about/editorial-team/', pages_views.editorial_team, name='editorial_team'),
+    path('about/publication-schedule/', pages_views.publication_schedule, name='publication_schedule'),
+    path('about/publication-fees/', pages_views.publication_fees, name='publication_fees'),
+    path('about/contact/', pages_views.contact, name='contact'),
+    path('publications/', pages_views.publications, name='publications'),
     path('publications/current/', views.current_issue, name='current_issue'),
     path('publications/archives/', views.archives, name='archives'),
-    path('indexing/', TemplateView.as_view(template_name='journal/indexing.html'), name='indexing'),
-
-    path('metrics/', TemplateView.as_view(template_name='journal/metrics.html'), name='metrics'),
-    path('guidelines/', TemplateView.as_view(template_name='journal/guidelines.html'), name='guidelines'),
-    path('guidelines/author/', TemplateView.as_view(template_name='journal/author_guidelines.html'), name='author_guidelines'),
-    path('guidelines/reviewer/', TemplateView.as_view(template_name='journal/reviewer_guidelines.html'), name='reviewer_guidelines'),
-    path('policies/ethics/', TemplateView.as_view(template_name='journal/ethics_malpractice.html'), name='ethics_malpractice'),
-    path('policies/open-access/', TemplateView.as_view(template_name='journal/open_access_policy.html'), name='open_access_policy'),
-    path('policies/editorial/', TemplateView.as_view(template_name='journal/editorial_policy.html'), name='editorial_policy'),
-    path('policies/peer-review/', TemplateView.as_view(template_name='journal/peer_review_policy.html'), name='peer_review_policy'),
-    path('policies/archiving/', TemplateView.as_view(template_name='journal/archiving_policy.html'), name='archiving_policy'),
-    path('policies/subscription/', TemplateView.as_view(template_name='journal/subscription_advertising.html'), name='subscription_advertising'),
-    path('policies/plagiarism/', TemplateView.as_view(template_name='journal/plagiarism_policy.html'), name='plagiarism_policy'),
-    path('policies/', TemplateView.as_view(template_name='journal/policies.html'), name='policies'),
+    path('indexing/', pages_views.indexing, name='indexing'),
+    path('metrics/', pages_views.metrics, name='metrics'),
+    path('guidelines/', pages_views.guidelines, name='guidelines'),
+    path('guidelines/author/', pages_views.author_guidelines, name='author_guidelines'),
+    path('guidelines/reviewer/', pages_views.reviewer_guidelines, name='reviewer_guidelines'),
+    path('policies/ethics/', pages_views.ethics_malpractice, name='ethics_malpractice'),
+    path('policies/open-access/', pages_views.open_access_policy, name='open_access_policy'),
+    path('policies/editorial/', pages_views.editorial_policy, name='editorial_policy'),
+    path('policies/peer-review/', pages_views.peer_review_policy, name='peer_review_policy'),
+    path('policies/archiving/', pages_views.archiving_policy, name='archiving_policy'),
+    path('policies/subscription/', pages_views.subscription_advertising, name='subscription_advertising'),
+    path('policies/plagiarism/', pages_views.plagiarism_policy, name='plagiarism_policy'),
+    path('policies/', pages_views.policies, name='policies'),
     path('announcements/', views.announcements, name='announcements'),
     path('announcements/<int:announcement_id>/', views.announcement_detail, name='announcement_detail'),
-    path('jhst-journals/', TemplateView.as_view(template_name='journal/jhst_journals.html'), name='jhst_journals'),
+    path('jhst-journals/', pages_views.jhst_journals, name='jhst_journals'),
     path('rss/', feeds.LatestArticlesFeed(), name='article_feed'),
 ]

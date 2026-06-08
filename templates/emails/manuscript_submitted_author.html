@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2>Manuscript Submitted Successfully</h2>
+    <p>Dear {{ author_name }},</p>
+    <p>Thank you for submitting your manuscript titled <strong>"{{ title }}"</strong> to the Journal of Hydrocarbon Science and Technology.</p>
+    <p>Your manuscript has been received and is currently under initial editorial review. You will be notified once it is assigned to reviewers or if any further action is required from your end.</p>
+    <p style="text-align: center; margin: 30px 0;">
+        <a href="{{ dashboard_url }}" style="background-color: #2563eb; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; display: inline-block; font-weight: bold;">View Dashboard</a>
+    </p>
+    <p>If you have any questions, please reply to this email or contact our support team.</p>
+    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+    <p style="font-size: 12px; color: #999;">&copy; {% now "Y" %} Journal of Hydrocarbon Science and Technology. All rights reserved.</p>
+</body>
+</html>

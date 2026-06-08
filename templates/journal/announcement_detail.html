@@ -39,7 +39,7 @@
     <div
       class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300"
     >
-      {{ announcement.content|safe|linebreaks }}
+      {{ announcement.content|safe }}
     </div>
 
     {% if not announcement.image %}

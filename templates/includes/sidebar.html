@@ -1,4 +1,4 @@
-{% load static %}
+{% load static pages_extras %}
 <aside class="space-y-8">
   <div class="bg-amber-400 p-4 rounded text-center text-black">
     <p class="font-bold text-lg">IMPORTANT ANNOUNCEMENT</p>
@@ -16,7 +16,7 @@
       New Release
     </h3>
     <img
-      src="{% static 'assets/images/Hydro_science_journal_2025.png' %}"
+      src="{% if page.new_release_image %}{{ page.new_release_image.url }}{% else %}{% static 'assets/images/Hydro_science_journal_2025.png' %}{% endif %}"
       alt="Hydro Science Journal 2025 Release"
       class="w-full rounded"
     />
@@ -65,11 +65,13 @@
     >
       Keywords
     </h3>
+    {% if page.keywords_image %}
     <img
-      alt="Keyword cloud showing terms like aflatoxin-b1, antioxidant, antibacterial activity, etc."
+      alt="Keywords"
       class="w-full"
-      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5EJmNcrMokICbf18WhpAWV1LPVCVZNabSXwWT62i35I9vEqXVaeZTNfCjpIYS0chgeLZQK-2YwQmOYLTxfWUtvCxHBgEDoesSPUohe8bpFkKAvIwgs81nJEgNwOvorT8qE74ZE1oHdV2vVW5yUPhohtF0vOeJ3InN-2vonPTD3hC8HaBMI17cM6WrFnckaOVIsZPFQaWJ1l8Em7zC4A_0QdYLkmj2elGbmUkdnvCRRSqBvdBt2773vVPEo-J8bBGam9U6_E9v76Lf"
+      src="{{ page.keywords_image.url }}"
     />
+    {% endif %}
   </div>
   <div class="bg-card-light dark:bg-card-dark p-6 rounded">
     <h3
