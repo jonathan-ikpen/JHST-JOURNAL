@@ -1,4 +1,4 @@
-﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Assign
+{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}Assign
 Reviewer{% endblock %} {% block content %}
 <div class="space-y-6">
   <!-- Manuscript Info Card -->
@@ -76,8 +76,9 @@ Reviewer{% endblock %} {% block content %}
       <ul class="space-y-3">
         {% for review in existing_reviews %}
         <li
-          class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded border border-gray-100 dark:border-gray-700"
+          class="flex flex-col p-3 bg-gray-50 dark:bg-gray-750 rounded border border-gray-100 dark:border-gray-700"
         >
+          <div class="flex items-center justify-between w-full">
           <div class="flex items-center space-x-3">
             <div
               class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs uppercase"
@@ -94,10 +95,17 @@ Reviewer{% endblock %} {% block content %}
             </div>
           </div>
           <span
-            class="px-2 py-1 rounded text-xs font-bold {% if review.date_completed %}bg-green-100 text-green-800{% else %}bg-amber-100 text-amber-800{% endif %}"
+            class="px-2 py-1 rounded text-xs font-bold {% if review.invitation_status == 'declined' %}bg-red-100 text-red-800{% elif review.date_completed %}bg-green-100 text-green-800{% elif review.invitation_status == 'invited' %}bg-blue-100 text-blue-800{% else %}bg-amber-100 text-amber-800{% endif %}"
           >
-            {% if review.date_completed %}Completed{% else %}Pending{% endif %}
+            {% if review.invitation_status == 'declined' %}Declined{% elif review.date_completed %}Completed{% elif review.invitation_status == 'invited' %}Invited{% else %}Pending{% endif %}
           </span>
+          </div>
+          {% if review.invitation_status == 'declined' and review.declined_reason %}
+          <div class="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30 rounded text-sm text-red-700 dark:text-red-400">
+            <span class="font-bold block mb-1 text-xs tracking-wider uppercase opacity-80">Decline Reason:</span>
+            {{ review.declined_reason }}
+          </div>
+          {% endif %}
         </li>
         {% endfor %}
       </ul>
@@ -134,10 +142,7 @@ Reviewer{% endblock %} {% block content %}
           >
             <option value="" disabled selected>-- Choose Reviewer --</option>
             {% for reviewer in reviewers %}
-            <option value="{{ reviewer.id }}">
-              {{ reviewer.username }} {% if reviewer.affiliation %}({{
-              reviewer.affiliation }}){% endif %}
-            </option>
+            <option value="{{ reviewer.id }}">{{ reviewer.username }}{% if reviewer.affiliation %} ({{ reviewer.affiliation }}){% endif %}</option>
             {% endfor %}
           </select>
 
@@ -160,10 +165,18 @@ Reviewer{% endblock %} {% block content %}
             </p>
           </div>
 
-          <div class="mt-8 flex justify-end">
+          <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <label class="flex items-center cursor-pointer group">
+              <div class="relative">
+                <input type="checkbox" name="invite_only" id="invite_only" class="sr-only peer" checked>
+                <div class="w-10 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+              </div>
+              <span class="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300">Invite Only <span class="text-xs text-slate-400 font-normal">(Reviewer must accept first)</span></span>
+            </label>
+          </div>
             <button
               type="submit"
-              class="bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition text-sm"
+              class="mt-4 bg-primary text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition text-sm"
             >
               Send Invitation
             </button>

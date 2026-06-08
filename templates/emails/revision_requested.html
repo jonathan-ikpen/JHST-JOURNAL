@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2>Revision Required</h2>
+    <p>Dear {{ author_name }},</p>
+    <p>The review process for your manuscript <strong>"{{ title }}"</strong> has been completed.</p>
+    <p>Based on the reviewers' feedback, revisions are required before we can proceed with publication. Please log in to your dashboard to review the feedback and submit your revised manuscript.</p>
+    <p style="text-align: center; margin: 30px 0;">
+        <a href="{{ dashboard_url }}" style="background-color: #2563eb; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; display: inline-block; font-weight: bold;">View Feedback & Submit Revision</a>
+    </p>
+    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+    <p style="font-size: 12px; color: #999;">&copy; {% now "Y" %} Journal of Hydrocarbon Science and Technology. All rights reserved.</p>
+</body>
+</html>

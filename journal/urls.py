@@ -1,24 +1,40 @@
-from django.urls import path
+from django.urls import path, reverse_lazy
 from . import views, feeds
-from .forms import UserLoginForm
+from .forms import UserLoginForm, CustomPasswordChangeForm
 from django.contrib.auth import views as auth_views
+from django.contrib.messages.views import SuccessMessageMixin
 from pages import views as pages_views
+
+class CustomPasswordChangeView(SuccessMessageMixin, auth_views.PasswordChangeView):
+    success_message = "Your password was successfully updated!"
 
 urlpatterns = [
     path('', pages_views.home, name='index'),
     path('register/', views.register, name='register'),
+    path('verify-email/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
+    path('resend-verification/', views.resend_verification_email, name='resend_verification'),
     path('login/', auth_views.LoginView.as_view(template_name='journal/login.html', authentication_form=UserLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/manuscript/<int:manuscript_id>/', views.dashboard_manuscript_detail, name='dashboard_manuscript_detail'),
     path('dashboard/my-submissions/', views.my_submissions, name='my_submissions'),
-    path('dashboard/my-submissions/<int:manuscript_id>/', views.my_submission_detail, name='my_submission_detail'),
-    path('dashboard/review-assignment/<int:manuscript_id>/', views.reviewer_manuscript_detail, name='reviewer_manuscript_detail'),
+    path('dashboard/my-submission/<int:manuscript_id>/', views.my_submission_detail, name='my_submission_detail'),
+    path('dashboard/my-submission/<int:manuscript_id>/submit-revision/', views.submit_revision, name='submit_revision'),
+    path('dashboard/review-assignment/<int:review_id>/', views.reviewer_manuscript_detail, name='reviewer_manuscript_detail'),
     path('dashboard/assigned-reviews/', views.assigned_reviews, name='assigned_reviews'),
     path('profile/', views.profile, name='profile'),
+    path('profile/change-password/', CustomPasswordChangeView.as_view(
+        template_name='journal/change_password.html', 
+        success_url=reverse_lazy('profile'),
+        form_class=CustomPasswordChangeForm
+    ), name='change_password'),
     path('submit/', views.submit_manuscript, name='submit_manuscript'),
     path('assign_reviewer/<int:manuscript_id>/', views.assign_reviewer, name='assign_reviewer'),
-    path('submit_review/<int:manuscript_id>/', views.submit_review, name='submit_review'),
+    path('request_re_review/<int:review_id>/', views.request_re_review, name='request_re_review'),
+    path('submit_review/<int:review_id>/', views.submit_review, name='submit_review'),
+    path('accept_invitation/<int:review_id>/', views.accept_review_invitation, name='accept_invitation'),
+    path('decline_invitation/<int:review_id>/', views.decline_review_invitation, name='decline_invitation'),
+    path('reviewer_check_revision/<int:review_id>/', views.reviewer_check_revision, name='reviewer_check_revision'),
     path('make_decision/<int:manuscript_id>/', views.make_decision, name='make_decision'),
     path('publish_article/<int:manuscript_id>/', views.publish_article, name='publish_article'),
     path('mark_as_paid/<int:manuscript_id>/', views.mark_as_paid, name='mark_as_paid'),

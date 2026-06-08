@@ -8,6 +8,22 @@ class SingletonMixin:
         super().save(*args, **kwargs)
 
 
+class SiteSettings(SingletonMixin, models.Model):
+    issn_online = models.CharField(max_length=50, default='1595 - 431 (Online)')
+    issn_print = models.CharField(max_length=50, default='2025(Print)')
+    copyright_text = models.CharField(
+        max_length=200, 
+        default='© 2025 Journal of Hydrocarbon Science & Technology — Petroleum Training Institute, Effurun'
+    )
+
+    class Meta:
+        verbose_name = 'Site Settings'
+        verbose_name_plural = 'Site Settings'
+
+    def __str__(self):
+        return "Global Site Settings"
+
+
 class HomePage(SingletonMixin, models.Model):
     intro_title         = models.CharField(max_length=200, default='An Introduction to the Journal')
     video_url           = models.CharField(max_length=500)
@@ -140,6 +156,7 @@ class EditorialTeamPage(SingletonMixin, models.Model):
     editorial_assistant_description = RichTextField()
     section_editors_description     = RichTextField()
     editorial_board_description     = RichTextField()
+    advisory_board_description      = RichTextField(blank=True)
 
     class Meta:
         verbose_name = 'Editorial Team Page'
@@ -155,10 +172,12 @@ class TeamMember(models.Model):
         ('editorial_assistant', 'Editorial Assistant'),
         ('section_editor',      'Section Editor'),
         ('editorial_board',     'Editorial Board'),
+        ('advisory_board',      'Advisory Board'),
     ]
     name        = models.CharField(max_length=200)
     role_type   = models.CharField(max_length=30, choices=ROLE_CHOICES)
     affiliation = models.CharField(max_length=300)
+    photo       = models.ImageField(upload_to='team_photos/', blank=True, null=True)
     bio         = RichTextField()
     email       = models.CharField(max_length=200, blank=True)
     order       = models.PositiveIntegerField(default=0)

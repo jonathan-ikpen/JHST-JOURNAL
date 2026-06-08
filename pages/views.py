@@ -50,6 +50,7 @@ def editorial_team(request):
     editorial_assistants = members.filter(role_type='editorial_assistant')
     section_editors = members.filter(role_type='section_editor')
     editorial_board = members.filter(role_type='editorial_board')
+    advisory_board = members.filter(role_type='advisory_board')
     return render(request, 'journal/editorial_team.html', {
         'page': page,
         'editor_in_chief': editor_in_chief,
@@ -57,6 +58,7 @@ def editorial_team(request):
         'editorial_assistants': editorial_assistants,
         'section_editors': section_editors,
         'editorial_board': editorial_board,
+        'advisory_board': advisory_board,
     })
 
 

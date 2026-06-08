@@ -1,14 +1,18 @@
-﻿{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}My
+{% extends 'dashboard/dashboard_base.html' %} {% block dashboard_title %}My
 Profile{% endblock %} {% block content %}
 <div class="max-w-4xl">
   <div
     class="bg-white dark:bg-card-dark rounded border border-border-light dark:border-border-dark p-8"
   >
-    <h2
-      class="text-2xl font-display font-bold text-gray-800 dark:text-white mb-6"
-    >
-      Profile Settings
-    </h2>
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-display font-bold text-gray-800 dark:text-white">
+        Profile Settings
+      </h2>
+      <a href="{% url 'change_password' %}" class="text-primary hover:text-primary-light font-medium text-sm flex items-center transition bg-primary/5 hover:bg-primary/10 px-4 py-2 rounded-lg border border-primary/20">
+        <span class="material-icons text-sm mr-2">lock</span>
+        Change Password
+      </a>
+    </div>
 
     <form method="post" enctype="multipart/form-data" class="space-y-6">
       {% csrf_token %}
@@ -113,12 +117,10 @@ Profile{% endblock %} {% block content %}
         </div>
       </div>
 
-      <div
-        class="pt-6 border-t border-border-light dark:border-border-dark flex justify-end"
-      >
+      <div class="pt-6 border-t border-border-light dark:border-border-dark flex justify-end">
         <button
           type="submit"
-          class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-opacity-90 transition"
+          class="bg-primary text-white font-bold py-2.5 px-6 rounded-lg hover:bg-opacity-90 transition w-full sm:w-auto"
         >
           Save Changes
         </button>

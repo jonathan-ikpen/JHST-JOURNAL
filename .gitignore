@@ -5,3 +5,7 @@ _inspo
 /_inspo
 db.sqlite3
 media/
+staticfiles
+/logs
+logs/
+logs

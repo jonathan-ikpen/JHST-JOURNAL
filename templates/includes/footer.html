@@ -50,10 +50,9 @@
   <div
     class="flex flex-col gap-2 border-t border-gray-200 dark:border-gray-800 pt-4 text-center text-sm text-gray-600 dark:text-gray-400"
   >
-    <p>ISSN: 1595 - 431 (Online), 2025(Print)</p>
+    <p>ISSN: {{ site_settings.issn_online|default:"1595 - 431 (Online)" }}, {{ site_settings.issn_print|default:"2025(Print)" }}</p>
     <p>
-      © 2025 Journal of Hydrocarbon Science & Technology — Petroleum Training
-      Institute, Effurun
+      {{ site_settings.copyright_text|default:"© 2025 Journal of Hydrocarbon Science & Technology — Petroleum Training Institute, Effurun" }}
     </p>
   </div>
 </footer>
