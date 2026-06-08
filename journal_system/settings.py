@@ -133,6 +133,9 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOGS_DIR, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -140,7 +143,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'error.log'),
+            'filename': os.path.join(LOGS_DIR, 'error.log'),
         },
     },
     'loggers': {
