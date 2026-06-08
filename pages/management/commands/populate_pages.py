@@ -342,6 +342,7 @@ class Command(BaseCommand):
                 'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
                 'bio': 'Petroleum/Chemical Engineering',
                 'email': 'okewale.akindele@fupre.edu.ng',
+                'photo_path': 'users/images/akindele_okewale.png',
                 'order': 2,
             },
             {
@@ -358,6 +359,7 @@ class Command(BaseCommand):
                 'affiliation': 'Rivers State University',
                 'bio': 'Petroleum and natural gas Production',
                 'email': 'kinate.bright@ust.edu.ng',
+                'photo_path': 'users/images/bright_kinate.png',
                 'order': 4,
             },
             {
@@ -366,6 +368,7 @@ class Command(BaseCommand):
                 'affiliation': 'Rivers State University',
                 'bio': 'Reservoir Engineering',
                 'email': 'isaac.ihua-maduenyi@ust.edu.ng',
+                'photo_path': 'users/images/isaac_ihua_maduenyi.png',
                 'order': 5,
             },
             {
@@ -374,6 +377,7 @@ class Command(BaseCommand):
                 'affiliation': 'Newcastle University',
                 'bio': 'Engr. Abdullahi is a Research Associate in the School of Engineering at Newcastle University with over four years of research experience in Chemical Engineering. He holds a B.Sc. and M.Sc. in Chemical Engineering from Mendeleev University of Chemical Technology of Russia, and a Ph.D. in Chemical Engineering from Newcastle University. His research focuses on process intensification, with expertise in catalysis, reaction engineering, and process engineering. He has contributed to the development of sustainable technologies for carbon capture and conversion, biorefining, gas sweetening, and wastewater treatment. Abdullahi is a COREN-certified engineer, a Corporate Member of the Nigerian Society of Engineers (NSE), and an Associate Member of the Institution of Chemical Engineers (IChemE), where he also serves on the Catalysis and Reaction Engineering Special Interest Group.',
                 'email': 'abdullahi.adamu@newcastle.ac.uk',
+                'photo_path': 'users/images/abdullahi_adamu.png',
                 'order': 6,
             },
             {
@@ -390,6 +394,7 @@ class Command(BaseCommand):
                 'affiliation': 'Edwin Clark University, Kiagbodo',
                 'bio': 'Energy management',
                 'email': 'docwarati@gmail.com',
+                'photo_path': 'users/images/samuel_wara.png',
                 'order': 8,
             },
             {
@@ -406,6 +411,7 @@ class Command(BaseCommand):
                 'affiliation': 'Babcok University',
                 'bio': 'AWODELE Oludele is a Professor of Computer Science and Artificial Intelligence in the School of Computing, Babcock University, Ilisan-Remo. He was Head of the Department of Computer Science (2009-2016), Dean, School of Computing and Engineering Sciences (2016-2020), and currently the Director of Academic Planning, Babcock University, Nigeria. His current research is on Artificial Intelligence, Blockchain Technology, Data Communications and Computer Security. He has successfully supervised 18 PhDs and currently mentoring 5 PhD Scholars in different areas of Artificial Intelligence, Computer Science and Block chain Technology. Prof Awodele has contributed significantly to the growth and development of his professional association. He is a Fellow, Nigeria Computer Society (NCS), and Member of the following professional bodies: Computer Professional Registration Council of Nigeria (CPN), Institute of Cooperate Administration (ICA), USA Informing Science Institute (ISI), CPN Education and Man power Development Committee, NCS Publication and Research Committee, Babcock University Ethics Committee, Ethical Review Committee of Nigeria Computer Society (2013-2015). He has published well over 150 papers both in International and Local Journals and attended several academic conferences across the globe. He was the Editor-in-Chief of the following Nigeria Computer Society Journals: International Journal of Information Security Privacy & Digital Forensics and the Journal of Computer Science and Its Applications (2017-2021). Senior Member of the Institute of Electrical and Electronics Engineers, Member of Editorial Review Board InSITE USA, Member Governing Council, Association of Applied Information, Management Professionals, Member, National Executive Committee of the Nigeria Computer Society (2017- 2025), Member Governing Council of the Computer Professional Registration Council of Nigeria (2019- 2025) and the Chairman, Innovation, Research and Development Committee of the Nigeria Computer Society (2017 -2021). He made a distinction is a training course on Theory, Practice and future development in Accreditation in Higher Education organized by the National Universities Commission (NUC), National Open University of Nigeria (NOUN) and African Quality Assurance Network (AfriQAN) in 2021. He also made a distinction in another training course on Theory, Practice and Future of Academic Planning in University Education organized by NUC and NOUN in 2022. The indefatigable scholar has served as external examiner and assessor to many Universities within and outside the Country. In recognition of his hard work, diligence, and immeasurable contribution to the body of knowledge and societal development, he has been conferred with numerous distinguished awards. He is happily married and blessed with lovely children.',
                 'email': 'awodeleo@babcock.edu.ng',
+                'photo_path': 'users/images/oludele_awodele.png',
                 'order': 10,
             },
             {
@@ -422,6 +428,7 @@ class Command(BaseCommand):
                 'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
                 'bio': 'Dr. Jasper Ahamefula Agbakwuru is a Professor of Offshore Engineering and Underwater Technology in the Marine Engineering Department at the Federal University of Petroleum Resources. He is an experienced academic and engineering professional with expertise in offshore engineering, subsea systems, underwater technology, sustainable energy, and ocean engineering. With over 15 years of industry experience and more than a decade in academia, he focuses his research on blue economy technologies, ocean renewable energy, climate change engineering, AI applications in offshore systems, and oceanography. Professor Agbakwuru holds a Ph.D. in Offshore Engineering, an M.Sc. in Subsea Engineering, a B.Eng. in Mechanical Engineering, and a Diploma in Electrical/Electronic Engineering. He is also an IMCA-certified underwater diver and a member of the Council for the Regulation of Engineering in Nigeria, Nigerian Society of Engineers, and Society for Underwater Technology. He has secured national and international research grants, holds several patents, and has authored over sixty scholarly publications. His work continues to advance innovation and sustainable solutions in offshore and underwater engineering.',
                 'email': 'agbakwuru.jasper@fupre.edu.ng',
+                'photo_path': 'users/images/jasper_agbakwuru.png',
                 'order': 12,
             },
             {
@@ -430,6 +437,7 @@ class Command(BaseCommand):
                 'affiliation': 'University of North Dakota.',
                 'bio': 'Dr. Opeyemi Oni is a petroleum engineer and researcher with over 15 years of experience in teaching, laboratory practice, and applied research across oil, gas, and geothermal systems. His expertise spans drilling fluid design and optimization, drilling engineering, production technology, and geothermal heat extraction. He has contributed to academic and laboratory development through the design of instructional manuals, crude oil characterization, and petrophysical analysis, while supervising undergraduate and postgraduate research. Currently at the University of North Dakota, his work focuses on developing novel and waste-derived materials to improve drilling fluid performance using advanced analytical techniques, with findings disseminated through conferences and peer-reviewed publications.',
                 'email': 'opeyemi.oni@und.edu',
+                'photo_path': 'users/images/opeyemi_oni.png',
                 'order': 13,
             },
             {
@@ -438,6 +446,7 @@ class Command(BaseCommand):
                 'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
                 'bio': 'Offshore and Underwater Engineering',
                 'email': 'nwaoha.thaddeus@fupre.edu.ng',
+                'photo_path': 'users/images/thaddeus_nwaoha.png',
                 'order': 14,
             },
             {
@@ -513,17 +522,31 @@ class Command(BaseCommand):
                 'order': 8,
             },
         ]
+        from django.core.files import File
+        import os
+        from django.conf import settings
+
         for m in members:
             bio_html = _p(m['bio'])
-            TeamMember.objects.update_or_create(
+            defaults = {
+                'affiliation': m['affiliation'],
+                'bio': bio_html,
+                'email': m['email'],
+                'order': m['order'],
+            }
+            
+            member_obj, created = TeamMember.objects.update_or_create(
                 name=m['name'], role_type=m['role_type'],
-                defaults={
-                    'affiliation': m['affiliation'],
-                    'bio': bio_html,
-                    'email': m['email'],
-                    'order': m['order'],
-                },
+                defaults=defaults,
             )
+
+            if 'photo_path' in m and m['photo_path']:
+                # The photo path is relative to the project root (where users/images/ is)
+                # But since the script runs from project root, we can just use the path directly
+                full_path = os.path.join(settings.BASE_DIR, m['photo_path'])
+                if os.path.exists(full_path):
+                    with open(full_path, 'rb') as f:
+                        member_obj.photo.save(os.path.basename(full_path), File(f), save=True)
         self.stdout.write(f'  OK TeamMembers ({len(members)})')
 
     def _populate_indexing_page(self):

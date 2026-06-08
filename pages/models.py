@@ -177,6 +177,7 @@ class TeamMember(models.Model):
     name        = models.CharField(max_length=200)
     role_type   = models.CharField(max_length=30, choices=ROLE_CHOICES)
     affiliation = models.CharField(max_length=300)
+    photo       = models.ImageField(upload_to='team_photos/', blank=True, null=True)
     bio         = RichTextField()
     email       = models.CharField(max_length=200, blank=True)
     order       = models.PositiveIntegerField(default=0)
