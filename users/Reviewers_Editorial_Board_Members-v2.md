@@ -113,3 +113,21 @@ Prof. Francis Anyasi, PhD, M.Eng, B.Eng, FNSE, R.Eng (COREN) is a Professor of T
 14. Unconventional Resources and Energy Security
 15. Collaboration and industry partnerships
 16. Process Systems, Hydrocarbon Accounting and
+
+## From the Chief Editor’s Desk
+
+Journal of Hydrocarbon Science and Technology (JHST)
+Petroleum Training Institute, Effurun, Nigeria
+
+In an era where the global energy landscape is undergoing unprecedented transformation, the Journal of Hydrocarbon Science and Technology (JHST) emerges as a timely response to a critical need — the need to rethink, redefine, and renew our approach to energy development, sustainability, and innovation.
+The Petroleum Training Institute (PTI), for over five decades, has served as Nigeria’s premier institution for technical excellence in the petroleum and allied sectors. Through education, applied research, and industry collaboration, PTI has equipped generations of professionals with the competence and creativity to advance the oil and gas industry. The JHST is a natural evolution of this legacy — a bridge between research and real-world application, between academia and industry, between innovation and impact.
+Our mission at JHST is to provide a global platform for original, peer-reviewed research that deepens understanding and drives innovation across the hydrocarbon value chain — from exploration and production to refining, environmental management, renewable integration, and digital transformation. We welcome contributions that address both the opportunities and the challenges of the energy transition — where hydrocarbons, renewables, and new technologies converge to shape a sustainable future.
+In line with PTI’s commitment to excellence, JHST upholds rigorous standards of scholarly integrity, transparency, and quality. Our distinguished editorial and review boards bring together leading experts, scientists, and professionals from around the world — ensuring that each publication meets the highest levels of technical and ethical credibility.
+We envision this Journal not merely as a collection of articles, but as a platform for dialogue, a catalyst for innovation, and a repository of insight — where ideas transform into technologies, and research drives resilience in an evolving energy economy.
+As we embark on this exciting journey, I invite researchers, industry professionals, policymakers, and students alike to contribute, collaborate, and engage with JHST. Together, we can advance the science and technology that sustain our energy future — responsibly, intelligently, and inclusively.
+Welcome to the Journal of Hydrocarbon Science and Technology — where energy meets innovation.
+
+Dr. Fredrick B. Owoyemi
+Chief Editor
+Journal of Hydrocarbon Science and Technology (JHST)
+Petroleum Training Institute, Effurun, Nigeria

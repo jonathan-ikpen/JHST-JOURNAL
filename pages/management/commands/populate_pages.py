@@ -57,10 +57,20 @@ class Command(BaseCommand):
         self._populate_jhst_journals_page()
         self._populate_pti_journals()
         self._populate_publications_page()
+        self._populate_site_settings()
 
         self.stdout.write(self.style.SUCCESS(
             'Successfully populated all page models with real content.'
         ))
+
+    def _populate_site_settings(self):
+        from pages.models import SiteSettings
+        SiteSettings.objects.update_or_create(pk=1, defaults={
+            'issn_online': '1595 - 431 (Online)',
+            'issn_print': '2025(Print)',
+            'copyright_text': '© 2025 Journal of Hydrocarbon Science & Technology — Petroleum Training Institute, Effurun'
+        })
+        self.stdout.write('  OK SiteSettings')
 
     def _populate_home_page(self):
         # Template wraps mission_intro in <p>, mission_item_* in <li>, and
@@ -89,30 +99,38 @@ class Command(BaseCommand):
             'organogram_heading': 'JHST ORGANOGRAM',
             'chief_editor_title': "From the Chief Editor's Desk",
             'chief_editor_para_1': (
-                'In an era where the global energy landscape is undergoing unprecedented '
-                'transformation, the Journal of Hydrocarbon Science and Technology (JHST) '
-                "emerges as a timely response to a critical need. PTI has served as Nigeria's "
-                'premier institution for technical excellence in the petroleum and allied sectors. '
-                'The JHST is a natural evolution of this legacy.'
+                'In an era where the global energy landscape is undergoing unprecedented transformation, the Journal of '
+                'Hydrocarbon Science and Technology (JHST) emerges as a timely response to a critical need — the need '
+                'to rethink, redefine, and renew our approach to energy development, sustainability, and innovation. '
+                'The Petroleum Training Institute (PTI), for over five decades, has served as Nigeria’s premier institution '
+                'for technical excellence in the petroleum and allied sectors. Through education, applied research, and '
+                'industry collaboration, PTI has equipped generations of professionals with the competence and creativity '
+                'to advance the oil and gas industry. The JHST is a natural evolution of this legacy — a bridge between '
+                'research and real-world application, between academia and industry, between innovation and impact.'
             ),
             'chief_editor_para_2': (
-                'Our mission at JHST is to provide a global platform for original, peer-reviewed '
-                'research that deepens understanding and drives innovation across the hydrocarbon '
-                'value chain. We welcome contributions that address both the opportunities and '
-                'the challenges of the energy transition.'
+                'Our mission at JHST is to provide a global platform for original, peer-reviewed research that deepens '
+                'understanding and drives innovation across the hydrocarbon value chain — from exploration and production '
+                'to refining, environmental management, renewable integration, and digital transformation. We welcome '
+                'contributions that address both the opportunities and the challenges of the energy transition — where '
+                'hydrocarbons, renewables, and new technologies converge to shape a sustainable future.'
             ),
             'chief_editor_para_3': (
-                "In line with PTI's commitment to excellence, JHST upholds rigorous standards "
-                'of scholarly integrity, transparency, and quality. Our distinguished editorial '
-                'and review boards bring together leading experts from around the world.'
+                'In line with PTI’s commitment to excellence, JHST upholds rigorous standards of scholarly integrity, '
+                'transparency, and quality. Our distinguished editorial and review boards bring together leading experts, '
+                'scientists, and professionals from around the world — ensuring that each publication meets the highest '
+                'levels of technical and ethical credibility. We envision this Journal not merely as a collection of articles, '
+                'but as a platform for dialogue, a catalyst for innovation, and a repository of insight — where ideas '
+                'transform into technologies, and research drives resilience in an evolving energy economy.'
             ),
             'chief_editor_para_4': (
-                'As we embark on this exciting journey, I invite researchers, industry professionals, '
-                'policymakers, and students alike to contribute, collaborate, and engage with JHST. '
-                'Welcome to the Journal of Hydrocarbon Science and Technology.'
+                'As we embark on this exciting journey, I invite researchers, industry professionals, policymakers, and '
+                'students alike to contribute, collaborate, and engage with JHST. Together, we can advance the science '
+                'and technology that sustain our energy future — responsibly, intelligently, and inclusively. Welcome '
+                'to the Journal of Hydrocarbon Science and Technology — where energy meets innovation.'
             ),
             'chief_editor_name': 'Dr. Fredrick B. Owoyemi',
-            'chief_editor_role': 'Chief Editor, JHST',
+            'chief_editor_role': 'Chief Editor, Journal of Hydrocarbon Science and Technology (JHST)',
         })
         self.stdout.write('  OK HomePage')
 
@@ -193,20 +211,24 @@ class Command(BaseCommand):
                 'in the following areas, though not limited to:'
             ),
             'scope_col1': _ul(
-                'Petroleum Geology and Geophysics\n'
-                'Reservoir Engineering and Simulation\n'
-                'Drilling and Completion Technology\n'
-                'Production Engineering and Optimization\n'
-                'Natural Gas Engineering and Processing\n'
-                'Petrochemicals and Refining Technology'
+                'Exploration, Production, and Operations (Upstream, Midstream, Downstream)\n'
+                'Health, Safety, and Environment (HSE) Management\n'
+                'Renewable Energy Integration Technologies\n'
+                'Transportation, Logistics, and Gas Flare Commercialization\n'
+                'Innovations in R&D, Digital Tech, and AI/Robotics\n'
+                'Asset Protection, SCADA, IoT, and Remote Monitoring\n'
+                'Energy Trading, Risk Management, and Financing\n'
+                'Sustainability, Environmental Management, and CCUS'
             ),
             'scope_col2': _ul(
-                'Health, Safety, and Environment (HSE) in Energy\n'
-                'Energy Economics and Policy\n'
-                'Renewable Energy Integration with Hydrocarbons\n'
-                'Carbon Capture, Utilization, and Storage (CCUS)\n'
-                'Digital Transformation in Oil & Gas (AI, IoT)\n'
-                'Pipeline Engineering and Flow Assurance'
+                'Geology, Geophysics, and Mineral Exploration\n'
+                'Offshore, Marine, and Subsea Technology\n'
+                'Human Capital and Workforce Development\n'
+                'Regulatory, Legal, and Policy Frameworks\n'
+                'Market Trends and Strategic Outlook\n'
+                'Unconventional Resources and Energy Security\n'
+                'Collaboration and industry partnerships\n'
+                'Process Systems, Hydrocarbon Accounting and Management'
             ),
         })
         self.stdout.write('  OK AimScopePage')
@@ -218,7 +240,7 @@ class Command(BaseCommand):
             'office_institution': 'Petroleum Training Institute',
             'office_address_line1': 'P.M.B. 20, Effurun',
             'office_address_line2': 'Delta State, Nigeria.',
-            'principal_name': 'Prof. A. B. Johnson',
+            'principal_name': 'Dr. Fredrick B. Owoyemi',
             'principal_role': 'Editor-in-Chief',
             'principal_email': 'eic@jhst.org',
             'principal_phone': '+234 800 123 4567',
@@ -264,9 +286,14 @@ class Command(BaseCommand):
 
     def _populate_editorial_team_page(self):
         EditorialTeamPage.objects.update_or_create(pk=1, defaults={
+            'editor_in_chief_description': _p(
+                'The Editor-in-Chief assumes primary responsibility for the journal’s scientific '
+                'and editorial quality. He oversees the strategic direction, leads the editorial '
+                'board, and ensures the journal maintains its core mission and ethical standards.'
+            ),
             'managing_director_description': _p(
-                "Oversees the journal's daily editorial operations, manages scholarly "
-                'correspondence, and provides informed recommendations to the Editor-in-Chief '
+                'Oversees the day-to-day operations of the journal, coordinates the editorial '
+                'workflow, manages correspondence, and assists the Editor-in-Chief in decisions '
                 'regarding manuscript acceptance or rejection.'
             ),
             'editorial_assistant_description': _p(
@@ -282,90 +309,208 @@ class Command(BaseCommand):
                 'Managing Director aimed at enhancing journal quality, visibility, and '
                 'indexing performance.'
             ),
+            'advisory_board_description': _p(
+                'The Advisory Board comprises distinguished academics and industry professionals '
+                'who provide strategic counsel and insights to ensure the journal remains at the '
+                'forefront of scientific research and industry trends.'
+            ),
         })
         self.stdout.write('  OK EditorialTeamPage')
 
     def _populate_team_members(self):
+        TeamMember.objects.all().delete()
         members = [
             {
-                'name': 'Professor A. B. Johnson',
+                'name': 'Dr. Fredrick B. Owoyemi',
                 'role_type': 'editor_in_chief',
-                'affiliation': 'Department of Petroleum Engineering, Petroleum Training Institute, Effurun, Nigeria',
-                'bio': 'Professor Johnson has over 30 years of experience in hydrocarbon research and academia, leading numerous groundbreaking studies in petroleum engineering and sustainable energy transition.',
+                'affiliation': 'Petroleum Training Institute, Effurun, Nigeria',
+                'bio': 'Dr. Fredrick B. Owoyemi serves as the Editor-in-Chief of the Journal of Hydrocarbon Science and Technology (JHST).',
                 'email': 'eic@jhst.org',
                 'order': 1,
             },
             {
-                'name': 'Dr. C. D. Okafor',
-                'role_type': 'managing_director',
-                'affiliation': 'Department of Chemical Engineering, PTI Effurun',
-                'bio': 'Dr. Okafor specializes in chemical processes and refining technologies, bringing extensive editorial expertise from previous roles in major engineering journals.',
-                'email': 'managing.director@jhst.org',
+                'name': 'Prof. Abdulwahab Giwa',
+                'role_type': 'editorial_board',
+                'affiliation': 'Federal University Dutsin-ma',
+                'bio': 'Chemical Engineering',
+                'email': 'agiwa@fudutsinma.edu.ng',
                 'order': 1,
             },
             {
-                'name': 'Ms. J. K. Bello',
-                'role_type': 'editorial_assistant',
-                'affiliation': 'Journal of Hydrocarbon Science and Technology',
-                'bio': 'Ms. Bello is a dedicated communications professional responsible for managing author relations and streamlining the peer-review timeline.',
-                'email': 'admin@jhst.org',
-                'order': 1,
-            },
-            {
-                'name': 'Prof. E. F. Mensah',
-                'role_type': 'section_editor',
-                'affiliation': 'Kwame Nkrumah University of Science and Technology, Ghana',
-                'bio': "Prof. Mensah's research focuses on renewable energy integration and biofuels processing technologies.",
-                'email': '',
-                'order': 1,
-            },
-            {
-                'name': 'Dr. G. H. Smith',
-                'role_type': 'section_editor',
-                'affiliation': 'University of Aberdeen, United Kingdom',
-                'bio': 'Dr. Smith leads research in structural geology and deep-water exploration techniques.',
-                'email': '',
+                'name': 'Prof. Okewale Akindele',
+                'role_type': 'editorial_board',
+                'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
+                'bio': 'Petroleum/Chemical Engineering',
+                'email': 'okewale.akindele@fupre.edu.ng',
                 'order': 2,
             },
             {
-                'name': 'Prof. I. J. Ahmed',
-                'role_type': 'section_editor',
-                'affiliation': 'University of Lagos, Nigeria',
-                'bio': 'Prof. Ahmed specializes in environmental impact assessments and pollution control in hydrocarbon extraction.',
-                'email': '',
+                'name': 'Dr Adaobi Stephenie Nwosi-Anele',
+                'role_type': 'editorial_board',
+                'affiliation': 'Rivers State University of Science and Technology',
+                'bio': 'Petroleum Economics',
+                'email': 'adaobi.nwosi-anele@ust.edu.ng',
                 'order': 3,
             },
             {
-                'name': 'Dr. K. L. Wong',
-                'role_type': 'section_editor',
-                'affiliation': 'Universiti Teknologi PETRONAS, Malaysia',
-                'bio': 'Dr. Wong brings expertise in digital oilfields, IoT applications, and machine learning models for reservoir prediction.',
-                'email': '',
+                'name': 'Engr Bright Bariakpoa Kinate',
+                'role_type': 'editorial_board',
+                'affiliation': 'Rivers State University',
+                'bio': 'Petroleum and natural gas Production',
+                'email': 'kinate.bright@ust.edu.ng',
                 'order': 4,
             },
             {
-                'name': 'Prof. M. N. Opara',
+                'name': 'Engr. Isaac Ihua- Maduenyi',
                 'role_type': 'editorial_board',
-                'affiliation': 'Texas A&M University, USA',
-                'bio': 'Recognized globally for contributions to enhanced oil recovery and thermodynamics.',
-                'email': '',
+                'affiliation': 'Rivers State University',
+                'bio': 'Reservoir Engineering',
+                'email': 'isaac.ihua-maduenyi@ust.edu.ng',
+                'order': 5,
+            },
+            {
+                'name': 'Dr. Abdullahi Adamu',
+                'role_type': 'editorial_board',
+                'affiliation': 'Newcastle University',
+                'bio': 'Engr. Abdullahi is a Research Associate in the School of Engineering at Newcastle University with over four years of research experience in Chemical Engineering. He holds a B.Sc. and M.Sc. in Chemical Engineering from Mendeleev University of Chemical Technology of Russia, and a Ph.D. in Chemical Engineering from Newcastle University. His research focuses on process intensification, with expertise in catalysis, reaction engineering, and process engineering. He has contributed to the development of sustainable technologies for carbon capture and conversion, biorefining, gas sweetening, and wastewater treatment. Abdullahi is a COREN-certified engineer, a Corporate Member of the Nigerian Society of Engineers (NSE), and an Associate Member of the Institution of Chemical Engineers (IChemE), where he also serves on the Catalysis and Reaction Engineering Special Interest Group.',
+                'email': 'abdullahi.adamu@newcastle.ac.uk',
+                'order': 6,
+            },
+            {
+                'name': 'Prof. Folade Gbenga',
+                'role_type': 'editorial_board',
+                'affiliation': 'University of Ibadan, Oyo State',
+                'bio': 'Petroleum Energy economics and law',
+                'email': 'falodelias@gmail.com',
+                'order': 7,
+            },
+            {
+                'name': 'Professor Samuel T. Wara',
+                'role_type': 'editorial_board',
+                'affiliation': 'Edwin Clark University, Kiagbodo',
+                'bio': 'Energy management',
+                'email': 'docwarati@gmail.com',
+                'order': 8,
+            },
+            {
+                'name': 'Prof. Adenike Ogunshe',
+                'role_type': 'editorial_board',
+                'affiliation': 'University of Ibadan',
+                'bio': 'Biotechnology/Microbiology',
+                'email': 'adenikemicro@gmail.com',
+                'order': 9,
+            },
+            {
+                'name': 'Prof. Oludele Awodele',
+                'role_type': 'editorial_board',
+                'affiliation': 'Babcok University',
+                'bio': 'AWODELE Oludele is a Professor of Computer Science and Artificial Intelligence in the School of Computing, Babcock University, Ilisan-Remo. He was Head of the Department of Computer Science (2009-2016), Dean, School of Computing and Engineering Sciences (2016-2020), and currently the Director of Academic Planning, Babcock University, Nigeria. His current research is on Artificial Intelligence, Blockchain Technology, Data Communications and Computer Security. He has successfully supervised 18 PhDs and currently mentoring 5 PhD Scholars in different areas of Artificial Intelligence, Computer Science and Block chain Technology. Prof Awodele has contributed significantly to the growth and development of his professional association. He is a Fellow, Nigeria Computer Society (NCS), and Member of the following professional bodies: Computer Professional Registration Council of Nigeria (CPN), Institute of Cooperate Administration (ICA), USA Informing Science Institute (ISI), CPN Education and Man power Development Committee, NCS Publication and Research Committee, Babcock University Ethics Committee, Ethical Review Committee of Nigeria Computer Society (2013-2015). He has published well over 150 papers both in International and Local Journals and attended several academic conferences across the globe. He was the Editor-in-Chief of the following Nigeria Computer Society Journals: International Journal of Information Security Privacy & Digital Forensics and the Journal of Computer Science and Its Applications (2017-2021). Senior Member of the Institute of Electrical and Electronics Engineers, Member of Editorial Review Board InSITE USA, Member Governing Council, Association of Applied Information, Management Professionals, Member, National Executive Committee of the Nigeria Computer Society (2017- 2025), Member Governing Council of the Computer Professional Registration Council of Nigeria (2019- 2025) and the Chairman, Innovation, Research and Development Committee of the Nigeria Computer Society (2017 -2021). He made a distinction is a training course on Theory, Practice and future development in Accreditation in Higher Education organized by the National Universities Commission (NUC), National Open University of Nigeria (NOUN) and African Quality Assurance Network (AfriQAN) in 2021. He also made a distinction in another training course on Theory, Practice and Future of Academic Planning in University Education organized by NUC and NOUN in 2022. The indefatigable scholar has served as external examiner and assessor to many Universities within and outside the Country. In recognition of his hard work, diligence, and immeasurable contribution to the body of knowledge and societal development, he has been conferred with numerous distinguished awards. He is happily married and blessed with lovely children.',
+                'email': 'awodeleo@babcock.edu.ng',
+                'order': 10,
+            },
+            {
+                'name': 'Dr. Morgan Akpan',
+                'role_type': 'editorial_board',
+                'affiliation': 'African University of Science and Technology',
+                'bio': 'Geology',
+                'email': 'leo@aust.edu.ng',
+                'order': 11,
+            },
+            {
+                'name': 'Dr. Jasper Ahamefula Agbakwuru',
+                'role_type': 'editorial_board',
+                'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
+                'bio': 'Dr. Jasper Ahamefula Agbakwuru is a Professor of Offshore Engineering and Underwater Technology in the Marine Engineering Department at the Federal University of Petroleum Resources. He is an experienced academic and engineering professional with expertise in offshore engineering, subsea systems, underwater technology, sustainable energy, and ocean engineering. With over 15 years of industry experience and more than a decade in academia, he focuses his research on blue economy technologies, ocean renewable energy, climate change engineering, AI applications in offshore systems, and oceanography. Professor Agbakwuru holds a Ph.D. in Offshore Engineering, an M.Sc. in Subsea Engineering, a B.Eng. in Mechanical Engineering, and a Diploma in Electrical/Electronic Engineering. He is also an IMCA-certified underwater diver and a member of the Council for the Regulation of Engineering in Nigeria, Nigerian Society of Engineers, and Society for Underwater Technology. He has secured national and international research grants, holds several patents, and has authored over sixty scholarly publications. His work continues to advance innovation and sustainable solutions in offshore and underwater engineering.',
+                'email': 'agbakwuru.jasper@fupre.edu.ng',
+                'order': 12,
+            },
+            {
+                'name': 'Opeyemi Oni',
+                'role_type': 'editorial_board',
+                'affiliation': 'University of North Dakota.',
+                'bio': 'Dr. Opeyemi Oni is a petroleum engineer and researcher with over 15 years of experience in teaching, laboratory practice, and applied research across oil, gas, and geothermal systems. His expertise spans drilling fluid design and optimization, drilling engineering, production technology, and geothermal heat extraction. He has contributed to academic and laboratory development through the design of instructional manuals, crude oil characterization, and petrophysical analysis, while supervising undergraduate and postgraduate research. Currently at the University of North Dakota, his work focuses on developing novel and waste-derived materials to improve drilling fluid performance using advanced analytical techniques, with findings disseminated through conferences and peer-reviewed publications.',
+                'email': 'opeyemi.oni@und.edu',
+                'order': 13,
+            },
+            {
+                'name': 'Prof Thaddeus Chidiebere Nwaoha',
+                'role_type': 'editorial_board',
+                'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
+                'bio': 'Offshore and Underwater Engineering',
+                'email': 'nwaoha.thaddeus@fupre.edu.ng',
+                'order': 14,
+            },
+            {
+                'name': 'Dr Ali Aliyu',
+                'role_type': 'editorial_board',
+                'affiliation': 'University of Lincoln',
+                'bio': 'Sustainable Energy',
+                'email': 'AAliyu@lincoln.ac.uk',
+                'order': 15,
+            },
+            {
+                'name': 'Dr David Hitchmough PhD MEng AMRINA AFHEA',
+                'role_type': 'advisory_board',
+                'affiliation': '',
+                'bio': 'Research Fellow in Maritime Decarbonization, School of Engineering, Mechanical Engineering',
+                'email': 'D.M.Hitchmough@ljmu.ac.uk',
                 'order': 1,
             },
             {
-                'name': 'Prof. P. Q. Roy',
-                'role_type': 'editorial_board',
-                'affiliation': 'Indian Institute of Technology, India',
-                'bio': 'Pioneer in green chemistry applications for hydrocarbon processing.',
-                'email': '',
+                'name': 'Prof. Ayansi Francis Ifeanyi',
+                'role_type': 'advisory_board',
+                'affiliation': 'Ambros Alli University, Ekpoma, Edo State',
+                'bio': 'Electrical and Electronics Engineering',
+                'email': 'francisanyasi@aauekpoma.edu.ng',
                 'order': 2,
             },
             {
-                'name': 'Dr. S. T. Utomi',
-                'role_type': 'editorial_board',
-                'affiliation': 'Shell Research Centre, Netherlands',
-                'bio': 'Industry representative bridging the gap between theoretical research and commercial deployment.',
-                'email': '',
+                'name': 'Dr Michael A. Adegbite',
+                'role_type': 'advisory_board',
+                'affiliation': 'Petroleum Training Institute (Retiree)',
+                'bio': 'Welding Corrosion Engineering',
+                'email': 'adegbite_ma@pti.edu.ng',
                 'order': 3,
+            },
+            {
+                'name': 'Dr. Kevin Idehen',
+                'role_type': 'advisory_board',
+                'affiliation': 'Petroleum Training Institute',
+                'bio': 'Chemistry/Polymer Chemistry',
+                'email': 'kiidehen@yahoo.com',
+                'order': 4,
+            },
+            {
+                'name': 'Prof Benjamin Ugbeoke Iyenagbe',
+                'role_type': 'advisory_board',
+                'affiliation': 'University of Abuja/Edo State University',
+                'bio': 'Materials Engineering and Applied Solid Mechanics',
+                'email': 'ben.ugheoke@uniabuja.edu.ng',
+                'order': 5,
+            },
+            {
+                'name': 'Prof Thaddeus Chidiebere Nwaoha',
+                'role_type': 'advisory_board',
+                'affiliation': 'Federal University of Petroleum Resources, Effurun, Delta State',
+                'bio': 'Offshore, Marine and Underwater Engineering',
+                'email': 'nwaoha.thaddeus@fupre.edu.ng',
+                'order': 6,
+            },
+            {
+                'name': 'Dr Jasper Agbakwuru',
+                'role_type': 'advisory_board',
+                'affiliation': 'Federal University of Petroleum Resources, Effurun',
+                'bio': 'Offshore/Subsea Engineering',
+                'email': 'agbakwuru.jasper@fupre.edu.ng',
+                'order': 7,
+            },
+            {
+                'name': 'Prof Ibrahim Ali Mohammed-Dabo',
+                'role_type': 'advisory_board',
+                'affiliation': 'Amadu Bello University, Zaria',
+                'bio': 'Chemical Engineering',
+                'email': 'iamohammed-dabo@abu.edu.ng',
+                'order': 8,
             },
         ]
         for m in members:

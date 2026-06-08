@@ -7,6 +7,7 @@ from .models import (
     PlagiarismPolicyPage, SubscriptionAdvertisingPage, EditorialPolicyPage,
     PublicationSchedulePage, GuidelinesPage, ReviewerGuidelinesPage,
     MetricsPage, JhstJournalsPage, PtiJournal, PublicationsPage,
+    SiteSettings,
 )
 
 
@@ -16,6 +17,13 @@ class SingletonPageAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, _request):
         return not self.model.objects.exists()
+
+
+@admin.register(SiteSettings)
+class SiteSettingsAdmin(SingletonPageAdmin):
+    pass
+
+
 
 
 @admin.register(HomePage)
@@ -109,7 +117,7 @@ class EditorialTeamPageAdmin(SingletonPageAdmin):
     fieldsets = (
         ('Role Descriptions', {'fields': (
             'editor_in_chief_description', 'managing_director_description', 'editorial_assistant_description',
-            'section_editors_description', 'editorial_board_description',
+            'section_editors_description', 'editorial_board_description', 'advisory_board_description',
         )}),
     )
 

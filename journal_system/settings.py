@@ -61,6 +61,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "journal.context_processors.notifications",
+                "pages.context_processors.site_settings_processor",
             ],
         },
     },
@@ -128,6 +129,7 @@ CKEDITOR_CONFIGS = {
             ['RemoveFormat', 'Source']
         ],
         'width': 'auto',
+        'versionCheck': False,
     },
 }
 
