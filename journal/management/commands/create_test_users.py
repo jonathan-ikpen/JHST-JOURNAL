@@ -16,7 +16,7 @@ class Command(BaseCommand):
                 password='password123',
                 first_name='Test',
                 last_name='Author',
-                is_author=True,
+                is_researcher=True,
                 is_email_verified=True
             )
             self.stdout.write(self.style.SUCCESS('Successfully created Test Author (author1@test.com)'))
