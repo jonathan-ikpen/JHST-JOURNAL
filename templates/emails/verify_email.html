@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2>Welcome to JHST, {{ user.get_full_name|default:user.username }}!</h2>
+    <p>Thank you for registering with the Journal of Hydrocarbon Science and Technology.</p>
+    <p>To verify your email address and unlock all features, please click the button below:</p>
+    <p style="text-align: center; margin: 30px 0;">
+        <a href="{{ verification_url }}" style="background-color: #2563eb; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; display: inline-block; font-weight: bold;">Verify Email Address</a>
+    </p>
+    <p>If the button doesn't work, you can copy and paste the following link into your browser:</p>
+    <p style="word-break: break-all; color: #666;">
+        <a href="{{ verification_url }}">{{ verification_url }}</a>
+    </p>
+    <p>If you did not create this account, please ignore this email.</p>
+    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+    <p style="font-size: 12px; color: #999;">&copy; {% now "Y" %} Journal of Hydrocarbon Science and Technology. All rights reserved.</p>
+</body>
+</html>

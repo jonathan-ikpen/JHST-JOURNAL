@@ -7,6 +7,7 @@ class User(AbstractUser):
     is_researcher = models.BooleanField(default=False)
     is_reviewer = models.BooleanField(default=False)
     is_editor = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
     affiliation = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     orcid = models.CharField(max_length=19, blank=True, null=True, help_text="Format: XXXX-XXXX-XXXX-XXXX")

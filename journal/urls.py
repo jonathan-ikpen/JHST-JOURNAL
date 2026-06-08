@@ -1,12 +1,18 @@
-from django.urls import path
+from django.urls import path, reverse_lazy
 from . import views, feeds
-from .forms import UserLoginForm
+from .forms import UserLoginForm, CustomPasswordChangeForm
 from django.contrib.auth import views as auth_views
+from django.contrib.messages.views import SuccessMessageMixin
 from pages import views as pages_views
+
+class CustomPasswordChangeView(SuccessMessageMixin, auth_views.PasswordChangeView):
+    success_message = "Your password was successfully updated!"
 
 urlpatterns = [
     path('', pages_views.home, name='index'),
     path('register/', views.register, name='register'),
+    path('verify-email/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
+    path('resend-verification/', views.resend_verification_email, name='resend_verification'),
     path('login/', auth_views.LoginView.as_view(template_name='journal/login.html', authentication_form=UserLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -17,6 +23,11 @@ urlpatterns = [
     path('dashboard/review-assignment/<int:review_id>/', views.reviewer_manuscript_detail, name='reviewer_manuscript_detail'),
     path('dashboard/assigned-reviews/', views.assigned_reviews, name='assigned_reviews'),
     path('profile/', views.profile, name='profile'),
+    path('profile/change-password/', CustomPasswordChangeView.as_view(
+        template_name='journal/change_password.html', 
+        success_url=reverse_lazy('profile'),
+        form_class=CustomPasswordChangeForm
+    ), name='change_password'),
     path('submit/', views.submit_manuscript, name='submit_manuscript'),
     path('assign_reviewer/<int:manuscript_id>/', views.assign_reviewer, name='assign_reviewer'),
     path('request_re_review/<int:review_id>/', views.request_re_review, name='request_re_review'),
