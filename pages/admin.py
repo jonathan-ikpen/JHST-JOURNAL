@@ -342,3 +342,15 @@ class PtiJournalAdmin(admin.ModelAdmin):
 @admin.register(PublicationsPage)
 class PublicationsPageAdmin(SingletonPageAdmin):
     fields = ('intro_text', 'schedule_frequency_text')
+
+from .models import ConferencesPage, ConferenceProceeding
+
+@admin.register(ConferencesPage)
+class ConferencesPageAdmin(SingletonPageAdmin):
+    fields = ('intro_text',)
+
+@admin.register(ConferenceProceeding)
+class ConferenceProceedingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'theme', 'date', 'order')
+    list_editable = ('order',)
+    ordering = ('order', '-id')

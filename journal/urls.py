@@ -55,6 +55,7 @@ urlpatterns = [
     path('about/publication-fees/', pages_views.publication_fees, name='publication_fees'),
     path('about/contact/', pages_views.contact, name='contact'),
     path('publications/', pages_views.publications, name='publications'),
+    path('conferences/', pages_views.conferences, name='conferences'),
     path('publications/current/', views.current_issue, name='current_issue'),
     path('publications/archives/', views.archives, name='archives'),
     path('indexing/', pages_views.indexing, name='indexing'),

@@ -559,3 +559,28 @@ class PublicationsPage(SingletonMixin, models.Model):
 
     def __str__(self):
         return 'Publications Page'
+
+class ConferencesPage(SingletonMixin, models.Model):
+    intro_text = RichTextField()
+
+    class Meta:
+        verbose_name = 'Conferences Page'
+
+    def __str__(self):
+        return 'Conferences Page'
+
+
+class ConferenceProceeding(models.Model):
+    title = models.CharField(max_length=200)
+    theme = models.CharField(max_length=300)
+    date = models.CharField(max_length=100)
+    cover_image = models.ImageField(upload_to='proceedings/covers/')
+    pdf_document = models.FileField(upload_to='proceedings/documents/')
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', '-id']
+        verbose_name = 'Conference Proceeding'
+
+    def __str__(self):
+        return self.title

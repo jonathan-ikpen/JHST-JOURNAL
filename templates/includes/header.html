@@ -1,4 +1,4 @@
-﻿<header class="border-b-4 border-primary pb-4 mb-6">
+<header class="border-b-4 border-primary pb-4 mb-6">
   <div class="flex justify-between items-center mb-4">
     <a href="{% url 'index' %}" class="flex items-center space-x-4 hover:opacity-95 transition">
       {% load static %}
@@ -95,6 +95,7 @@
             </div>
         </div>
         <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="{% url 'announcements' %}">ANNOUNCEMENTS</a>
+        <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary" href="{% url 'conferences' %}">CONFERENCES</a>
         <a class="px-4 py-2 hover:bg-opacity-75 hover:bg-primary hidden" href="{% url 'jhst_journals' %}">JHST JOURNALS</a>
       </div>
 
@@ -180,6 +181,7 @@
             </div>
         </div>
         <a class="py-2 border-t border-white/20" href="{% url 'announcements' %}">ANNOUNCEMENTS</a>
+        <a class="py-2 border-t border-white/20" href="{% url 'conferences' %}">CONFERENCES</a>
         <a class="py-2 border-t border-white/20 hidden" href="{% url 'jhst_journals' %}">JHST JOURNALS</a>
         <form action="{% url 'search' %}" method="get" class="pt-2 border-t border-white/20 flex items-center">
           <button type="submit" class="material-icons text-white bg-transparent border-none cursor-pointer">search</button>
