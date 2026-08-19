@@ -1,31 +1,44 @@
+<!-- prettier-ignore -->
 {% extends 'base.html' %} 
-
-{% block title %}Conferences & Proceedings | JHST{% endblock %}
-
+{% block title %}Conferences & Proceedings | JHST{% endblock %} 
 {% block content %}
 <section class="max-w-5xl mx-auto space-y-8">
   <div class="bg-card-light dark:bg-card-dark p-6 rounded">
-    <h1 class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2">
+    <h1
+      class="text-3xl font-display font-bold text-primary mb-6 border-b border-border-light dark:border-border-dark pb-2"
+    >
       Conferences & Proceedings
     </h1>
 
-    <div class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 mb-8">
-      {% if page.intro_text %}
-        {{ page.intro_text|safe }}
-      {% else %}
-        <p>Welcome to the JHST Conferences and Proceedings section. Here you can find the official books of proceedings from our affiliated international conferences.</p>
+    <div
+      class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 mb-8"
+    >
+      {% if page.intro_text %} {{ page.intro_text|safe }} {% else %}
+      <p>
+        Welcome to the JHST Conferences and Proceedings section. Here you can
+        find the official books of proceedings from our affiliated international
+        conferences.
+      </p>
       {% endif %}
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
       {% for proceeding in proceedings %}
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col"
+      >
         {% if proceeding.cover_image %}
-        <div class="h-64 w-full bg-gray-100 dark:bg-gray-900 overflow-hidden flex items-center justify-center">
-            <img src="{{ proceeding.cover_image.url }}" alt="{{ proceeding.title }} Cover" class="object-contain h-full w-full">
+        <div
+          class="h-64 w-full bg-gray-100 dark:bg-gray-900 overflow-hidden flex items-center justify-center"
+        >
+          <img
+            src="{{ proceeding.cover_image.url }}"
+            alt="{{ proceeding.title }} Cover"
+            class="fobject-contain h-full w-full"
+          />
         </div>
         {% endif %}
-        
+
         <div class="p-6 flex-grow flex flex-col">
           <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
             {{ proceeding.title }}
@@ -33,15 +46,33 @@
           <p class="text-sm font-semibold text-primary mb-3">
             {{ proceeding.date }}
           </p>
-          <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow text-sm italic">
+          <p
+            class="text-gray-600 dark:text-gray-400 mb-6 flex-grow text-sm italic"
+          >
             "{{ proceeding.theme }}"
           </p>
-          
+
           {% if proceeding.pdf_document %}
           <div class="mt-auto">
-            <a href="{{ proceeding.pdf_document.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-primary hover:bg-opacity-90 text-white font-bold py-2.5 px-4 rounded transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <a
+              href="{{ proceeding.pdf_document.url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center w-full bg-primary hover:bg-opacity-90 text-white font-bold py-2.5 px-4 rounded transition-colors duration-200"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
               Read / Download PDF
             </a>
@@ -50,7 +81,9 @@
         </div>
       </div>
       {% empty %}
-      <div class="col-span-1 md:col-span-2 py-8 text-center text-gray-500 dark:text-gray-400">
+      <div
+        class="col-span-1 md:col-span-2 py-8 text-center text-gray-500 dark:text-gray-400"
+      >
         <p>No conference proceedings are currently available.</p>
       </div>
       {% endfor %}
