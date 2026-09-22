@@ -64,7 +64,7 @@ home_page_replace = """    def _populate_home_page(self):
                 'to the Journal of Hydrocarbon Science and Technology — where energy meets innovation.'
             ),
             'chief_editor_name': 'Dr. Fredrick B. Owoyemi',
-            'chief_editor_role': 'Chief Editor, Journal of Hydrocarbon Science and Technology (JHST)',
+            'chief_editor_role': 'Editor in Chief, Journal of Hydrocarbon Science and Technology (JHST)',
         })
         self.stdout.write('  OK HomePage')"""
 

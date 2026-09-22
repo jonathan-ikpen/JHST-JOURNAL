@@ -7,6 +7,7 @@ from pages.models import (
     PlagiarismPolicyPage, SubscriptionAdvertisingPage, EditorialPolicyPage,
     PublicationSchedulePage, GuidelinesPage, ReviewerGuidelinesPage,
     MetricsPage, JhstJournalsPage, PtiJournal, PublicationsPage,
+    ConferencesPage, ConferenceProceeding, ForReadersPage, ForLibrariansPage,
 )
 
 
@@ -58,6 +59,8 @@ class Command(BaseCommand):
         self._populate_pti_journals()
         self._populate_publications_page()
         self._populate_site_settings()
+        self._populate_for_readers()
+        self._populate_for_librarians()
 
         self.stdout.write(self.style.SUCCESS(
             'Successfully populated all page models with real content.'
@@ -97,7 +100,7 @@ class Command(BaseCommand):
                 'for the purpose of innovation, knowledge/education, lifestyle, culture and career development.'
             ),
             'organogram_heading': 'JHST ORGANOGRAM',
-            'chief_editor_title': "From the Chief Editor's Desk",
+            'chief_editor_title': "From the Editor in Chief's Desk",
             'chief_editor_para_1': (
                 'In an era where the global energy landscape is undergoing unprecedented transformation, the Journal of '
                 'Hydrocarbon Science and Technology (JHST) emerges as a timely response to a critical need — the need '
@@ -130,7 +133,7 @@ class Command(BaseCommand):
                 'to the Journal of Hydrocarbon Science and Technology — where energy meets innovation.'
             ),
             'chief_editor_name': 'Dr. Fredrick B. Owoyemi',
-            'chief_editor_role': 'Chief Editor, Journal of Hydrocarbon Science and Technology (JHST)',
+            'chief_editor_role': 'Editor in Chief, Journal of Hydrocarbon Science and Technology (JHST)',
         })
         self.stdout.write('  OK HomePage')
 
@@ -1227,3 +1230,26 @@ class Command(BaseCommand):
             ),
         })
         self.stdout.write('  OK PublicationsPage')
+
+    def _populate_for_readers(self):
+        ForReadersPage.objects.update_or_create(pk=1, defaults={
+            'content': _p(
+                'We encourage readers to sign up for the publishing notification service for this journal. '
+                'Use the Register link at the top of the home page for the journal. This registration will result '
+                'in the reader receiving the Table of Contents by email for each new issue of the journal. '
+                'This list also allows the journal to claim a certain level of support or readership. '
+                'See the journal\'s Privacy Statement, which assures readers that their name and email address '
+                'will not be used for other purposes.'
+            ),
+        })
+        self.stdout.write('  OK ForReadersPage')
+
+    def _populate_for_librarians(self):
+        ForLibrariansPage.objects.update_or_create(pk=1, defaults={
+            'content': _p(
+                'We encourage research librarians to list this journal among their library\'s electronic journal holdings. '
+                'As well, it may be worth noting that this journal\'s open source publishing system is suitable for '
+                'libraries to host for their faculty members to use with journals they are involved in editing.'
+            ),
+        })
+        self.stdout.write('  OK ForLibrariansPage')

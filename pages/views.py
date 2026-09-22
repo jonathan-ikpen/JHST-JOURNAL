@@ -1,4 +1,4 @@
-from django.shortcuts import render
+﻿from django.shortcuts import render
 from journal.models import Issue
 from .models import (
     HomePage, OrganogramItem, AboutPage, AimScopePage, ContactPage,
@@ -8,7 +8,8 @@ from .models import (
     PlagiarismPolicyPage, SubscriptionAdvertisingPage, EditorialPolicyPage,
     PublicationSchedulePage, GuidelinesPage, ReviewerGuidelinesPage,
     MetricsPage, JhstJournalsPage, PtiJournal, PublicationsPage,
-    ConferencesPage, ConferenceProceeding
+    ConferencesPage, ConferenceProceeding, ForReadersPage,
+    ForLibrariansPage
 )
 
 
@@ -54,6 +55,7 @@ def editorial_team(request):
     advisory_board = members.filter(role_type='advisory_board')
     return render(request, 'journal/editorial_team.html', {
         'page': page,
+        'all_members': members,
         'editor_in_chief': editor_in_chief,
         'managing_directors': managing_directors,
         'editorial_assistants': editorial_assistants,
@@ -146,6 +148,16 @@ def publications(request):
 
 
 def conferences(request):
-    page, _ = ConferencesPage.objects.get_or_create(pk=1)
+    page = ConferencesPage.objects.get(pk=1)
     proceedings = ConferenceProceeding.objects.all()
     return render(request, 'journal/conferences.html', {'page': page, 'proceedings': proceedings})
+
+
+def for_readers(request):
+    page = ForReadersPage.objects.get(pk=1)
+    return render(request, 'journal/for_readers.html', {'page': page})
+
+
+def for_librarians(request):
+    page = ForLibrariansPage.objects.get(pk=1)
+    return render(request, 'journal/for_librarians.html', {'page': page})

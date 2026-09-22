@@ -1,0 +1,38 @@
+<div class="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5 flex flex-col items-center text-center hover:shadow-md transition">
+  {% if member.photo %}
+  <img
+    src="{{ member.photo.url }}"
+    alt="{{ member.name }}"
+    class="w-20 h-20 rounded-full object-cover border-2 border-primary/25 mb-3"
+  />
+  {% else %}
+  <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-3 border-2 border-primary/20">
+    <span class="material-icons text-3xl text-primary/50">person</span>
+  </div>
+  {% endif %}
+
+  <span class="font-bold text-gray-900 dark:text-gray-100 text-sm leading-snug">{{ member.name }}</span>
+  <span class="text-gray-500 dark:text-gray-400 text-xs mt-1 mb-3 leading-snug">{{ member.affiliation }}</span>
+
+  <div class="flex items-center gap-2 mt-auto flex-wrap justify-center">
+    {% if member.email %}
+    <a href="mailto:{{ member.email }}" title="{{ member.email }}"
+      class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition">
+      <span class="material-icons text-sm">email</span>
+    </a>
+    {% endif %}
+    {% if member.bio %}
+    <button
+      class="view-profile-btn inline-flex items-center gap-1 text-xs font-semibold text-white bg-primary hover:bg-primary/90 px-3 py-1 rounded transition"
+      data-id="{{ member.id }}"
+      data-name="{{ member.name }}"
+      data-role="{{ role_label }}"
+      data-affiliation="{{ member.affiliation }}"
+      data-email="{{ member.email }}"
+      data-photo="{% if member.photo %}{{ member.photo.url }}{% endif %}"
+    >
+      View Profile
+    </button>
+    {% endif %}
+  </div>
+</div>

@@ -7,7 +7,7 @@ from .models import (
     PlagiarismPolicyPage, SubscriptionAdvertisingPage, EditorialPolicyPage,
     PublicationSchedulePage, GuidelinesPage, ReviewerGuidelinesPage,
     MetricsPage, JhstJournalsPage, PtiJournal, PublicationsPage,
-    SiteSettings,
+    SiteSettings, ForReadersPage, ForLibrariansPage,
 )
 
 
@@ -354,3 +354,11 @@ class ConferenceProceedingAdmin(admin.ModelAdmin):
     list_display = ('title', 'theme', 'date', 'order')
     list_editable = ('order',)
     ordering = ('order', '-id')
+
+@admin.register(ForReadersPage)
+class ForReadersPageAdmin(SingletonPageAdmin):
+    fields = ('content',)
+
+@admin.register(ForLibrariansPage)
+class ForLibrariansPageAdmin(SingletonPageAdmin):
+    fields = ('content',)

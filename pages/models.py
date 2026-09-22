@@ -584,3 +584,21 @@ class ConferenceProceeding(models.Model):
 
     def __str__(self):
         return self.title
+
+class ForReadersPage(SingletonMixin, models.Model):
+    content = RichTextField(help_text="Information for readers")
+
+    class Meta:
+        verbose_name = 'Information for Readers Page'
+
+    def __str__(self):
+        return 'Information for Readers Page'
+
+class ForLibrariansPage(SingletonMixin, models.Model):
+    content = RichTextField(help_text="Information for librarians")
+
+    class Meta:
+        verbose_name = 'Information for Librarians Page'
+
+    def __str__(self):
+        return 'Information for Librarians Page'

@@ -74,5 +74,7 @@ urlpatterns = [
     path('announcements/', views.announcements, name='announcements'),
     path('announcements/<int:announcement_id>/', views.announcement_detail, name='announcement_detail'),
     path('jhst-journals/', pages_views.jhst_journals, name='jhst_journals'),
+    path('information/readers/', pages_views.for_readers, name='for_readers'),
+    path('information/librarians/', pages_views.for_librarians, name='for_librarians'),
     path('rss/', feeds.LatestArticlesFeed(), name='article_feed'),
 ]

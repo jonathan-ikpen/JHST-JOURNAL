@@ -1,5 +1,13 @@
 {% load static pages_extras %}
 <aside class="space-y-8">
+  <div class="text-center">
+    <a
+      class="block w-full bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark font-bold py-2 px-4 rounded border-b-4 border-gray-400 dark:border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-600"
+      href="{% url 'login' %}"
+      >MAKE A SUBMISSION</a
+    >
+  </div>
+
   <div class="bg-amber-400 p-4 rounded text-center text-black">
     <p class="font-bold text-lg">IMPORTANT ANNOUNCEMENT</p>
     <div class="bg-black text-white p-4 my-2 rounded">
@@ -15,11 +23,17 @@
     >
       New Release
     </h3>
+    {% if page.new_release_image %}
     <img
-      src="{% if page.new_release_image %}{{ page.new_release_image.url }}{% else %}{% static 'assets/images/Hydro_science_journal_2025.png' %}{% endif %}"
-      alt="Hydro Science Journal 2025 Release"
+      src="{{ page.new_release_image.url }}"
+      alt="New Release"
       class="w-full rounded"
     />
+    {% else %}
+    <div class="text-center text-gray-500 dark:text-gray-400 py-6 italic text-sm border-2 border-dashed border-gray-300 dark:border-gray-600 rounded">
+      No edition published yet
+    </div>
+    {% endif %}
   </div>
 
   <div class="bg-card-light dark:bg-card-dark p-4 rounded shadow-sm">
@@ -59,7 +73,7 @@
       <li>
         <a
           class="text-primary hover:underline"
-          href="{% url 'subscription_advertising' %}"
+          href="{% url 'for_readers' %}"
           >For Readers</a
         >
       </li>
@@ -73,7 +87,7 @@
       <li>
         <a
           class="text-primary hover:underline"
-          href="{% url 'subscription_advertising' %}"
+          href="{% url 'for_librarians' %}"
           >For Librarians</a
         >
       </li>
