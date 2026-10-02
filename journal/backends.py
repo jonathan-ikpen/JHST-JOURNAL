@@ -21,6 +21,9 @@ class EmailOrUsernameModelBackend(ModelBackend):
             # Run the default password hasher once to reduce the timing
             # difference between an existing and a nonexistent user.
             UserModel().set_password(password)
+        except UserModel.MultipleObjectsReturned:
+            # If multiple users somehow have the same email, authentication via email fails gracefully
+            return None
         else:
             if user.check_password(password) and self.user_can_authenticate(user):
                 return user

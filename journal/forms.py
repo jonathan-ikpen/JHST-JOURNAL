@@ -17,10 +17,19 @@ class ResearcherRegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if 'email' in self.fields:
+            self.fields['email'].required = True
         for field in self.fields.values():
             field.widget.attrs.update({
                 'class': 'w-full px-4 py-3 border border-slate-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
             })
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email:
+            if User.objects.filter(email__iexact=email).exists():
+                raise forms.ValidationError("An account is already registered with this email address. Please log in instead.")
+        return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
