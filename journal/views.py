@@ -64,7 +64,7 @@ def register(request):
             except Exception as e:
                 print(f"Error sending email: {e}")
                 
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"Welcome to JHST, {user.username}! Your account has been created. Please check your email to verify your account.")
             return redirect('dashboard')
     else:
@@ -1059,7 +1059,7 @@ def verify_email(request, uidb64, token):
         user.save()
         messages.success(request, "Your email address has been successfully verified! You now have full access to all features.")
         if not request.user.is_authenticated:
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('dashboard')
     else:
         messages.error(request, "The verification link was invalid or has expired. Please request a new one.")
