@@ -19,6 +19,7 @@ urlpatterns = [
     path('dashboard/manuscript/<int:manuscript_id>/', views.dashboard_manuscript_detail, name='dashboard_manuscript_detail'),
     path('dashboard/my-submissions/', views.my_submissions, name='my_submissions'),
     path('dashboard/my-submission/<int:manuscript_id>/', views.my_submission_detail, name='my_submission_detail'),
+    path('dashboard/my-submission/<int:manuscript_id>/withdraw/', views.withdraw_submission, name='withdraw_submission'),
     path('dashboard/my-submission/<int:manuscript_id>/submit-revision/', views.submit_revision, name='submit_revision'),
     path('dashboard/review-assignment/<int:review_id>/', views.reviewer_manuscript_detail, name='reviewer_manuscript_detail'),
     path('dashboard/assigned-reviews/', views.assigned_reviews, name='assigned_reviews'),

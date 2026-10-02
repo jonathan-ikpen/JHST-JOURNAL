@@ -406,6 +406,26 @@ def my_submission_detail(request, manuscript_id):
     })
 
 @login_required
+def withdraw_submission(request, manuscript_id):
+    manuscript = get_object_or_404(Manuscript, id=manuscript_id)
+    
+    # Security check: Ensure user owns this manuscript
+    if manuscript.author != request.user:
+        return redirect('my_submissions')
+        
+    # Security check: Ensure status is 'submitted'
+    if manuscript.status != 'submitted':
+        messages.error(request, "This manuscript can no longer be withdrawn as it is already being processed.")
+        return redirect('my_submissions')
+        
+    if request.method == 'POST':
+        title = manuscript.title
+        manuscript.delete() 
+        messages.success(request, f"Your manuscript '{title}' has been successfully withdrawn and deleted.")
+        
+    return redirect('my_submissions')
+
+@login_required
 @verified_email_required
 def submit_manuscript(request):
     if request.method == 'POST':
