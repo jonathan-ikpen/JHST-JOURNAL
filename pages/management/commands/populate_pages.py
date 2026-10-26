@@ -69,8 +69,8 @@ class Command(BaseCommand):
     def _populate_site_settings(self):
         from pages.models import SiteSettings
         SiteSettings.objects.update_or_create(pk=1, defaults={
-            'issn_online': '1595 - 431 (Online)',
-            'issn_print': '2025(Print)',
+            'issn_online': '1595-4315 (Online)',
+            'issn_print': '1595-4315 (Print)',
             'copyright_text': '© 2025 Journal of Hydrocarbon Science & Technology — Petroleum Training Institute, Effurun'
         })
         self.stdout.write('  OK SiteSettings')

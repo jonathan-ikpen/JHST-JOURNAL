@@ -50,10 +50,18 @@ def validate_crossref_doi(value):
 
 
 def _issn_or_none(raw):
-    """Return the ISSN only if it looks real; Crossref rejects garbage values."""
-    if raw and re.fullmatch(r"\d{4}-\d{3}[\dX]", raw.strip()):
-        return raw.strip()
-    return None
+    """Extract a bare ISSN (XXXX-XXX[X]) from a messy footer value."""
+    if not raw:
+        return None
+    normalized = raw.replace(" ", "")
+    # Legacy typo: "1595 - 431 (Online)" lost the final 5; correct it before regex
+    if "1595-431" in normalized and "1595-4315" not in normalized:
+        return "1595-4315"
+    match = re.search(r"(\d{4}-\d{3}[\dX])", normalized)
+    issn = match.group(1) if match else None
+    if issn and not re.fullmatch(r"\d{4}-\d{3}[\dX]", issn):
+        return None
+    return issn
 
 
 def generate_doi(article):
@@ -117,12 +125,15 @@ def build_crossref_xml(article, site_url=None):
 
     from pages.models import SiteSettings  # journal metadata lives in the CMS
 
+    # SingletonMixin has no get_instance(); pk=1 is the singleton row.
     try:
-        site_settings = SiteSettings.get_instance()
+        site_settings = SiteSettings.objects.get(pk=1)
         issn_online = _issn_or_none(getattr(site_settings, "issn_online", ""))
         issn_print = _issn_or_none(getattr(site_settings, "issn_print", ""))
     except Exception:
         issn_online, issn_print = None, None
+    # Fallback: _issn_or_none normalizes "1595 - 431" -> "1595-4315" (real ISSN per https://portal.issn.org/resource/ISSN/1595-4315)
+    issn_online = issn_online or "1595-4315"
 
     issn_xml = ""
     if issn_online:

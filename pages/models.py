@@ -9,8 +9,8 @@ class SingletonMixin:
 
 
 class SiteSettings(SingletonMixin, models.Model):
-    issn_online = models.CharField(max_length=50, default='1595 - 431 (Online)')
-    issn_print = models.CharField(max_length=50, default='2025(Print)')
+    issn_online = models.CharField(max_length=50, default='1595-4315 (Online)')
+    issn_print = models.CharField(max_length=50, default='1595-4315 (Print)')
     copyright_text = models.CharField(
         max_length=200, 
         default='© 2025 Journal of Hydrocarbon Science & Technology — Petroleum Training Institute, Effurun'
