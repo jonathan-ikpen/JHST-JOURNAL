@@ -254,9 +254,34 @@ def deposit_to_crossref(article, xml_string=None):
 
 
 def check_deposit_status(article):
-    """True once the DOI resolves live via api.crossref.org (DOI goes live 5-30 min after deposit)."""
+    """True once the DOI handle resolves (doi.org) or the record is indexed (api).
+
+    doi.org goes live ~5 min after deposit with an ISSN fix; api.crossref.org
+    lags 30 min+. We ask the handle first so 'pending registration' flips to
+    a real link as soon as the DOI actually works.
+    """
     if not article.doi:
         return False
+    # Ask the handle first (= the bouncer): HEAD doi.org/<doi> -> 302 Location
+    try:
+        handle = requests.head(
+            f"https://doi.org/{article.doi}",
+            allow_redirects=False,
+            timeout=10,
+        )
+        if handle.status_code in (301, 302, 303, 307, 308):
+            target = handle.headers.get("Location", "")
+            if article.id is not None and f"/article/{article.id}/" in target:
+                return True
+            site = getattr(settings, "CROSSREF_SITE_URL", "https://www.jhst.org").rstrip("/").split("//", 1)[-1]
+            if site in target or target.startswith("/article/"):
+                return True
+        elif handle.status_code == 200:
+            # Unlikely for doi.org, but treat as live if it happens
+            return True
+    except requests.RequestException:
+        logger.debug("doi.org handle check failed for %s", article.doi, exc_info=True)
+    # Fallback: ask the library index (api.crossref.org/works)
     try:
         response = requests.get(
             f"{WORKS_API_URL}/{article.doi}",
