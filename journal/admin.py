@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Manuscript, Review, Volume, Issue, Article, Announcement
+from .crossref import validate_crossref_doi
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -28,12 +29,23 @@ class ManuscriptAdmin(admin.ModelAdmin):
     list_filter = ('status', 'submitted_date')
     search_fields = ('title', 'author__username')
 
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('manuscript', 'issue', 'doi', 'doi_status', 'crossref_batch_id')
+    list_filter = ('doi_status', 'issue')
+    search_fields = ('manuscript__title', 'doi')
+    readonly_fields = ('doi', 'doi_status', 'crossref_batch_id')
+
+    def save_model(self, request, obj, form, change):
+        # Enforce prefix validation even for superusers — placeholders die here.
+        validate_crossref_doi(obj.doi)
+        super().save_model(request, obj, form, change)
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Manuscript, ManuscriptAdmin)
 admin.site.register(Review)
 admin.site.register(Volume)
 admin.site.register(Issue)
-admin.site.register(Article)
+admin.site.register(Article, ArticleAdmin)
 admin.site.register(Announcement)
 
 # Admin Site Customization

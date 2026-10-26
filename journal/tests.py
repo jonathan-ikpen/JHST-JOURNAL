@@ -377,3 +377,142 @@ class UserModelTests(TestCase):
     def test_user_str_is_username(self):
         user = User(username='johndoe')
         self.assertEqual(str(user), 'johndoe')
+
+
+# ---------------------------------------------------------------------------
+# Crossref DOI tests
+# ---------------------------------------------------------------------------
+
+import journal.crossref as crossref_mod
+from journal.crossref import (
+    build_crossref_xml,
+    check_deposit_status,
+    deposit_to_crossref,
+    generate_doi,
+    validate_crossref_doi,
+)
+from django.core.exceptions import ValidationError
+from journal.models import Article, Issue, Volume
+from unittest.mock import patch
+
+
+def make_published_article(author, **kwargs):
+    import datetime as _dt
+    ms = make_manuscript(author, status='published', **kwargs)
+    year = kwargs.get('year', 2026)
+    volume = Volume.objects.create(number=kwargs.get('volume_number', 1), year=year)
+    issue = Issue.objects.create(
+        volume=volume,
+        number=kwargs.get('issue_number', 1),
+        publication_date=_dt.date(year, 3, 14),
+    )
+    article = Article.objects.create(manuscript=ms, issue=issue)
+    # generate_doi reads article.id, so save first then patch the doi in.
+    article.doi = generate_doi(article)
+    article.save(update_fields=['doi'])
+    return article
+
+
+class GenerateDoiTests(TestCase):
+    def setUp(self):
+        self.author = User.objects.create_user(
+            username='doiauthor', email='doi@example.com', password='pass12345', is_researcher=True
+        )
+
+    def test_generate_doi_uses_fixed_prefix_and_pattern(self):
+        article = make_published_article(self.author)
+        self.assertEqual(article.doi, f'10.68763/jhst.2026.v1i1.{article.id}')
+
+    def test_placeholder_dois_rejected(self):
+        with self.assertRaises(ValidationError):
+            validate_crossref_doi('10.1234/jhst.v1.i1.1')
+
+
+class BuildXmlTests(TestCase):
+    def setUp(self):
+        create_all_singletons()
+        self.author = User.objects.create_user(
+            username='doiauthor2', email='doi2@example.com', password='pass12345',
+            is_researcher=True, affiliation='Petroleum Training Institute',
+        )
+
+    def test_build_xml_contains_required_metadata(self):
+        article = make_published_article(self.author)
+        xml = build_crossref_xml(article)
+        self.assertIn(article.doi, xml)
+        self.assertIn(f'/article/{article.id}/', xml)
+        self.assertIn('Journal of Hydrocarbon Science and Technology', xml)
+        self.assertIn(article.manuscript.title, xml)
+        self.assertIn('Petroleum Training Institute', xml)
+        self.assertNotIn('None', xml.split('<doi_data>')[0].split('<journal_metadata')[-1])
+
+
+class DepositTests(TestCase):
+    def setUp(self):
+        self.author = User.objects.create_user(
+            username='doiauthor3', email='doi3@example.com', password='pass12345', is_researcher=True
+        )
+        self.article = make_published_article(self.author)
+
+    @patch.object(crossref_mod, 'check_deposit_status', return_value=True)
+    @patch.object(crossref_mod.requests, 'post')
+    def test_failed_deposit_leaves_article_pending(self, mock_post, _mock_check):
+        mock_post.return_value.text = (
+            '<doi_batch_diagnostic><record_diagnostic status="Failure">'
+            '<msg>Invalid metadata</msg></record_diagnostic></doi_batch_diagnostic>'
+        )
+        mock_post.return_value.raise_for_status = lambda: None
+        from django.test import override_settings
+        with override_settings(CROSSREF_LOGIN_ID='x@y.z', CROSSREF_LOGIN_PASSWORD='pw', CROSSREF_USE_TEST='True'):
+            with self.assertRaises(ValueError):
+                deposit_to_crossref(self.article)
+
+    def test_liveness_check_false_and_true(self):
+        self.assertFalse(check_deposit_status(self.article))
+        with patch.object(crossref_mod.requests, 'get') as mock_get:
+            mock_get.return_value.status_code = 200
+            self.assertTrue(check_deposit_status(self.article))
+
+
+class PublishFlowTests(TestCase):
+    """Publishing auto-generates a DOI and never crashes on Crossref failure."""
+
+    def setUp(self):
+        create_all_singletons()
+        self.editor = User.objects.create_user(
+            username='doi_editor', email='editor@example.com', password='pass12345', is_editor=True
+        )
+        self.author = User.objects.create_user(
+            username='doi_author4', email='doi4@example.com', password='pass12345', is_researcher=True
+        )
+        self.ms = make_manuscript(self.author, status='accepted')
+        self.volume = Volume.objects.create(number=1, year=2026)
+        self.issue = Issue.objects.create(volume=self.volume, number=1, publication_date='2026-03-14')
+
+    @patch('journal.views.check_deposit_status', return_value=False)
+    @patch('journal.views.deposit_to_crossref', return_value='batch-123')
+    def test_publish_auto_generates_doi_and_deposits(self, _mock_post, _mock_check):
+        self.client.force_login(self.editor)
+        response = self.client.post(
+            reverse('publish_article', args=[self.ms.id]),
+            {'issue': str(self.issue.id)},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.ms.refresh_from_db()
+        article = self.ms.article
+        self.assertEqual(self.ms.status, 'published')
+        self.assertEqual(article.doi, f'10.68763/jhst.2026.v1i1.{article.id}')
+        self.assertEqual(article.doi_status, 'pending')
+        self.assertEqual(article.crossref_batch_id, 'batch-123')
+
+    @patch('journal.views.deposit_to_crossref', side_effect=Exception('network down'))
+    def test_publish_survives_crossref_failure(self, _mock_post):
+        self.client.force_login(self.editor)
+        response = self.client.post(
+            reverse('publish_article', args=[self.ms.id]),
+            {'issue': str(self.issue.id)},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.ms.refresh_from_db()
+        self.assertEqual(self.ms.article.doi_status, 'failed')
+        self.assertTrue(self.ms.article.doi.startswith('10.68763/'))

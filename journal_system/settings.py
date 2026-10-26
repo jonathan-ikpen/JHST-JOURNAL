@@ -112,6 +112,16 @@ AUTHENTICATION_BACKENDS = [
     'journal.backends.EmailOrUsernameModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+# Crossref DOI Registration
+# Credentials live in environment variables (.env) — never commit passwords.
+# CROSSREF_USE_TEST=True posts to the Crossref test server for safe dry runs;
+# set it to False only when ready to register real, billable-free GEM deposits.
+CROSSREF_LOGIN_ID = os.environ.get('CROSSREF_LOGIN_ID', '')
+CROSSREF_LOGIN_PASSWORD = os.environ.get('CROSSREF_LOGIN_PASSWORD', '')
+CROSSREF_DEPOSITOR_EMAIL = os.environ.get('CROSSREF_DEPOSITOR_EMAIL', 'noreply@jhst.org')
+CROSSREF_USE_TEST = os.environ.get('CROSSREF_USE_TEST', 'True')
+CROSSREF_SITE_URL = os.environ.get('CROSSREF_SITE_URL', 'https://www.jhst.org')
+
 # Email Configuration
 # Use environment variables for sensitive SMTP credentials
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')

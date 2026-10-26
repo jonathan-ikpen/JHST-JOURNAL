@@ -58,7 +58,7 @@
           <span class="material-icons text-base mr-1">picture_as_pdf</span>
           PDF
         </a>
-        {% endif %} {% if article.doi %}
+        {% endif %} {% if article.doi and article.doi_status == 'registered' %}
         <span class="text-xs text-gray-400">DOI: {{ article.doi }}</span>
         {% endif %}
       </div>

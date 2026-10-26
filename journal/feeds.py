@@ -17,4 +17,7 @@ class LatestArticlesFeed(Feed):
         return item.manuscript.abstract
 
     def item_link(self, item):
+        # Point aggregators at the canonical DOI URL once registered.
+        if item.doi and item.doi_status == 'registered':
+            return f'https://doi.org/{item.doi}'
         return reverse('article_detail', args=[item.pk])

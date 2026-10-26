@@ -16,6 +16,7 @@ from django.urls import reverse
 from .forms import ResearcherRegistrationForm, ManuscriptForm, ReviewForm, VolumeForm, IssueForm, UserProfileForm, RevisionForm
 from .models import Manuscript, Review, User, Issue, Article, Volume, Notification, Announcement
 from .decorators import verified_email_required
+from .crossref import generate_doi, deposit_to_crossref, check_deposit_status
 
 def _send_notification_email(subject, message, recipient_list, html_message=None):
     """
@@ -847,15 +848,51 @@ def publish_article(request, manuscript_id):
         
         page_start = request.POST.get('page_start')
         page_end = request.POST.get('page_end')
-        doi = request.POST.get('doi')
-        
-        Article.objects.create(
-            manuscript=manuscript, 
+
+        # DOI is auto-generated server-side — never trust an editor-typed value.
+        existing = getattr(manuscript, 'article', None)
+        if existing is not None:
+            messages.error(request, "This manuscript already has a published article.")
+            return redirect('dashboard')
+
+        article = Article(
+            manuscript=manuscript,
             issue=issue,
             page_start=page_start if page_start else None,
             page_end=page_end if page_end else None,
-            doi=doi if doi else None
         )
+        # Save first to obtain article.id (used in the DOI suffix).
+        article.save()
+        article.doi = generate_doi(article)
+        article.save(update_fields=['doi'])
+
+        # Deposit metadata with Crossref. Publishing never fails because of
+        # Crossref: failures leave the article 'pending' for retry via
+        # `python manage.py deposit_pending_dois` (run as a cPanel cron).
+        try:
+            batch_id = deposit_to_crossref(article)
+            article.crossref_batch_id = batch_id
+            if check_deposit_status(article):
+                article.doi_status = 'registered'
+                messages.success(
+                    request,
+                    f"Article published to {issue} and DOI {article.doi} registered with Crossref."
+                )
+            else:
+                article.doi_status = 'pending'
+                messages.success(
+                    request,
+                    f"Article published to {issue} with DOI {article.doi} "
+                    "(pending Crossref registration — live within ~30 minutes)."
+                )
+        except Exception as exc:  # noqa: BLE001 — keep the article even if deposit fails
+            article.doi_status = 'failed'
+            messages.warning(
+                request,
+                f"Article published to {issue} with DOI {article.doi}, "
+                f"but the Crossref deposit failed and will be retried: {exc}"
+            )
+        article.save(update_fields=['doi_status', 'crossref_batch_id'])
 
         # Update manuscript status
         manuscript.status = 'published'

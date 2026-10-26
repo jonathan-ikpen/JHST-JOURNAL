@@ -69,19 +69,13 @@ Article{% endblock %} {% block content %}
           </div>
         </div>
 
-        <div>
-          <label
-            for="doi"
-            class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2"
-            >DOI (Optional)</label
-          >
-          <input
-            type="text"
-            name="doi"
-            id="doi"
-            placeholder="e.g. 10.1234/jhst.v1.i1.1"
-            class="w-full rounded border border-slate-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-card-dark dark:border-slate-600 dark:text-white p-3 shadow-sm transition-colors"
-          />
+        <div
+          class="bg-green-50 dark:bg-green-900/20 p-4 rounded border border-green-100 dark:border-green-800 text-sm text-green-800 dark:text-green-200 mb-4"
+        >
+          <span class="font-bold block mb-1">Automatic DOI Assignment</span>
+          On publish, the system will generate a DOI
+          (<span class="font-mono">10.68763/jhst.YYYY.vViI.id</span>) and deposit
+          it with Crossref automatically. No manual entry is needed.
         </div>
 
         <div

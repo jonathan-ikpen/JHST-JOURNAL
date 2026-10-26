@@ -1,4 +1,17 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block extra_head %}
+{% if article.doi_status == 'registered' %}
+<meta name="citation_title" content="{{ article.manuscript.title }}" />
+<meta name="citation_author" content="{{ article.manuscript.author.get_full_name|default:article.manuscript.author.username }}" />
+<meta name="citation_publication_date" content="{{ article.issue.publication_date|date:'Y/m/d' }}" />
+<meta name="citation_journal_title" content="Journal of Hydrocarbon Science and Technology" />
+<meta name="citation_volume" content="{{ article.issue.volume.number }}" />
+<meta name="citation_issue" content="{{ article.issue.number }}" />
+{% if article.page_start %}<meta name="citation_firstpage" content="{{ article.page_start }}" />{% endif %}
+{% if article.page_end %}<meta name="citation_lastpage" content="{{ article.page_end }}" />{% endif %}
+<meta name="citation_doi" content="{{ article.doi }}" />
+<meta name="citation_abstract_html_url" content="{{ request.build_absolute_uri }}" />
+{% endif %}
+{% endblock %} {% block content %}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
   <main class="lg:col-span-2 space-y-8">
     <div class="bg-card-light dark:bg-card-dark p-6 rounded shadow">
@@ -10,8 +23,9 @@
           <strong class="text-text-light dark:text-text-dark">Document Type:</strong> Research Article
         </p>
         <p class="mt-2">
-          <strong class="text-text-light dark:text-text-dark">Author:</strong>
-          {{ article.manuscript.author.username }} ({{ article.manuscript.author.affiliation|default:"No affiliation" }})
+          <strong class="text-text-light dark:text-text-dark">Author{% if article.manuscript.co_authors %}s{% endif %}:</strong>
+          {{ article.manuscript.author.get_full_name|default:article.manuscript.author.username }}{% if article.manuscript.co_authors %}; {{ article.manuscript.co_authors }}{% endif %}
+          ({{ article.manuscript.author.affiliation|default:article.manuscript.affiliations|default:"No affiliation" }})
           {% if article.manuscript.author.orcid %}
           <br />
           <strong class="text-text-light dark:text-text-dark">ORCID iD:</strong>
@@ -25,14 +39,18 @@
           {% endif %}
         </p>
         {% if article.doi %}
-        <p class="mt-2 text-blue-600">
+        <p class="mt-2{% if article.doi_status == 'registered' %} text-blue-600{% else %} text-gray-500{% endif %}">
           <strong class="text-text-light dark:text-text-dark">DOI:</strong>
+          {% if article.doi_status == 'registered' %}
           <a
-            href="https://doi.org/{{ article.doi }}"
+            href="{{ article.doi_url }}"
             target="_blank"
             class="hover:underline"
             >{{ article.doi }}</a
           >
+          {% else %}
+          <span>{{ article.doi }} (pending registration)</span>
+          {% endif %}
         </p>
         {% endif %}
       </div>
@@ -155,7 +173,7 @@
             <li><a href="javascript:void(0)" class="hover:underline flex items-center"><span class="material-icons text-xs mr-1">download</span> Reference Manager</a></li>
           </ul>
           <div class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-             {{ article.manuscript.author.last_name|default:article.manuscript.author.username }}, {% if article.manuscript.author.first_name %}{{ article.manuscript.author.first_name|first }}.{% endif %} ({{ article.issue.volume.year }}). {{ article.manuscript.title }}. <i>JHST</i>, {{ article.issue.volume.number }}({{ article.issue.number }}){% if article.page_start %}, {{ article.page_start }}-{{ article.page_end }}{% endif %}. {% if article.doi %}https://doi.org/{{ article.doi }}{% endif %}
+             {{ article.manuscript.author.last_name|default:article.manuscript.author.username }}, {% if article.manuscript.author.first_name %}{{ article.manuscript.author.first_name|first }}.{% endif %} ({{ article.issue.volume.year }}). {{ article.manuscript.title }}. <i>JHST</i>, {{ article.issue.volume.number }}({{ article.issue.number }}){% if article.page_start %}, {{ article.page_start }}-{{ article.page_end }}{% endif %}. {% if article.doi_status == 'registered' %}{{ article.doi_url }}{% endif %}
           </div>
         </div>
       </div>

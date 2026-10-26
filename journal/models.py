@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from ckeditor.fields import RichTextField
 
+from .crossref import validate_crossref_doi
+
 class User(AbstractUser):
     is_researcher = models.BooleanField(default=False)
     is_reviewer = models.BooleanField(default=False)
@@ -178,14 +180,37 @@ class Issue(models.Model):
         return f"Vol {self.volume.number}, Issue {self.number}"
 
 class Article(models.Model):
+    DOI_STATUS_CHOICES = [
+        ('none', 'No DOI'),
+        ('pending', 'Pending Registration'),
+        ('registered', 'Registered'),
+        ('failed', 'Deposit Failed'),
+    ]
+
     manuscript = models.OneToOneField(Manuscript, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='articles')
     page_start = models.IntegerField(null=True, blank=True)
     page_end = models.IntegerField(null=True, blank=True)
-    doi = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    doi = models.CharField(
+        max_length=100, unique=True, blank=True, null=True,
+        validators=[validate_crossref_doi],
+        help_text="Auto-generated on publish (10.68763/...). Placeholders are rejected."
+    )
+    doi_status = models.CharField(
+        max_length=20, choices=DOI_STATUS_CHOICES, default='none',
+        help_text="Crossref registration status of this article's DOI."
+    )
+    crossref_batch_id = models.CharField(
+        max_length=100, blank=True, null=True,
+        help_text="Submission/batch ID returned by Crossref for the last deposit."
+    )
 
     def __str__(self):
         return self.manuscript.title
+
+    @property
+    def doi_url(self):
+        return f"https://doi.org/{self.doi}" if self.doi else None
 
 class AuthorResponse(models.Model):
     manuscript = models.ForeignKey(Manuscript, on_delete=models.CASCADE, related_name='author_responses')
