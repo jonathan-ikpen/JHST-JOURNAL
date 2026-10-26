@@ -118,6 +118,7 @@ AUTHENTICATION_BACKENDS = [
 # set it to False only when ready to register real, billable-free GEM deposits.
 CROSSREF_LOGIN_ID = os.environ.get('CROSSREF_LOGIN_ID', '')
 CROSSREF_LOGIN_PASSWORD = os.environ.get('CROSSREF_LOGIN_PASSWORD', '')
+CROSSREF_ROLE = os.environ.get('CROSSREF_ROLE', 'bcmg')
 CROSSREF_DEPOSITOR_EMAIL = os.environ.get('CROSSREF_DEPOSITOR_EMAIL', 'noreply@jhst.org')
 CROSSREF_USE_TEST = os.environ.get('CROSSREF_USE_TEST', 'True')
 CROSSREF_SITE_URL = os.environ.get('CROSSREF_SITE_URL', 'https://www.jhst.org')

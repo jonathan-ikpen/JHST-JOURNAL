@@ -205,6 +205,9 @@ def deposit_to_crossref(article, xml_string=None):
     """POST the deposit XML; returns the submission/batch id. Raises on failure."""
     login_id = getattr(settings, "CROSSREF_LOGIN_ID", "")
     login_passwd = getattr(settings, "CROSSREF_LOGIN_PASSWORD", "")
+    # Crossref members belong to a role (ours is bcmg); the deposit POST must
+    # carry it or the servlet 401s with 'cannot assume specified role'.
+    role = getattr(settings, "CROSSREF_ROLE", "bcmg")
     if not login_id or not login_passwd:
         raise ValueError("Crossref credentials are not configured (CROSSREF_LOGIN_ID).")
 
@@ -215,6 +218,7 @@ def deposit_to_crossref(article, xml_string=None):
             "operation": "doMDUpload",
             "login_id": login_id,
             "login_passwd": login_passwd,
+            "role": role,
         },
         files={"fname": ("deposit.xml", xml_string, "application/xml")},
         timeout=30,
