@@ -1,12 +1,35 @@
 from django.urls import path, reverse_lazy
 from . import views, feeds
-from .forms import UserLoginForm, CustomPasswordChangeForm
+from .forms import (
+    UserLoginForm, CustomPasswordChangeForm,
+    CustomPasswordResetForm, CustomSetPasswordForm,
+)
 from django.contrib.auth import views as auth_views
 from django.contrib.messages.views import SuccessMessageMixin
 from pages import views as pages_views
 
 class CustomPasswordChangeView(SuccessMessageMixin, auth_views.PasswordChangeView):
     success_message = "Your password was successfully updated!"
+
+
+class JHSTPasswordResetView(SuccessMessageMixin, auth_views.PasswordResetView):
+    template_name = 'journal/password_reset.html'
+    email_template_name = 'emails/password_reset_email.txt'
+    html_email_template_name = 'emails/password_reset_email.html'
+    subject_template_name = 'emails/password_reset_subject.txt'
+    form_class = CustomPasswordResetForm
+    success_url = reverse_lazy('password_reset_done')
+    success_message = (
+        "If an account exists for that email, a reset link has been sent. "
+        "Please check your inbox (and spam folder)."
+    )
+
+
+class JHSTPasswordResetConfirmView(SuccessMessageMixin, auth_views.PasswordResetConfirmView):
+    template_name = 'journal/password_reset_confirm.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('password_reset_complete')
+    success_message = "Your password has been reset. You can now log in with your new password."
 
 urlpatterns = [
     path('', pages_views.home, name='index'),
@@ -15,6 +38,10 @@ urlpatterns = [
     path('resend-verification/', views.resend_verification_email, name='resend_verification'),
     path('login/', auth_views.LoginView.as_view(template_name='journal/login.html', authentication_form=UserLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
+    path('password-reset/', JHSTPasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='journal/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<str:uidb64>/<str:token>/', JHSTPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='journal/password_reset_complete.html'), name='password_reset_complete'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/manuscript/<int:manuscript_id>/', views.dashboard_manuscript_detail, name='dashboard_manuscript_detail'),
     path('dashboard/my-submissions/', views.my_submissions, name='my_submissions'),

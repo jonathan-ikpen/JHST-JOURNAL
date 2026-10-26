@@ -1,6 +1,16 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm, AuthenticationForm, PasswordChangeForm,
+    PasswordResetForm, SetPasswordForm,
+)
 from .models import User, Manuscript, Review, Volume, Issue
+
+_LOGIN_INPUT = (
+    'w-full px-4 py-3 border border-slate-300 rounded-lg shadow-sm '
+    'focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary '
+    'text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white '
+    'transition-all duration-200'
+)
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
@@ -97,9 +107,21 @@ class UserLoginForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = 'Username or Email'
         for field in self.fields.values():
-            field.widget.attrs.update({
-                'class': 'w-full px-4 py-3 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm dark:bg-card-dark dark:border-slate-600 dark:text-white transition-all duration-200'
-            })
+            field.widget.attrs.update({'class': _LOGIN_INPUT})
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': _LOGIN_INPUT})
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': _LOGIN_INPUT})
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

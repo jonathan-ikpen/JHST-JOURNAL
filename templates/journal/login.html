@@ -34,7 +34,12 @@
       Login
     </button>
   </form>
-  <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+  <p class="mt-4 text-sm text-gray-600 dark:text-gray-400 text-right">
+    <a href="{% url 'password_reset' %}" class="text-primary hover:underline"
+      >Forgot password?</a
+    >
+  </p>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
     Don't have an account?
     <a href="{% url 'register' %}" class="text-primary hover:underline"
       >Register here</a

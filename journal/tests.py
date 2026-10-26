@@ -516,3 +516,66 @@ class PublishFlowTests(TestCase):
         self.ms.refresh_from_db()
         self.assertEqual(self.ms.article.doi_status, 'failed')
         self.assertTrue(self.ms.article.doi.startswith('10.68763/'))
+
+
+# ---------------------------------------------------------------------------
+# Password reset tests
+# ---------------------------------------------------------------------------
+
+class PasswordResetTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='resetuser', email='reset@example.com', password='OldPass123!'
+        )
+
+    def test_login_page_links_to_password_reset(self):
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse('password_reset'))
+
+    def test_reset_request_page_loads(self):
+        response = self.client.get(reverse('password_reset'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_reset_request_sends_email_to_known_user(self):
+        response = self.client.post(reverse('password_reset'), {'email': 'reset@example.com'})
+        self.assertRedirects(response, reverse('password_reset_done'))
+
+    def test_reset_request_for_unknown_email_still_redirects(self):
+        # Never reveal whether an email exists — same response either way.
+        response = self.client.post(reverse('password_reset'), {'email': 'nobody@example.com'})
+        self.assertRedirects(response, reverse('password_reset_done'))
+
+    def test_reset_confirm_sets_new_password(self):
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = default_token_generator.make_token(self.user)
+        url = reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+
+        # Django's PasswordResetConfirmView 302s a valid token into the
+        # session-backed set-password URL; follow it to reach the form.
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Set a New Password')
+
+        response = self.client.post(response.redirect_chain[-1][0], {
+            'new_password1': 'BrandNewPass123!',
+            'new_password2': 'BrandNewPass123!',
+        })
+        self.assertRedirects(response, reverse('password_reset_complete'))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('BrandNewPass123!'))
+
+    def test_reset_confirm_with_bad_token_shows_invalid_page(self):
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        response = self.client.get(
+            reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': 'bad-token'})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'invalid or has expired')
